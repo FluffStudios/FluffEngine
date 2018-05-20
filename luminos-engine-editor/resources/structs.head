@@ -1,0 +1,31 @@
+#ifndef POINT_LIGHT
+#define POINT_LIGHT
+struct PointLight
+{
+	vec3 Position;
+	vec3 Color;
+	vec3 Attenuation;
+};
+#endif
+
+#ifndef SPOT_LIGHT
+#define SPOT_LIGHT
+struct SpotLight
+{
+	vec3 Position;
+	vec3 Direction;
+	vec3 Color;
+	vec3 Attenuation;
+	float CutOff;
+};
+#endif
+
+#ifndef DIRECTIONAL_LIGHT
+#define DIRECTIONAL_LIGHT
+struct DirectionalLight
+{
+	vec3 Direction;
+	vec3 Color;
+	vec3 Attenuation;
+};
+#endif

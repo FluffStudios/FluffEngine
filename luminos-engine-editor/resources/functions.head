@@ -1,0 +1,20 @@
+#include <resources/structs.head>
+
+#ifndef TRIPLANAR_TEXTURE_S2_V3_V3_F
+#define TRIPLANAR_TEXTURE_S2_V3_V3_F
+vec4 triplanar_texture(sampler2D tex, vec3 coordinates, vec3 Normal, float textureScale)
+{
+	vec2 yUV = coordinates.xz * textureScale;
+	vec2 xUV = coordinates.zy * textureScale;
+	vec2 zUV = coordinates.xy * textureScale;
+
+	vec3 yDiff = texture(tex, yUV).rgb;
+	vec3 xDiff = texture(tex, xUV).rgb;
+	vec3 zDiff = texture(tex, zUV).rgb;
+
+	vec3 blendWeights = abs(Normal);
+	blendWeights = clamp(blendWeights, vec3(0.01, 0.01, 0.01), vec3(0.99, 0.99, 0.99));
+	blendWeights /= (blendWeights.x + blendWeights.y + blendWeights.z);
+	return vec4(xDiff * blendWeights.x + yDiff * blendWeights.y + zDiff * blendWeights.z, 1);
+}
+#endif

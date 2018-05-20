@@ -1,0 +1,33 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/Environment/Hierarchy/Build/SolBuilderDuo/UseMsbuildSolutionBuilder/@EntryValue">NewVersion</s:String>
+	<s:String x:Key="/Default/RunConfigs/Active/@EntryValue">927D44C1B0A7224080C9ABBA87574D78</s:String>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<s:Boolean x:Key="/Default/RunConfigs/Config/=927D44C1B0A7224080C9ABBA87574D78/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/RunConfigs/Config/=927D44C1B0A7224080C9ABBA87574D78/Name/@EntryValue">Luminos Test Configuration</s:String>
+	<s:String x:Key="/Default/RunConfigs/Config/=927D44C1B0A7224080C9ABBA87574D78/ProjectGuid/@EntryValue">920AE07D9D1378429B7FB50221C376FF</s:String>
+	<s:String x:Key="/Default/RunConfigs/Config/=927D44C1B0A7224080C9ABBA87574D78/Type/@EntryValue">project</s:String>
+	
+	<s:Boolean x:Key="/Default/RunConfigs/Config/=AD7F3E804515074CB9DA433A7EB2D04D/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/RunConfigs/Config/=AD7F3E804515074CB9DA433A7EB2D04D/Name/@EntryValue">Utilities Test</s:String>
+	<s:String x:Key="/Default/RunConfigs/Config/=AD7F3E804515074CB9DA433A7EB2D04D/ProjectGuid/@EntryValue">255B42F02777A74FB470F01D76A3C5CB</s:String>
+	<s:String x:Key="/Default/RunConfigs/Config/=AD7F3E804515074CB9DA433A7EB2D04D/Type/@EntryValue">project</s:String>
+	<s:Boolean x:Key="/Default/RunConfigs/Config/=FA1E26298445AE4D8BC259049C8DA36F/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/RunConfigs/Config/=FA1E26298445AE4D8BC259049C8DA36F/Name/@EntryValue">Engine Editor</s:String>
+	<s:String x:Key="/Default/RunConfigs/Config/=FA1E26298445AE4D8BC259049C8DA36F/ProjectGuid/@EntryValue">D79D8958D04CA74683FB0F74DC321B0B</s:String>
+	<s:String x:Key="/Default/RunConfigs/Config/=FA1E26298445AE4D8BC259049C8DA36F/Type/@EntryValue">project</s:String>
+	
+	
+	
+	
+	
+	
+	
+	</wpf:ResourceDictionary>

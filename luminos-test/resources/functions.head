@@ -1,0 +1,82 @@
+#include <resources/structs.head>
+
+#ifndef TRIPLANAR_TEXTURE_S2_V3_V3_F
+#define TRIPLANAR_TEXTURE_S2_V3_V3_F
+vec4 triplanar_texture(sampler2D tex, vec3 coordinates, vec3 Normal, float textureScale)
+{
+	vec2 yUV = coordinates.xz * textureScale;
+	vec2 xUV = coordinates.zy * textureScale;
+	vec2 zUV = coordinates.xy * textureScale;
+
+	vec3 yDiff = texture(tex, yUV).rgb;
+	vec3 xDiff = texture(tex, xUV).rgb;
+	vec3 zDiff = texture(tex, zUV).rgb;
+
+	vec3 blendWeights = abs(Normal);
+	blendWeights = clamp(blendWeights, vec3(0.01, 0.01, 0.01), vec3(0.99, 0.99, 0.99));
+	blendWeights /= (blendWeights.x + blendWeights.y + blendWeights.z);
+	return vec4(xDiff * blendWeights.x + yDiff * blendWeights.y + zDiff * blendWeights.z, 1);
+}
+#endif
+
+#ifndef DIRECTIONAL_LIGHTING_DLIGHT
+#define DIRECTIONAL_LIGHTING_DLIGHT
+vec3 directional_lighting(DirectionalLight light, vec3 Diffuse, vec3 Specular, vec3 FragmentPosition, vec3 Normal, vec3 EyePosition, float Shininess)
+{
+	vec3 ambient = light.Ambient.rgb * Diffuse;
+	vec3 norm = normalize(Normal);
+	vec3 light_direction = normalize(-light.Direction.xyz);
+
+	// diffuse calculations
+	float diffuse_factor = max(dot(norm, light_direction.xyz), 0.0);
+	vec3 diffuse = light.Diffuse.rgb * diffuse_factor * Diffuse;
+
+	// specular calculations
+	vec3 view_direction = normalize(EyePosition - FragmentPosition);
+	vec3 reflect_direction = reflect(-light_direction, norm);
+	reflect_direction.xz *= -1;
+	float specular_factor = max(dot(view_direction, reflect_direction), 0.0);
+	vec3 specular = light.Specular.rgb * specular_factor * Specular;
+
+	return ambient + diffuse + specular;
+}
+#endif
+
+#ifndef POINT_LIGHTING_PLIGHT
+#define POINT_LIGHTING_PLIGHT
+vec3 point_lighting(PointLight light, vec3 Diffuse, vec3 Specular, vec3 FragmentPosition, vec3 Normal, vec3 EyePosition, float Shininess)
+{
+	vec3 lighting = Diffuse * light.Ambient.rgb;
+	vec3 view_direction = normalize(EyePosition - FragmentPosition);
+	vec3 light_direction = normalize(light.Position.xyz - FragmentPosition);
+	vec3 diffuse = max(dot(Normal, light_direction), 0.0) * Diffuse * light.Diffuse.rgb;
+
+	vec3 half_v = normalize(light_direction + view_direction);
+	float specular_factor = max(dot(Normal, half_v), 0.0);
+	vec3 specular = light.Specular.rgb * specular_factor * Specular;
+
+	float distance = length(light.Position.xyz - FragmentPosition);
+	float attenuation = 1.0 / (light.Attenuation.x + light.Attenuation.y * distance + light.Attenuation.z * distance * distance);
+	return attenuation * (diffuse + specular) + lighting;
+}
+#endif
+
+#ifndef SPOT_LIGHTING_SLIGHT
+#define SPOT_LIGHTING_SLIGHT
+vec3 spot_lighting(SpotLight light, vec3 Diffuse, vec3 Specular, vec3 FragmentPosition, vec3 Normal, vec3 EyePosition, float Shininess)
+{
+	vec3 lighting = Diffuse * light.Ambient.rgb;
+	vec3 view_direction = normalize(EyePosition - FragmentPosition);
+	vec3 light_direction = normalize(light.Position.xyz - FragmentPosition);
+	vec3 diffuse = max(dot(Normal, light_direction), 0.0) * Diffuse * light.Diffuse.rgb;
+
+	vec3 half_v = normalize(light_direction + view_direction);
+	float specular_factor = max(dot(Normal, half_v), 0.0);
+	vec3 specular = light.Specular.rgb * specular_factor * Specular;
+
+	float distance = length(light.Position.xyz - FragmentPosition);
+	float attenuation = 1.0 / (light.Attenuation.x + light.Attenuation.y * distance + light.Attenuation.z * distance * distance);
+	if (acos(dot(light_direction, light.Direction.xyz)) > light.CutOff) attenuation = 0;
+	return attenuation * (diffuse + specular) + lighting;
+}
+#endif

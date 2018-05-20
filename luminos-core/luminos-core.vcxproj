@@ -1,0 +1,393 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{6961F117-013D-4BC0-BC6C-369F3A2CAA5F}</ProjectGuid>
+    <RootNamespace>luminoscore</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)$(Platform)\$(ProjectName)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)$(Platform)\$(ProjectName)\$(Configuration)\intermediates\</IntDir>
+    <IncludePath>$(SolutionDir)depend\include;$(SolutionDir)luminos-utilities\includes;$(IncludePath)</IncludePath>
+    <ReferencePath>$(ReferencePath)</ReferencePath>
+    <LibraryPath>$(SolutionDir)depend\lib\x86;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
+    <TargetName>$(ProjectName)-$(Platform)$(Configuration)</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)$(Platform)\$(ProjectName)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)$(Platform)\$(ProjectName)\$(Configuration)\intermediates\</IntDir>
+    <IncludePath>$(SolutionDir)depend\include;$(SolutionDir)luminos-utilities\includes;$(IncludePath)</IncludePath>
+    <ReferencePath>$(ReferencePath)</ReferencePath>
+    <LibraryPath>$(SolutionDir)depend\lib\x86;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
+    <TargetName>$(ProjectName)-$(Platform)$(Configuration)</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IntDir>$(SolutionDir)$(Platform)\$(ProjectName)\$(Configuration)\intermediates\</IntDir>
+    <IncludePath>$(SolutionDir)depend\include;$(ProjectDir)includes;$(SolutionDir)luminos-utilities\includes;$(ProjectDir)\includes;$(IncludePath)</IncludePath>
+    <ReferencePath>$(ReferencePath)</ReferencePath>
+    <LibraryPath>$(SolutionDir)$(Platform)\luminos-utilities\$(Configuration);$(SolutionDir)depend\lib\x64;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64</LibraryPath>
+    <OutDir>$(SolutionDir)$(Platform)\$(ProjectName)\$(Configuration)\</OutDir>
+    <TargetName>$(ProjectName)</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IntDir>$(SolutionDir)$(Platform)\$(ProjectName)\$(Configuration)\intermediates\</IntDir>
+    <IncludePath>$(SolutionDir)depend\include;$(ProjectDir)includes;$(SolutionDir)luminos-utilities\includes;$(IncludePath)</IncludePath>
+    <ReferencePath>$(ReferencePath)</ReferencePath>
+    <LibraryPath>$(SolutionDir)$(Platform)\luminos-utilities\$(Configuration);$(SolutionDir)depend\lib\x64;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64</LibraryPath>
+    <OutDir>$(SolutionDir)$(Platform)\$(ProjectName)\$(Configuration)\</OutDir>
+    <TargetName>$(ProjectName)</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>LowLevelAABBDEBUG.lib;LowLevelClothDEBUG.lib;LowLevelDEBUG.lib;LowLevelDynamicsDEBUG.lib;LowLevelParticlesDEBUG.lib;PhysX3CharacterKinematicsDEBUG_x64.lib;PhysX3CommonDEBUG_x64.lib;PhysX3CookingDEBUG_x64.lib;PhysX3DEBUG_x64.lib;PhysX3ExtensionsDEBUG_x64.lib;PhysX3GpuDEBUG_x64.lib;PhysX3VehicleDEBUG.lib;SceneQueryDEBUG.lib;SimulationControllerDEBUG.lib;ws2_32.lib;opengl32.lib;glew32s.lib;glfw3.lib;assimp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NK_IMPLEMENTATION;GLEW_STATIC;NK_INCLUDE_FIXED_TYPES;NK_INCLUDE_DEFAULT_ALLOCATOR;NK_INCLUDE_STANDARD_IO;NK_INCLUDE_STANDARD_VARARGS;NK_INCLUDE_VERTEX_BUFFER_OUTPUT;NK_INCLUDE_FONT_BAKING;NK_INCLUDE_DEFAULT_FONT;NK_INCLUDE_COMMAND_USERDATA;NK_BUTTON_TRIGGER_ON_RELEASE;NK_ZERO_COMMAND_MEMORY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp14</LanguageStandard>
+      <AdditionalOptions>/FS %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>luminos-utilities.lib;ws2_32.lib;opengl32.lib;glew32s.lib;glfw3.lib;assimp.lib;LowLevelAABBDEBUG.lib;LowLevelClothDEBUG.lib;LowLevelDEBUG.lib;LowLevelDynamicsDEBUG.lib;LowLevelParticlesDEBUG.lib;PhysX3CharacterKinematic_x64DEBUG.lib;PhysX3Common_x64DEBUG.lib;PhysX3Cooking_x64DEBUG.lib;PhysX3DEBUG_x64.lib;PhysX3ExtensionsDEBUG.lib;PhysX3GpuDEBUG_x64.lib;PhysX3VehicleDEBUG.lib;PsFastXml_x64.lib;PxCudaContextManager_x64.lib;PxFoundation_x64.lib;PxPvdSDK_x64.lib;PxTask_x64.lib;SceneQueryDEBUG.lib;SimulationControllerDEBUG.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>true</LinkLibraryDependencies>
+    </ProjectReference>
+    <Lib>
+      <AdditionalDependencies>LowLevelAABB.lib;LowLevelCloth.lib;LowLevel.lib;LowLevelDynamics.lib;LowLevelParticles.lib;PhysX3CharacterKinematic_x64.lib;PhysX3Common_x64.lib;PhysX3Cooking_x64.lib;PhysX3DEBUG_x64.lib;PhysX3Extensions.lib;PhysX3Gpu_x64.lib;PhysX3Vehicle.lib;PsFastXml_x64.lib;PxCudaContextManager_x64.lib;PxFoundation_x64.lib;PxPvdSDK_x64.lib;PxTask_x64.lib;SceneQuery.lib;SimulationController.lib;ws2_32.lib;opengl32.lib;glew32s.lib;glfw3-debug.lib;assimp.lib;luminos-utilities.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <LinkTimeCodeGeneration>true</LinkTimeCodeGeneration>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <MinimalRebuild>false</MinimalRebuild>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>ws2_32.lib;opengl32.lib;glew32s.lib;glfw3.lib;assimp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NK_IMPLEMENTATION;GLEW_STATIC;NK_INCLUDE_FIXED_TYPES;NK_INCLUDE_DEFAULT_ALLOCATOR;NK_INCLUDE_STANDARD_IO;NK_INCLUDE_STANDARD_VARARGS;NK_INCLUDE_VERTEX_BUFFER_OUTPUT;NK_INCLUDE_FONT_BAKING;NK_INCLUDE_DEFAULT_FONT;NK_INCLUDE_COMMAND_USERDATA;NK_BUTTON_TRIGGER_ON_RELEASE;NK_ZERO_COMMAND_MEMORY;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
+      <MinimalRebuild>false</MinimalRebuild>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>LowLevelAABB.lib;LowLevelCloth.lib;LowLevel.lib;LowLevelDynamics.lib;LowLevelParticles.lib;PhysX3CharacterKinematic_x64.lib;PhysX3Common_x64.lib;PhysX3Cooking_x64.lib;PhysX3DEBUG_x64.lib;PhysX3Extensions.lib;PhysX3Gpu_x64.lib;PhysX3Vehicle.lib;PsFastXml_x64.lib;PxCudaContextManager_x64.lib;PxFoundation_x64.lib;PxPvdSDK_x64.lib;PxTask_x64.lib;SceneQuery.lib;SimulationController.lib;ws2_32.lib;opengl32.lib;glew32s.lib;glfw3.lib;assimp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <Lib>
+      <AdditionalDependencies>LowLevelAABB.lib;LowLevelCloth.lib;LowLevel.lib;LowLevelDynamics.lib;LowLevelParticles.lib;PhysX3CharacterKinematic_x64.lib;PhysX3Common_x64.lib;PhysX3Cooking_x64.lib;PhysX3_x64.lib;PhysX3Extensions.lib;PhysX3Gpu_x64.lib;PhysX3Vehicle.lib;PsFastXml_x64.lib;PxCudaContextManager_x64.lib;PxFoundation_x64.lib;PxPvdSDK_x64.lib;PxTask_x64.lib;SceneQuery.lib;SimulationController.lib;ws2_32.lib;opengl32.lib;glew32s.lib;glfw3.lib;assimp.lib;luminos-utilities.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="source\core\registry.cpp" />
+    <ClCompile Include="source\physics\physics_component.cpp" />
+    <ClCompile Include="source\physics\physics_material.cpp" />
+    <ClCompile Include="source\physics\physics_scene.cpp" />
+    <ClCompile Include="source\ui\nuklear\nuklear_buffer.c" />
+    <ClCompile Include="source\ui\nuklear\nuklear_button.c" />
+    <ClCompile Include="source\ui\nuklear\nuklear_chart.c" />
+    <ClCompile Include="source\ui\nuklear\nuklear_color.c" />
+    <ClCompile Include="source\ui\nuklear\nuklear_color_picker.c" />
+    <ClCompile Include="source\ui\nuklear\nuklear_combo.c" />
+    <ClCompile Include="source\ui\nuklear\nuklear_context.c" />
+    <ClCompile Include="source\ui\nuklear\nuklear_contextual.c" />
+    <ClCompile Include="source\ui\nuklear\nuklear_draw.c" />
+    <ClCompile Include="source\ui\nuklear\nuklear_edit.c" />
+    <ClCompile Include="source\ui\nuklear\nuklear_font.c" />
+    <ClCompile Include="source\ui\nuklear\nuklear_group.c" />
+    <ClCompile Include="source\ui\nuklear\nuklear_image.c" />
+    <ClCompile Include="source\ui\nuklear\nuklear_input.c" />
+    <ClCompile Include="source\ui\nuklear\nuklear_layout.c" />
+    <ClCompile Include="source\ui\nuklear\nuklear_list_view.c" />
+    <ClCompile Include="source\ui\nuklear\nuklear_math.c" />
+    <ClCompile Include="source\ui\nuklear\nuklear_menu.c" />
+    <ClCompile Include="source\ui\nuklear\nuklear_page_element.c" />
+    <ClCompile Include="source\ui\nuklear\nuklear_panel.c" />
+    <ClCompile Include="source\ui\nuklear\nuklear_pool.c" />
+    <ClCompile Include="source\ui\nuklear\nuklear_popup.c" />
+    <ClCompile Include="source\ui\nuklear\nuklear_progress.c" />
+    <ClCompile Include="source\ui\nuklear\nuklear_property.c" />
+    <ClCompile Include="source\ui\nuklear\nuklear_scrollbar.c" />
+    <ClCompile Include="source\ui\nuklear\nuklear_selectable.c" />
+    <ClCompile Include="source\ui\nuklear\nuklear_slider.c" />
+    <ClCompile Include="source\ui\nuklear\nuklear_string.c" />
+    <ClCompile Include="source\ui\nuklear\nuklear_style.c" />
+    <ClCompile Include="source\ui\nuklear\nuklear_table.c" />
+    <ClCompile Include="source\ui\nuklear\nuklear_text.c" />
+    <ClCompile Include="source\ui\nuklear\nuklear_text_editor.c" />
+    <ClCompile Include="source\ui\nuklear\nuklear_toggle.c" />
+    <ClCompile Include="source\ui\nuklear\nuklear_tooltip.c" />
+    <ClCompile Include="source\ui\nuklear\nuklear_tree.c" />
+    <ClCompile Include="source\ui\nuklear\nuklear_utf8.c" />
+    <ClCompile Include="source\ui\nuklear\nuklear_util.c" />
+    <ClCompile Include="source\ui\nuklear\nuklear_vertex.c" />
+    <ClCompile Include="source\ui\nuklear\nuklear_widget.c" />
+    <ClCompile Include="source\ui\nuklear\nuklear_window.c" />
+    <ClCompile Include="source\core\assets\material_library.cpp" />
+    <ClCompile Include="source\core\assets\mesh_library.cpp" />
+    <ClCompile Include="source\core\assets\pipeline_library.cpp" />
+    <ClCompile Include="source\core\assets\texture_library.cpp" />
+    <ClCompile Include="source\core\debug_system.cpp" />
+    <ClCompile Include="source\core\ecs\entity.cpp" />
+    <ClCompile Include="source\core\ecs\event.cpp" />
+    <ClCompile Include="source\core\ecs\event_manager.cpp" />
+    <ClCompile Include="source\core\ecs\ievent.cpp" />
+    <ClCompile Include="source\core\ecs\isystem.cpp" />
+    <ClCompile Include="source\core\ecs\pool.cpp" />
+    <ClCompile Include="source\core\ecs\system.cpp" />
+    <ClCompile Include="source\core\engine.cpp" />
+    <ClCompile Include="source\core\engine_settings.cpp" />
+    <ClCompile Include="source\core\inputs\cursor.cpp" />
+    <ClCompile Include="source\core\inputs\keyboard.cpp" />
+    <ClCompile Include="source\core\inputs\mouse.cpp" />
+    <ClCompile Include="source\core\core.cpp" />
+    <ClCompile Include="source\core\lookup_table.cpp" />
+    <ClCompile Include="source\core\texture_data.cpp" />
+    <ClCompile Include="source\core\timer.cpp" />
+    <ClCompile Include="source\core\window.cpp" />
+    <ClCompile Include="source\gfx\context.cpp" />
+    <ClCompile Include="source\gfx\frame_buffer.cpp" />
+    <ClCompile Include="source\physics\physics_actor.cpp" />
+    <ClCompile Include="source\physics\physics_manager.cpp" />
+    <ClCompile Include="source\physics\physics_system.cpp" />
+    <ClCompile Include="source\rendering\lighting_manager.cpp" />
+    <ClCompile Include="source\rendering\material.cpp" />
+    <ClCompile Include="source\gfx\mesh.cpp" />
+    <ClCompile Include="source\gfx\pipeline.cpp" />
+    <ClCompile Include="source\rendering\resource_library.cpp" />
+    <ClCompile Include="source\gfx\sampler.cpp" />
+    <ClCompile Include="source\gfx\shader.cpp" />
+    <ClCompile Include="source\rendering\shader_buffer.cpp" />
+    <ClCompile Include="source\rendering\terrain.cpp" />
+    <ClCompile Include="source\gfx\texture.cpp" />
+    <ClCompile Include="source\rendering\render_system.cpp" />
+    <ClCompile Include="source\rendering\screenshot_system.cpp" />
+    <ClCompile Include="source\ui\components\button_component.cpp" />
+    <ClCompile Include="source\ui\components\label_component.cpp" />
+    <ClCompile Include="source\ui\debug_widget.cpp" />
+    <ClCompile Include="source\ui\fps_widget.cpp" />
+    <ClCompile Include="source\ui\layout.cpp" />
+    <ClCompile Include="source\ui\nk_ui.cpp" />
+    <ClCompile Include="source\rendering\uniform.cpp" />
+    <ClCompile Include="source\gfx\vertex_buffer.cpp" />
+    <ClCompile Include="source\physics\physics_allocator.cpp" />
+    <ClCompile Include="source\physics\physics_error_callback.cpp" />
+    <ClCompile Include="source\rendering\scene_renderer.cpp" />
+    <ClCompile Include="source\rendering\ui_renderer.cpp" />
+    <ClCompile Include="source\stb_image.cpp" />
+    <ClCompile Include="source\ui\components\slider_component.cpp" />
+    <ClCompile Include="source\ui\ui_layer.cpp" />
+    <ClCompile Include="source\util\FastNoise.cpp" />
+    <ClCompile Include="source\util\maths.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="includes\core\assets\material_library.h" />
+    <ClInclude Include="includes\core\assets\mesh_library.h" />
+    <ClInclude Include="includes\core\assets\pipeline_library.h" />
+    <ClInclude Include="includes\core\assets\texture_library.h" />
+    <ClInclude Include="includes\core\assets\util.h" />
+    <ClInclude Include="includes\core\beans\listenable.h" />
+    <ClInclude Include="includes\core\beans\property.h" />
+    <ClInclude Include="includes\core\core.h" />
+    <ClInclude Include="includes\core\debug_event.h" />
+    <ClInclude Include="includes\core\debug_message.h" />
+    <ClInclude Include="includes\core\debug_system.h" />
+    <ClInclude Include="includes\core\ecs\dependency.h" />
+    <ClInclude Include="includes\core\ecs\ecs_manager.h" />
+    <ClInclude Include="includes\core\ecs\entity.h" />
+    <ClInclude Include="includes\core\ecs\event.h" />
+    <ClInclude Include="includes\core\ecs\event_manager.h" />
+    <ClInclude Include="includes\core\ecs\exclusive.h" />
+    <ClInclude Include="includes\core\ecs\ievent.h" />
+    <ClInclude Include="includes\core\ecs\isystem.h" />
+    <ClInclude Include="includes\core\ecs\pool.h" />
+    <ClInclude Include="includes\core\ecs\signal.h" />
+    <ClInclude Include="includes\core\ecs\system.h" />
+    <ClInclude Include="includes\core\engine.h" />
+    <ClInclude Include="includes\core\engine_settings.h" />
+    <ClInclude Include="includes\core\lookup_table.h" />
+    <ClInclude Include="includes\core\registry.h" />
+    <ClInclude Include="includes\core\texture_data.h" />
+    <ClInclude Include="includes\core\timer.h" />
+    <ClInclude Include="includes\core\transformation.h" />
+    <ClInclude Include="includes\core\transformation_component.h" />
+    <ClInclude Include="includes\core\window.h" />
+    <ClInclude Include="includes\gfx\camera_component.h" />
+    <ClInclude Include="includes\gfx\context.h" />
+    <ClInclude Include="includes\gfx\error_callback.h" />
+    <ClInclude Include="includes\gfx\frame_buffer.h" />
+    <ClInclude Include="includes\gfx\gfx.h" />
+    <ClInclude Include="includes\gfx\model_submit_event.h" />
+    <ClInclude Include="includes\gfx\mesh.h" />
+    <ClInclude Include="includes\gfx\model.h" />
+    <ClInclude Include="includes\gfx\pipeline.h" />
+    <ClInclude Include="includes\gfx\shader_buffers\components.h" />
+    <ClInclude Include="includes\gfx\shader_buffers\lighting.h" />
+    <ClInclude Include="includes\physics\physics_geometry.h" />
+    <ClInclude Include="includes\physics\physics.h" />
+    <ClInclude Include="includes\physics\physics_actor.h" />
+    <ClInclude Include="includes\physics\physics_component.h" />
+    <ClInclude Include="includes\physics\physics_material.h" />
+    <ClInclude Include="includes\physics\physics_scene.h" />
+    <ClInclude Include="includes\physics\physics_system.h" />
+    <ClInclude Include="includes\rendering\lighting_manager.h" />
+    <ClInclude Include="includes\rendering\light_components.h" />
+    <ClInclude Include="includes\rendering\renderable.h" />
+    <ClInclude Include="includes\rendering\renderable_component.h" />
+    <ClInclude Include="includes\rendering\rendering.h" />
+    <ClInclude Include="includes\rendering\resource_library.h" />
+    <ClInclude Include="includes\gfx\sampler.h" />
+    <ClInclude Include="includes\gfx\shader.h" />
+    <ClInclude Include="includes\gfx\shader_buffer.h" />
+    <ClInclude Include="includes\rendering\scene_lighting.h" />
+    <ClInclude Include="includes\rendering\terrain.h" />
+    <ClInclude Include="includes\gfx\texture.h" />
+    <ClInclude Include="includes\gfx\texture_info.h" />
+    <ClInclude Include="includes\rendering\material.h" />
+    <ClInclude Include="includes\rendering\screenshot.h" />
+    <ClInclude Include="includes\rendering\screenshot_event.h" />
+    <ClInclude Include="includes\rendering\screenshot_system.h" />
+    <ClInclude Include="includes\ui\components\button_component.h" />
+    <ClInclude Include="includes\ui\components\label_component.h" />
+    <ClInclude Include="includes\ui\debug_widget.h" />
+    <ClInclude Include="includes\ui\fps_widget.h" />
+    <ClInclude Include="includes\ui\layout.h" />
+    <ClInclude Include="includes\ui\nk_ui.h" />
+    <ClInclude Include="includes\rendering\uniform.h" />
+    <ClInclude Include="includes\gfx\vertex_buffer.h" />
+    <ClInclude Include="includes\gfx\vertex_layout.h" />
+    <ClInclude Include="includes\core\inputs\cursor.h" />
+    <ClInclude Include="includes\core\inputs\keyboard.h" />
+    <ClInclude Include="includes\core\inputs\mouse.h" />
+    <ClInclude Include="includes\luminos.h" />
+    <ClInclude Include="includes\net\net_api.h" />
+    <ClInclude Include="includes\physics\physics_manager.h" />
+    <ClInclude Include="includes\physics\physics_allocator.h" />
+    <ClInclude Include="includes\physics\physics_error_callback.h" />
+    <ClInclude Include="includes\rendering\render_system.h" />
+    <ClInclude Include="includes\rendering\scene_renderer.h" />
+    <ClInclude Include="includes\rendering\ui_renderer.h" />
+    <ClInclude Include="includes\stb_image.h" />
+    <ClInclude Include="includes\ui\iui_component.h" />
+    <ClInclude Include="includes\ui\components\slider_component.h" />
+    <ClInclude Include="includes\ui\ui_layer.h" />
+    <ClInclude Include="includes\ui\widget.h" />
+    <ClInclude Include="includes\util\FastNoise.h" />
+    <ClInclude Include="includes\util\fileutils.h" />
+    <ClInclude Include="includes\util\maths.h" />
+    <ClInclude Include="includes\ui\ui.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resources\functions.head" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -1,0 +1,9 @@
+How to Write Shaders
+
+GLSL
+* Keep all data in Uniform Block Layouts
+* Keep binding same across different shaders
+	* Projection-View Data should be in binding 0
+	* Model Data should be in binding 1
+	* Lighting data should be in binding 2
+* Data that should be gathered by frequency of updates

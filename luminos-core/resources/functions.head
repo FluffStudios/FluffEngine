@@ -1,0 +1,27 @@
+struct PointLight {
+	vec3 Position;
+	vec3 Color;
+	vec3 Attenuation;
+};
+
+struct DirectionalLight {
+	vec3 Direction;
+	vec3 Color;
+	vec3 Attenuation;
+};
+
+struct SpotLight {
+	vec3 Position;
+	vec3 Direction;
+	vec3 Color;
+	float Cutoff;
+};
+
+vec4 triplanar_texture(sampler2D tex, vec3 coordinates, vec3 blending)
+{
+	vec4 xcol = texture(tex, coordinates.zy * textureScale);
+	vec4 ycol = texture(tex, coordinates.zx * textureScale);
+	vec4 zcol = texture(tex, coordinates.yx * textureScale);
+
+	return xcol * blending.x + ycol * blending.y + zcol * blending.z;
+}
