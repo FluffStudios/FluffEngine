@@ -18,4 +18,10 @@
 .vs/*
 x64/*
 
-depend/*
+depend/
+
+*.vcxproj*
+*CMakeFiles*
+*CMakeCache.txt*
+*.cmake
+*.sln
