@@ -3,3 +3,4 @@ project (fluff-engine)
 
 add_subdirectory(fluff-core)
 add_subdirectory(fluff-utilities)
+add_subdirectory(fluff-stl)
