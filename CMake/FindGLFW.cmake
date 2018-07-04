@@ -28,14 +28,15 @@ FIND_PATH( GLFW_INCLUDE_DIRS
 
 FIND_LIBRARY( GLFW_LIBRARIES
 	NAMES
-		glfw3-debug glfw3 glfw3dll
+		if ( CMAKE_BUILD_TYPE STREQUAL "Debug" )
+		glfw3-debug
+		elseif ( CMAKE_BUILD_TYPE STREQUAL "Release" )
+		glfw3
+		endif ( CMAKE_BUILD_TYPE STREQUAL "Debug" )
 	PATHS
 		${GLFW_SEARCH_PATHS}
 	PATH_SUFFIXES
-		lib
-		lib64
-		lib/Release/Win32
-		lib/Release/x64
+		lib/${CMAKE_BUILD_TYPE}/x64
 	DOC
 		"The GLFW library"
 )

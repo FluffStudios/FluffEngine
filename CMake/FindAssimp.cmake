@@ -32,10 +32,7 @@ FIND_LIBRARY( ASSIMP_LIBRARIES
 	PATHS
 		${ASSIMP_SEARCH_PATHS}
 	PATH_SUFFIXES
-		lib
-		lib64
-		lib/Release/Win32
-		lib/Release/x64
+		lib/${CMAKE_BUILD_TYPE}/x64
 	DOC
 		"The Assimp library"
 )

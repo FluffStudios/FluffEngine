@@ -15,7 +15,7 @@ else()
 	)
 endif()
 
-if ( CMAKE_BUILD_TYPE STREQUAL "" )
+if ( NOT CMAKE_BUILD_TYPE OR CMAKE_BUILD_TYPE STREQUAL "")
 	# CMake defaults to leaving CMAKE_BUILD_TYPE empty. This screws up
 	# differentiation between debug and release builds.
 	set(
@@ -33,12 +33,7 @@ add_definitions( -DGLEW_STATIC )
 if ( CMAKE_BUILD_TYPE STREQUAL "Release" )
 add_definitions( -O2 )
 add_definitions( -NDEBUG )
-add_definitions( -D_ITERATOR_DEBUG_LEVEL=0 )
 endif ( CMAKE_BUILD_TYPE STREQUAL "Release" )
-
-if ( CMAKE_BUILD_TYPE STREQUAL "Debug" )
-add_definitions( -D_ITERATOR_DEBUG_LEVEL=2 )
-endif ( CMAKE_BUILD_TYPE STREQUAL "Debug")
 
 # Lets LOAD up our headers for the core project
 file(GLOB_RECURSE CORE_HDRS
@@ -54,7 +49,7 @@ file(GLOB_RECURSE CORE_SRCS
 include_directories(${FluffEngine_SOURCE_DIR}/Engine/Source/Core/Public)
 
 # Define the executable
-add_executable(Core ${CORE_HDRS} ${CORE_SRCS})
+add_library(Core ${CORE_HDRS} ${CORE_SRCS})
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT Core)
 
 # We need a CMAKE_DIR with some code to find external dependencies

@@ -31,10 +31,7 @@ FIND_LIBRARY( GLEW_LIBRARIES
 	PATHS
 		${GLEW_SEARCH_PATHS}
 	PATH_SUFFIXES
-		lib
-		lib64
-		lib/Release/Win32
-		lib/Release/x64
+		lib/${CMAKE_BUILD_TYPE}/x64
 	DOC
 		"The GLEW library"
 )

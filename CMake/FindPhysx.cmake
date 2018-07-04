@@ -31,10 +31,7 @@ FIND_LIBRARY( PHYSX_LIBRARIES
 	PATHS
 		${PHYSX_SEARCH_PATHS}
 	PATH_SUFFIXES
-		lib
-		lib64
-		lib/Release/Win32
-		lib/Release/x64
+		lib/${CMAKE_BUILD_TYPE}/x64
 	DOC
 		"The Physx library"
 )
