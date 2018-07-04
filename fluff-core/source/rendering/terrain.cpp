@@ -52,8 +52,8 @@ namespace fluff { namespace render
 				positions[3 * vertex_pointer + 2] = static_cast<float>(z);
 
 				uvs[3 * vertex_pointer + 0] = static_cast<float>(0);
-				uvs[3 * vertex_pointer + 1] = static_cast<float>((static_cast<float>(z) / (VertexCountPerSide - 1)));
-				uvs[3 * vertex_pointer + 2] = static_cast<float>((static_cast<float>(x) / (VertexCountPerSide - 1)));
+				uvs[3 * vertex_pointer + 1] = static_cast<float>((z / (VertexCountPerSide - 1)));
+				uvs[3 * vertex_pointer + 2] = static_cast<float>((x / (VertexCountPerSide - 1)));
 				vertex_pointer++;
 			}
 		}
@@ -82,7 +82,7 @@ namespace fluff { namespace render
 		const auto at_loc = static_cast<bool*>(Allocator::Alloc(sizeof(bool) * VertexCountPerSide * VertexCountPerSide));
 		memset(at_loc, false, sizeof(bool) * VertexCountPerSide * VertexCountPerSide);
 
-		for (size_t i = 0; i < (6 * (VertexCountPerSide - 1) * (VertexCountPerSide - 1)); i += 3)
+		for (uint32_t i = 0; i < (6 * (VertexCountPerSide - 1) * (VertexCountPerSide - 1)); i += 3)
 		{
 			auto i1 = indices[i + 0];
 			auto i2 = indices[i + 1];
@@ -129,7 +129,7 @@ namespace fluff { namespace render
 			}
 		}
 
-		for (size_t i = 0; i < (VertexCountPerSide * VertexCountPerSide); i++)
+		for (uint32_t i = 0; i < (VertexCountPerSide * VertexCountPerSide); i++)
 		{
 			face_norms[i] = glm::normalize(face_norms[i]);
 			face_norms[i] *= -1;
@@ -165,7 +165,7 @@ namespace fluff { namespace render
 
 		for (int x = VertexCountPerSide - 1; x >= 0; x--)
 		{
-			for (size_t z = 0; z < VertexCountPerSide; z++)
+			for (uint32_t z = 0; z < VertexCountPerSide; z++)
 			{
 				positions[3 * vertex_pointer + 0] = static_cast<float>(-x);
 				auto height = 0.0f;
@@ -291,8 +291,8 @@ namespace fluff { namespace render
 				positions[3 * (z + x * VertexCountPerSide) + 2] = (x / (float)(VertexCountPerSide - 1));
 
 				uvs[3 * (z + x * VertexCountPerSide) + 0] = static_cast<float>(0);
-				uvs[3 * (z + x * VertexCountPerSide) + 1] = static_cast<float>((static_cast<float>(z) / (VertexCountPerSide - 1)));
-				uvs[3 * (z + x * VertexCountPerSide) + 2] = static_cast<float>((static_cast<float>(x) / (VertexCountPerSide - 1)));
+				uvs[3 * (z + x * VertexCountPerSide) + 1] = static_cast<float>((z / (VertexCountPerSide - 1)));
+				uvs[3 * (z + x * VertexCountPerSide) + 2] = static_cast<float>((x / (VertexCountPerSide - 1)));
 			}
 		}
 
@@ -393,8 +393,8 @@ namespace fluff { namespace render
 				positions[3 * vertex_pointer + 2] = (static_cast<float>(z) / (VertexCountPerSide - 1)) * Size;
 
 				uvs[3 * vertex_pointer + 0] = static_cast<float>(0);
-				uvs[3 * vertex_pointer + 1] = static_cast<float>((static_cast<float>(z) / (VertexCountPerSide - 1)));
-				uvs[3 * vertex_pointer + 2] = static_cast<float>((static_cast<float>(x) / (VertexCountPerSide - 1)));
+				uvs[3 * vertex_pointer + 1] = static_cast<float>((z / (VertexCountPerSide - 1)));
+				uvs[3 * vertex_pointer + 2] = static_cast<float>((x / (VertexCountPerSide - 1)));
 				vertex_pointer++;
 			}
 		}
@@ -522,17 +522,19 @@ namespace fluff { namespace render
 				const uint32_t T = static_cast<uint32_t>(z / Samples + 1 + TransformHandle->GetPosition().x * (VertexCountPerSide - 1));
 				const uint32_t B = static_cast<uint32_t>(z / Samples + TransformHandle->GetPosition().x * (VertexCountPerSide - 1));
 
-				height = Smooth(Noise.GetValue(static_cast<FN_DECIMAL>(B), static_cast<FN_DECIMAL>(L)), 
-					Noise.GetValue(static_cast<FN_DECIMAL>(B), static_cast<FN_DECIMAL>(R)), 
-					Noise.GetValue(static_cast<FN_DECIMAL>(T), static_cast<FN_DECIMAL>(L)), 
-					Noise.GetValue(static_cast<FN_DECIMAL>(T), static_cast<FN_DECIMAL>(R)), static_cast<float>(x) / Samples - static_cast<float>(x), static_cast<float>(z) / Samples - static_cast<float>(z));
+				height = Smooth(
+					Noise.GetValue(static_cast<FN_DECIMAL>(B), static_cast<FN_DECIMAL>(L)),
+					Noise.GetValue(static_cast<FN_DECIMAL>(B), static_cast<FN_DECIMAL>(R)),
+					Noise.GetValue(static_cast<FN_DECIMAL>(T), static_cast<FN_DECIMAL>(L)),
+					Noise.GetValue(static_cast<FN_DECIMAL>(T), static_cast<FN_DECIMAL>(R)), 
+					static_cast<float>(x) / Samples - static_cast<float>(x), static_cast<float>(z) / Samples - static_cast<float>(z));
 
 				positions[3 * (z + x * VertexCountPerSide) + 1] = (height * Amplitude);
 				positions[3 * (z + x * VertexCountPerSide) + 2] = (x / static_cast<float>(VertexCountPerSide - 1)) * Size;
 
 				uvs[3 * (z + x * VertexCountPerSide) + 0] = static_cast<float>(0);
-				uvs[3 * (z + x * VertexCountPerSide) + 1] = static_cast<float>((static_cast<float>(z) / (VertexCountPerSide - 1)));
-				uvs[3 * (z + x * VertexCountPerSide) + 2] = static_cast<float>((static_cast<float>(x) / (VertexCountPerSide - 1)));
+				uvs[3 * (z + x * VertexCountPerSide) + 1] = static_cast<float>((z / (VertexCountPerSide - 1)));
+				uvs[3 * (z + x * VertexCountPerSide) + 2] = static_cast<float>((x / (VertexCountPerSide - 1)));
 			}
 		}
 

@@ -7,7 +7,7 @@
 namespace fluff { namespace render
 {
 	
-	class Terrain : public Renderable
+	class FLUFF_API Terrain : public Renderable
 	{
 		float * HeightMap_;
 		size_t VertexCountPerSide_;
@@ -15,18 +15,18 @@ namespace fluff { namespace render
 		/*
 			Default constructor
 		*/
-		FLUFF_API Terrain() { }
+		Terrain() { }
 
 		/*
 			Creates new terrain
 			
 			VertexCountPerSide - vertices per side
 		 */
-		explicit FLUFF_API Terrain(unsigned int VertexCountPerSide);
+		explicit Terrain(unsigned int VertexCountPerSide);
 
-		explicit FLUFF_API Terrain(const Terrain & Other);
+		Terrain(const Terrain & Other);
 
-		FLUFF_API ~Terrain()
+		~Terrain()
 		{
 			if (HeightMap_)
 				delete HeightMap_;
@@ -38,7 +38,7 @@ namespace fluff { namespace render
 			VertexCountPerSide - vertices per side
 			MaterialHandle - pointer to material
 		 */
-		FLUFF_API Terrain(unsigned int VertexCountPerSide, Material *MaterialHandle);
+		Terrain(unsigned int VertexCountPerSide, Material *MaterialHandle);
 
 		/*
 			Creates new terrain
@@ -47,9 +47,9 @@ namespace fluff { namespace render
 			MaterialHandle - pointer to material
 			ModelHandle	- pointer to model
 		 */
-		FLUFF_API Terrain(unsigned int VertexCountPerSide, Material *MaterialHandle, Model *ModelHandle);
+		Terrain(unsigned int VertexCountPerSide, Material *MaterialHandle, Model *ModelHandle);
 
-		FLUFF_API Terrain(unsigned int VertexCountPerSide, Material * MaterialHandle, Transformation * TransformHandle, FastNoise & Noise, const float Amplitude, const unsigned int Size);
+		Terrain(unsigned int VertexCountPerSide, Material * MaterialHandle, Transformation * TransformHandle, FastNoise & Noise, const float Amplitude, const unsigned int Size);
 
 		/*
 			Generates a flat terrain
@@ -111,7 +111,7 @@ namespace fluff { namespace render
 		*/
 		static Terrain* GenerateTerrain(std::vector<float32_t> Positions, std::vector<float32_t> Normals, std::vector<float32_t> UVCoordinate, std::vector<uint32_t> Indices, Material * Mat = nullptr);
 	
-		float FLUFF_API * GetHeightMap() const
+		float * GetHeightMap() const
 		{
 			return HeightMap_;
 		}

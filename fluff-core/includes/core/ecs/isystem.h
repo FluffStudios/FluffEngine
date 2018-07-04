@@ -7,7 +7,7 @@ namespace fluff { namespace ecs {
 
 	class EntityManager;
 
-	class ISystem
+	class FLUFF_API ISystem
 	{
 	protected:
 		size_t FamilyID_;
@@ -18,14 +18,14 @@ namespace fluff { namespace ecs {
 			Entities - Entity Manager associated with system
 			Events - Event Manager associated with system
 		*/
-		virtual void FLUFF_API Configure(EntityManager & Entities, EventManager & Events);
+		virtual void Configure(EntityManager & Entities, EventManager & Events);
 
 		/*
 			Configures system
 
 			Events - Event Manager associated with system
 		*/
-		virtual void FLUFF_API Configure(EventManager & Events);
+		virtual void Configure(EventManager & Events);
 
 		/*
 			Updates system
@@ -34,7 +34,7 @@ namespace fluff { namespace ecs {
 			Events - Event manager associated with system
 			DeltaTime - time between update calls
 		*/
-		virtual void FLUFF_API Update(EntityManager & Entities, EventManager & Events, double DeltaTime) { };
+		virtual void Update(EntityManager & Entities, EventManager & Events, double DeltaTime) { };
 
 		/*
 			Updates system
@@ -42,14 +42,14 @@ namespace fluff { namespace ecs {
 			Entities - Entity manager associated with system
 			Events - Event manager associated with system
 		*/
-		virtual void FLUFF_API FixedUpdate(EntityManager & Entities, EventManager & Events) { }
+		virtual void FixedUpdate(EntityManager & Entities, EventManager & Events) { }
 
 		static size_t FamilyIDCounter;
 		
 		/*
 			Destructor
 		*/
-		virtual FLUFF_API ~ISystem();
+		virtual ~ISystem();
 	};
 
 } }

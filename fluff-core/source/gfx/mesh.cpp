@@ -62,7 +62,7 @@ namespace fluff { namespace gfx {
 		BiTangents_ = new float[Serial.VertexCount * 3];
 		Indices_ = new unsigned int[Serial.IndexCount];
 
-		for (size_t i = 0; i < Serial.VertexCount; i++)
+		for (auto i = 0; i < Serial.VertexCount; i++)
 		{
 			const auto v = Vertex(Serial.VertexArray[i]);
 			AddVertex(v, i);
@@ -86,7 +86,7 @@ namespace fluff { namespace gfx {
 		size_t VertexCount = 0;
 		IndexCount = 0;
 
-		for (auto i = 0; i < Count; i++)
+		for (size_t i = 0; i < Count; i++)
 		{
 			VertexCount += SerialMesh[i].VertexCount;
 			IndexCount += SerialMesh[i].IndexCount;
@@ -110,18 +110,18 @@ namespace fluff { namespace gfx {
 			}
 		}
 
-		size_t offset = 0;
-		size_t index_offset = 0;
-		for (size_t i = 0; i < Count; i++)
+		uint32_t offset = 0;
+		uint32_t index_offset = 0;
+		for (auto i = 0; i < Count; i++)
 		{
-			for (size_t j = 0; j < SerialMesh[i].IndexCount; j++)
+			for (auto j = 0; j < SerialMesh[i].IndexCount; j++)
 			{
-				Indices_[offset++] = SerialMesh[i].Indices[j] + static_cast<uint32_t>(index_offset);
+				Indices_[offset++] = SerialMesh[i].Indices[j] + index_offset;
 			}
-			index_offset += SerialMesh[i].VertexCount;
+			index_offset += static_cast<uint32_t>(SerialMesh[i].VertexCount);
 		}
 
-		for (size_t i = 0; i < Count; i++)
+		for (auto i = 0; i < Count; i++)
 		{
 			auto Serial = SerialMesh[i];
 			if (!this->HasPositions) this->HasPositions = Serial.HasVertices;

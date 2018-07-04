@@ -22,10 +22,10 @@ namespace fluff { namespace threading {
 		static std::shared_ptr<ThreadPool> GetInstance(uint32_t ID = 0);
 		static std::shared_ptr<ThreadPool> CreateInstance(const uint32_t NumThreads, uint32_t & ID);
 
-		explicit FLUFF_API ThreadPool(const uint32_t NumThreads);
-		FLUFF_API ThreadPool(const ThreadPool & RHS) = delete;
-		ThreadPool FLUFF_API & operator= (const ThreadPool & RHS) = delete;
-		FLUFF_API ~ThreadPool();
+		explicit ThreadPool(const uint32_t NumThreads);
+		ThreadPool(const ThreadPool & RHS) = delete;
+		ThreadPool & operator= (const ThreadPool & RHS) = delete;
+		~ThreadPool();
 
 		template <typename Func, typename ... Args>
 		auto Submit(Func && Function, Args && ... Arguments)
@@ -41,8 +41,8 @@ namespace fluff { namespace threading {
 			return result;
 		}
 	private:
-		void FLUFF_API Worker();
-		void FLUFF_API Destroy();
+		void Worker();
+		void Destroy();
 	};
 
 } }

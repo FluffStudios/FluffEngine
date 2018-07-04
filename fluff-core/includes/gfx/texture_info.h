@@ -6,7 +6,7 @@
 
 namespace fluff { namespace gfx
 {
-	enum TextureFilter : uint32_t
+	enum FLUFF_API TextureFilter : uint32_t
 	{
 		FILTER_MIN_NEAREST_MAG_NEAREST,
 		FILTER_MIN_NEAREST_MAG_LINEAR,
@@ -23,7 +23,7 @@ namespace fluff { namespace gfx
 		FILTER_ANISOTROPIC
 	};
 
-	enum TextureFormat : uint32_t
+	enum FLUFF_API TextureFormat : uint32_t
 	{
 		RGBA32,
 		RGBA16,
@@ -35,7 +35,7 @@ namespace fluff { namespace gfx
 		RGB
 	};
 
-	struct AnisotropicFilter
+	struct FLUFF_API AnisotropicFilter
 	{
 		bool Enabled = false;
 		float Min = 0;
@@ -50,7 +50,7 @@ namespace fluff { namespace gfx
 		}
 	};
 
-	struct TextureCreateInfo
+	struct FLUFF_API TextureCreateInfo
 	{
 		TextureFilter Filter;
 		TextureFormat Format;

@@ -20,7 +20,7 @@
 
 namespace fluff
 {
-	class Mouse
+	class FLUFF_API Mouse
 	{
 	private:
 		static bool keys[MAX_BUTTON_COUNT];

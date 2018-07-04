@@ -8,7 +8,7 @@
 namespace fluff { namespace ecs {
 
 	template <typename Type, typename ... Dependencies>
-	class Dependency : public System<Dependency<Type, Dependencies ...>>, public Receiver<Dependency<Type, Dependencies ...>>
+	class FLUFF_API Dependency : public System<Dependency<Type, Dependencies ...>>, public Receiver<Dependency<Type, Dependencies ...>>
 	{
 	public:
 		/*

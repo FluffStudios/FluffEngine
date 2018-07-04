@@ -5,7 +5,7 @@
 #include <core/ecs/entity.h>
 
 namespace fluff { namespace render {
-	class LightingManager
+	class FLUFF_API LightingManager
 	{
 		ecs::EntityManager * EntityManager_;
 		ecs::EventManager  * EventManager_;
@@ -24,26 +24,26 @@ namespace fluff { namespace render {
 
 		Returns entity manager
 		*/
-		inline static ecs::EntityManager * GetEntityManager() { return Manager_.EntityManager_; }
+		static ecs::EntityManager * GetEntityManager() { return Manager_.EntityManager_; }
 
 		/*
 		Gets a pointer to the ECSManager's event manager
 
 		Returns event manager
 		*/
-		inline static ecs::EventManager  * GetEventManager() { return Manager_.EventManager_; }
+		static ecs::EventManager  * GetEventManager() { return Manager_.EventManager_; }
 
 		/*
 		Gets a pointer to the ECSManager's system manager
 
 		Returns system manager
 		*/
-		inline static ecs::SystemManager * GetSystemManager() { return Manager_.SystemManager_; }
+		static ecs::SystemManager * GetSystemManager() { return Manager_.SystemManager_; }
 
 		/*
 		Disposes of the encapsulated managers
 		*/
-		inline static void Dispose()
+		static void Dispose()
 		{
 			if (Manager_.EntityManager_)
 			{

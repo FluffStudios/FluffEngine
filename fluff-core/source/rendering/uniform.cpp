@@ -81,6 +81,7 @@ namespace fluff { namespace render {
 			{
 				FLUFF_ERROR_FUNC("INVALID ENUM - UNIFORMTYPE");
 				FLUFF_ASSERT(false);
+				return 0;
 			}
 		}
 	}

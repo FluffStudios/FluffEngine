@@ -7,20 +7,20 @@
 namespace fluff
 {
 
-	struct DebugSystem : public ecs::System<DebugSystem>, public ecs::Receiver<DebugSystem>
+	struct FLUFF_API DebugSystem : public ecs::System<DebugSystem>, public ecs::Receiver<DebugSystem>
 	{
 	public:
 		/*
 			Creates the debug system
 		*/
-		FLUFF_API DebugSystem();
+		DebugSystem();
 		
 		/*
 			Configures debug system to respond to debug events
 
 			Events - Event manager associated with debug system
 		*/
-		void FLUFF_API Configure(ecs::EventManager & Events);
+		void Configure(ecs::EventManager & Events);
 
 		/*
 			Ticks through the debug messages
@@ -29,14 +29,14 @@ namespace fluff
 			Events - Event manager associated with debug system
 			TimeDelta - Time since last update
 		*/
-		void FLUFF_API Update(ecs::EntityManager & Entities, ecs::EventManager & Events, double TimeDelta) override;
+		void Update(ecs::EntityManager & Entities, ecs::EventManager & Events, double TimeDelta) override;
 
 		/*
 			Response to the Debug Event
 
 			Msg - Debug Message
 		*/
-		void FLUFF_API Receive(const DebugEvent & Msg);
+		void Receive(const DebugEvent & Msg);
 	};
 
 }

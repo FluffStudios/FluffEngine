@@ -4,7 +4,7 @@
 
 namespace fluff
 {
-	class Cursor
+	class FLUFF_API Cursor
 	{
 		static float X_; 
 		static float Y_;

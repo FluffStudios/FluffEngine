@@ -2,7 +2,6 @@
 
 #include <physics/physics_actor.h>
 #include <glm/vec3.hpp>
-#include <common.h>
 
 namespace fluff { namespace physics {
 
@@ -18,13 +17,13 @@ namespace fluff { namespace physics {
 		std::unique_ptr<PhysicsSceneImpl> Impl_;
 
 	public:
-		FLUFF_API PhysicsScene(void * pSDK);
-		FLUFF_API PhysicsScene(void * pSDK, PhysicsSceneDescriptor Descriptor);
+		PhysicsScene(void * pSDK);
+		PhysicsScene(void * pSDK, PhysicsSceneDescriptor Descriptor);
 
-		void FLUFF_API AddToScene(PhysicsActor * pActor);
-		void FLUFF_API RemoveFromScene(PhysicsActor * pActor);
+		void AddToScene(PhysicsActor * pActor);
+		void RemoveFromScene(PhysicsActor * pActor);
 
-		void FLUFF_API * GetScene() const;
+		void * GetScene() const;
 	};
 
 } }

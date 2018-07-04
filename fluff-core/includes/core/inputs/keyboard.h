@@ -132,7 +132,7 @@
 
 namespace fluff
 {
-	class Keyboard
+	class FLUFF_API Keyboard
 	{
 		static bool keys[MAX_KEY_COUNT];
 	public:
@@ -143,7 +143,7 @@ namespace fluff
 			KeyID - ID of key pressed
 			Returns if the key pressed
 		 */
-		inline static bool IsKeyPressed(unsigned int KeyID)
+		static bool IsKeyPressed(unsigned int KeyID)
 		{
 #if defined(DEBUG) || defined(_DEBUG)
 			if (KeyID < 0 || KeyID > MAX_KEY_COUNT) 

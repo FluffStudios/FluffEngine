@@ -16,7 +16,7 @@
 
 namespace fluff { namespace gfx {
 
-		class Context
+		class FLUFF_API Context
 		{
 			std::vector<Mesh*> Meshes_;
 			std::vector<Model*> Models_;

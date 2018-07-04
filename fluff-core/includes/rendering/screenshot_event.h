@@ -16,7 +16,7 @@ namespace fluff { namespace render {
 			Width - width of screenshot
 			Height - height of screenshot
 		*/
-		FLUFF_API ScreenshotEvent(uint32_t Width, uint32_t Height)
+		ScreenshotEvent(uint32_t Width, uint32_t Height)
 			: Width(Width), Height(Height) { }
 	};
 

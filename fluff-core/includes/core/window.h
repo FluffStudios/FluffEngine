@@ -7,7 +7,7 @@
 
 namespace fluff
 {
-	class Window
+	class FLUFF_API Window
 	{
 		const char* Name_;
 		Property<unsigned int> Width_;
@@ -21,7 +21,7 @@ namespace fluff
 		static Window* CurrentHandle_;
 		static bool GlewInit_;
 
-		FLUFF_API Window(const char* Name, unsigned int Width, unsigned int Height, bool Vsync, bool Fullscreen);
+		Window(const char* Name, unsigned int Width, unsigned int Height, bool Vsync, bool Fullscreen);
 
 		struct WindowImpl;
 		std::unique_ptr<WindowImpl> Impl_;
@@ -31,19 +31,19 @@ namespace fluff
 			
 			Releases GLFW if it is the last window open
 		 */
-		FLUFF_API ~Window();
+		~Window();
 
 		/*
 			Updates window and inputs
 			
 			Returns if window was successfully updated
 		 */
-		bool FLUFF_API Update() const;
+		bool Update() const;
 
 		/*
 			Kills window
 		 */
-		void FLUFF_API CloseWindow();
+		void CloseWindow();
 
 		/*
 			Gets the window's width
@@ -65,7 +65,7 @@ namespace fluff
 			Width - new width
 			Height - new height
 		 */
-		void FLUFF_API SetDimensions(unsigned int Width, unsigned int Height);
+		void SetDimensions(unsigned int Width, unsigned int Height);
 		inline void SetWidth(unsigned int Width) { Width_ = Width; }
 		inline void SetHeight(unsigned int Height) { Height_ = Height; }
 
@@ -100,7 +100,7 @@ namespace fluff
 			
 			Returns Handle Pointer
 		 */
-		void FLUFF_API * GetHandle() const;
+		void * GetHandle() const;
 
 		/*
 			Set window framebuffer size
@@ -108,7 +108,7 @@ namespace fluff
 			Width - buffer width
 			Height - buffer height
 		*/
-		void FLUFF_API SetBufferSize(uint32_t Width, uint32_t Height)
+		void SetBufferSize(uint32_t Width, uint32_t Height)
 		{
 			this->FramebufferWidth_ = Width;
 			this->FramebufferHeight_ = Height;
@@ -117,18 +117,18 @@ namespace fluff
 		/*
 			Gets the border size of the window
 		*/
-		void FLUFF_API GetWindowBorders(int * left, int * top, int * right, int * bottom);
+		void GetWindowBorders(int * left, int * top, int * right, int * bottom);
 
-		inline Property<unsigned int>& GetBufferWidth()
+		Property<unsigned int>& GetBufferWidth()
 		{
 			return FramebufferWidth_;
 		}
 
-		inline Property<unsigned int>& GetBufferHeight()
+		Property<unsigned int>& GetBufferHeight()
 		{
 			return FramebufferHeight_;
 		}
 	private:
-		void FLUFF_API Initialize();
+		void Initialize();
 	};
 }

@@ -19,7 +19,7 @@ namespace fluff { namespace gfx {
 	 * @author Nick Clark
 	 * @version 18-October-17
 	 */
-	class Shader
+	class FLUFF_API Shader
 	{
 		uint32_t Id_ = 0;
 		std::shared_ptr<ECSManager> & Manager_;
@@ -30,7 +30,7 @@ namespace fluff { namespace gfx {
 			Vertex - Vertex shader file
 			Fragment - Fragment shader file
 		 */
-		FLUFF_API Shader(std::shared_ptr<ECSManager> & Manager, const char *Vertex, const char *Fragment);
+		Shader(std::shared_ptr<ECSManager> & Manager, const char *Vertex, const char *Fragment);
 
 		/*
 			Creates a new shader program
@@ -39,7 +39,7 @@ namespace fluff { namespace gfx {
 			Geometry - Geometry shader file
 			Fragment - Fragment shader file
 		 */
-		FLUFF_API Shader(std::shared_ptr<ECSManager> & Manager, const char *Vertex, const char *Geometry, const char *Fragment);
+		Shader(std::shared_ptr<ECSManager> & Manager, const char *Vertex, const char *Geometry, const char *Fragment);
 		
 		/*
 			Creates a new shader program
@@ -50,9 +50,9 @@ namespace fluff { namespace gfx {
 			TesselationEvaluation - Tesselation evaluation shader file
 			Fragment - Fragment shader file
 		 */
-		FLUFF_API Shader(std::shared_ptr<ECSManager> & Manager, const char *Vertex, const char *Geometry, const char *TesselationControl, const char *TesselationEvaluation, const char *Fragment);
+		Shader(std::shared_ptr<ECSManager> & Manager, const char *Vertex, const char *Geometry, const char *TesselationControl, const char *TesselationEvaluation, const char *Fragment);
 
-		FLUFF_API ~Shader() {
+		~Shader() {
 			Release(); 
 		}
 		
@@ -62,7 +62,7 @@ namespace fluff { namespace gfx {
 			Other - other shader
 			Returns if same shader
 		*/
-		bool FLUFF_API operator == (const Shader & Other) const { return Id_ == Other.Id_; }
+		bool operator == (const Shader & Other) const { return Id_ == Other.Id_; }
 
 		/*
 			Checks if two shaders are not the same GPU program
@@ -70,7 +70,7 @@ namespace fluff { namespace gfx {
 			Other - other shader
 			Returns if not the same shader
 		*/
-		bool FLUFF_API operator != (const Shader & Other) const { return Id_ != Other.Id_; }
+		bool operator != (const Shader & Other) const { return Id_ != Other.Id_; }
 
 		/*
 			Recreates shader program
@@ -79,7 +79,7 @@ namespace fluff { namespace gfx {
 			Fragment - Fragment shader file
 			Returns pointer to this shader
 		 */
-		Shader FLUFF_API * Recreate(const char * Vertex, const char * Fragment);
+		Shader* Recreate(const char * Vertex, const char * Fragment);
 		
 		/*
 			Recreates shader program
@@ -89,7 +89,7 @@ namespace fluff { namespace gfx {
 			Fragment - Fragment shader file
 			Returns pointer to this shader
 		 */
-		Shader FLUFF_API * Recreate(const char * Vertex, const char * Geometry, const char * Fragment);
+		Shader* Recreate(const char * Vertex, const char * Geometry, const char * Fragment);
 
 		/*
 			Recreates shader program
@@ -101,12 +101,12 @@ namespace fluff { namespace gfx {
 			Fragment - Fragment shader file
 			Returns pointer to this shader
 		 */
-		Shader FLUFF_API * Recreate(const char * Vertex, const char * Geometry, const char * TesselationControl, const char * TesselationEvaluation, const char * Fragment);
+		Shader* Recreate(const char * Vertex, const char * Geometry, const char * TesselationControl, const char * TesselationEvaluation, const char * Fragment);
 
 		/*
 			Binds shader for drawing
 		*/
-		void FLUFF_API Bind() const;
+		void Bind() const;
 
 		/*
 			Unbinds shader
@@ -116,14 +116,14 @@ namespace fluff { namespace gfx {
 		/*
 			Releases shader resources
 		 */
-		void FLUFF_API Release();
+		void Release();
 
 		/*
 			Gets the handle of the shader
 
 			Returns handle of shader
 		 */
-		uint32_t FLUFF_API GetHandle() const { return Id_; }
+		uint32_t GetHandle() const { return Id_; }
 
 		/*
 			Binds texture to location
@@ -131,16 +131,16 @@ namespace fluff { namespace gfx {
 			Name - Name of variable
 			Location - Location of texture
 		 */
-		void FLUFF_API BindTextureLocation(const char * Name, unsigned int Location) const;
+		void BindTextureLocation(const char * Name, unsigned int Location) const;
 
 	private:
-		unsigned int FLUFF_API CreateShaderStage(const char *File, uint32_t Type) const;
-		void FLUFF_API LinkProgram() const;
-		void FLUFF_API VerifyProgram() const;
-		void FLUFF_API DetachShaderStages(std::vector<unsigned int> Stages) const;
+		unsigned int CreateShaderStage(const char *File, uint32_t Type) const;
+		void LinkProgram() const;
+		void VerifyProgram() const;
+		void DetachShaderStages(std::vector<unsigned int> Stages) const;
 	};
 
-	inline std::string ReadTextFile(const char* Filename)
+	static inline std::string ReadTextFile(const char* Filename)
 	{
 		std::ifstream stream(Filename);
 		std::stringstream buffer;

@@ -9,7 +9,7 @@ namespace fluff { namespace ecs {
 
 namespace fluff
 {
-	class Timer
+	class FLUFF_API Timer
 	{
 		friend class ecs::SystemManager;
 		Property<uint16_t> FPS_;

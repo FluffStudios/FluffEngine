@@ -5,14 +5,14 @@
 
 namespace fluff
 {
-	enum SEVERITY
+	enum FLUFF_API SEVERITY
 	{
 		MESSAGE,
 		WARNING,
 		FATAL
 	};
 
-	struct DebugEvent : public ecs::Event<DebugEvent>
+	struct FLUFF_API DebugEvent : public ecs::Event<DebugEvent>
 	{
 		/*
 			Creates a new Debug Event
@@ -20,12 +20,12 @@ namespace fluff
 			Severity - Level of significance of event
 			Message - Associated error message
 		*/
-		FLUFF_API DebugEvent(SEVERITY Severity, const char * Message) : Severity(Severity), Message(Message) { };
+		DebugEvent(SEVERITY Severity, const char * Message) : Severity(Severity), Message(Message) { };
 
 		/*
 			Deconstructor
 		*/
-		FLUFF_API ~DebugEvent() { }
+		~DebugEvent() { }
 
 		SEVERITY Severity;
 		const char * Message;

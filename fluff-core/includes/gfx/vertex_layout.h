@@ -4,7 +4,7 @@
 
 namespace fluff { namespace gfx {
 
-	struct VertexLayout
+	struct FLUFF_API VertexLayout
 	{
 		unsigned int Attribute;
 		unsigned int Dimensions;

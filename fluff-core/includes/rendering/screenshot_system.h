@@ -15,13 +15,13 @@ namespace fluff { namespace render {
 
 			Creates new screenshot system
 		*/
-		FLUFF_API ScreenshotSystem(std::shared_ptr<ECSManager> & Manager);
+		ScreenshotSystem(std::shared_ptr<ECSManager> & Manager);
 
 		/*
 			Configures Screenshot System to listen for
 			screenshot events
 		*/
-		void FLUFF_API Configure(ecs::EventManager & Events);
+		void Configure(ecs::EventManager & Events);
 
 		/*
 			Ticks through events
@@ -30,14 +30,14 @@ namespace fluff { namespace render {
 			Events - Event Manager associated with screenshot system
 			TimeDelta - time since last update
 		*/
-		void FLUFF_API Update(ecs::EntityManager & Entities, ecs::EventManager & Events, double TimeDelta) override;
+		void Update(ecs::EntityManager & Entities, ecs::EventManager & Events, double TimeDelta) override;
 
 		/*
 			Creates screenshot
 
 			Msg - Screenshot Event trigger
 		*/
-		void FLUFF_API Receive(const ScreenshotEvent & Msg);
+		void Receive(const ScreenshotEvent & Msg);
 	};
 
 } }

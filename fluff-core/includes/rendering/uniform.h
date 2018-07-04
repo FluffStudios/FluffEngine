@@ -30,7 +30,7 @@ namespace fluff { namespace render {
 		MAT4
 	};
 
-	class Uniform
+	class FLUFF_API Uniform
 	{
 	public:
 		int32_t Location_;
@@ -73,7 +73,7 @@ namespace fluff { namespace render {
 			Name_[name.length()] = '\0';
 		}
 	public:
-		FLUFF_API Uniform() { }
+		Uniform() { }
 
 		/*
 			Creates new uniform
@@ -83,54 +83,54 @@ namespace fluff { namespace render {
 			UniformName - Name of uniform
 			InitialValue - inital value in shader
 		*/
-		FLUFF_API Uniform(UniformType Type, uint32_t ShaderHandle, char * UniformName, void * InitialValue = nullptr);
+		Uniform(UniformType Type, uint32_t ShaderHandle, char * UniformName, void * InitialValue = nullptr);
 
 		/*
 			Destructor
 		*/
-		FLUFF_API ~Uniform();
+		~Uniform();
 
 		/*
 			Gets the type of the uniform
 
 			Returns uniform type
 		*/
-		UniformType FLUFF_API GetType() const;
+		UniformType GetType() const;
 		
 		/*
 			Gets the name of the uniform
 
 			Returns uniform name
 		*/
-		const char FLUFF_API * const GetName() const;
+		const char * const GetName() const;
 
 		/*
 			Gets uniform value
 
 			Returns uniform value
 		*/
-		void FLUFF_API * GetValue() const;
+		void * GetValue() const;
 
 		/*
 			Gets the location of the uniform
 
 			Returns uniform location
 		*/
-		int32_t FLUFF_API GetLocation() const;
+		int32_t GetLocation() const;
 
 		/*
 			Gets the shader handle
 
 			Returns shader handle
 		*/
-		uint32_t FLUFF_API GetShaderHandle() const;
+		uint32_t GetShaderHandle() const;
 
 		/*
 			Sets the uniform's value
 
 			Value - new value
 		*/
-		void FLUFF_API SetValue(const void * Value) const;
+		void SetValue(const void * Value) const;
 
 		/*
 			Gets value of uniform
@@ -142,7 +142,7 @@ namespace fluff { namespace render {
 
 		void GetLocation(uint32_t ShaderID);
 	private:
-		size_t FLUFF_API GetSize() const;
+		size_t GetSize() const;
 	};
 
 	enum TextureType
@@ -180,7 +180,7 @@ namespace fluff { namespace render {
 			TextureHandle_ = &(tex->GetHandle());
 		}
 	public:
-		FLUFF_API TextureUniform() { }
+		TextureUniform() { }
 
 		/*
 			Creates new texture uniform
@@ -191,7 +191,7 @@ namespace fluff { namespace render {
 			BindLocation - Location in shader to bind to
 			Name - name of uniform
 		*/
-		FLUFF_API TextureUniform(TextureType Type, uint32_t ShaderHandle, uint32_t TextureHandle, int32_t BindLocation, char * Name);
+		TextureUniform(TextureType Type, uint32_t ShaderHandle, uint32_t TextureHandle, int32_t BindLocation, char * Name);
 		
 		/*
 			Creates new texture uniform
@@ -202,19 +202,19 @@ namespace fluff { namespace render {
 			BindLocation - Location in shader to bind to
 			Name - name of uniform
 		*/
-		FLUFF_API TextureUniform(TextureType Type, uint32_t ShaderHandle, uint32_t * TextureHandle, int32_t BindLocation, char * Name);
+		TextureUniform(TextureType Type, uint32_t ShaderHandle, uint32_t * TextureHandle, int32_t BindLocation, char * Name);
 		
 		/*
 			Destructor
 		*/
-		FLUFF_API ~TextureUniform();
+		~TextureUniform();
 
 		/*
 			Uploads texture to shader
 		*/
-		void FLUFF_API Upload() const;
+		void Upload() const;
 
-		void FLUFF_API GetLocation(uint32_t ShaderID);
+		void GetLocation(uint32_t ShaderID);
 	};
 }
 	template<typename T>

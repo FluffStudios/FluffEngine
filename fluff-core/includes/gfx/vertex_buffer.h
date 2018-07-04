@@ -8,30 +8,30 @@
 
 namespace fluff { namespace gfx {
 
-	class VertexBuffer
+	class FLUFF_API VertexBuffer
 	{
 	public:
 		/*
 			Creates a new Vertex Buffer
 		 */
-		FLUFF_API VertexBuffer();
+		VertexBuffer();
 
-		FLUFF_API ~VertexBuffer();
+		~VertexBuffer();
 		
 		/*
 			Binds buffer and enables attribute pointers
 		 */
-		void FLUFF_API Bind();
+		void Bind();
 		
 		/*
 			Unbinds buffer and disabled attribute pointers
 		 */
-		void FLUFF_API Unbind();
+		void Unbind();
 
 		/*
 			Releases resources held by the vertex buffer
 		 */
-		void FLUFF_API Release();
+		void Release();
 
 		/*
 			Loads data to a vertex buffer
@@ -40,7 +40,7 @@ namespace fluff { namespace gfx {
 			Count - Count of floats in data array
 			Layout - Layout to set buffer
 		 */
-		void FLUFF_API LoadToBuffer(float* Data, size_t Count, VertexLayout Layout);
+		void LoadToBuffer(float* Data, size_t Count, VertexLayout Layout);
 
 		/*
 			Loads data to a vertex buffer
@@ -49,7 +49,7 @@ namespace fluff { namespace gfx {
 			Count - Count of unsigned ints in data array
 			Layout - Layout to set buffer
 		 */
-		void FLUFF_API LoadToBuffer(unsigned int* Data, size_t Count, VertexLayout Layout);
+		void LoadToBuffer(unsigned int* Data, size_t Count, VertexLayout Layout);
 
 		/*
 			Loads data to a vertex buffer
@@ -58,7 +58,7 @@ namespace fluff { namespace gfx {
 			Count - Count of ints in data array
 			Layout - Layout to set buffer
 		 */
-		void FLUFF_API LoadToBuffer(int* Data, size_t Count, VertexLayout Layout);
+		void LoadToBuffer(int* Data, size_t Count, VertexLayout Layout);
 
 		/*
 			Loads data to a vertex buffer
@@ -66,7 +66,7 @@ namespace fluff { namespace gfx {
 			Positions - Float array of data representing positions
 			VertexData - Float array of data representing interleaved vertex attributes
 		 */
-		void FLUFF_API LoadToBuffer(std::vector<float> Positions, std::vector<float> VertexData);
+		void LoadToBuffer(std::vector<float> Positions, std::vector<float> VertexData);
 
 		/*
 			Loads data to a index buffer
@@ -74,7 +74,7 @@ namespace fluff { namespace gfx {
 			Data - Unsigned int array of data
 			Count - Count of unsigned ints in data array
 		 */
-		void FLUFF_API LoadIndices(unsigned int* Data, size_t Count);
+		void LoadIndices(unsigned int* Data, size_t Count);
 
 		/*
 			Checks if two vertex buffers are the same on the GPU
@@ -82,12 +82,12 @@ namespace fluff { namespace gfx {
 			Other - other vertex buffer
 			Returns if equivalent
 		*/
-		bool FLUFF_API operator == (const VertexBuffer & Other);
+		bool operator == (const VertexBuffer & Other);
 
 		/*
 			Gets ID of vertex buffer
 		*/
-		unsigned int FLUFF_API GetID() const;
+		unsigned int GetID() const;
 	private:
 		struct VertexBufferImpl;
 		std::unique_ptr<VertexBufferImpl> Buffer_;

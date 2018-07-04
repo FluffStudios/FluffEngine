@@ -16,7 +16,7 @@
 
 namespace fluff {
 
-	class PipelineLibrary
+	class FLUFF_API PipelineLibrary
 	{
 		static std::vector<std::string> FileNames_;
 		static std::unordered_map<std::string, gfx::GraphicsPipeline*> GraphicsPipelineMap_;

@@ -21,7 +21,7 @@
 namespace fluff { namespace gfx
 {
 
-	enum BlendFunction : uint32_t
+	enum FLUFF_API BlendFunction : uint32_t
 	{
 		ZERO							= 0x0000, // GL_ZERO						
 		ONE								= 0x0001, // GL_ONE						
@@ -40,7 +40,7 @@ namespace fluff { namespace gfx
 		BLEND_ONE_MINUS_CONSTANT_ALPHA	= 0x8004, // GL_ONE_MINUS_CONSTANT_ALPHA
 	};
 
-	enum Face : uint32_t
+	enum FLUFF_API Face : uint32_t
 	{
 		FRONT			= 0x0404, // GL_FRONT
 		BACK			= 0x0405, // GL_BACK
@@ -48,7 +48,7 @@ namespace fluff { namespace gfx
 		NONE			= 0x0000, // GL_NONE
 	};
 
-	enum ComparisonFunction : uint32_t
+	enum FLUFF_API ComparisonFunction : uint32_t
 	{
 		NEVER			= 0x0200, // GL_NEVER
 		LESS			= 0x0201, // GL_LESS
@@ -60,39 +60,39 @@ namespace fluff { namespace gfx
 		ALWAYS			= 0x0207, // GL_ALWAYS
 	};
 
-	enum TransformBufferMode : uint32_t
+	enum FLUFF_API TransformBufferMode : uint32_t
 	{
 		INTERLEAVED = 0x8C8C, // GL_INTERLEAVED_ATTRIBS
 		SEPARATE	= 0x8C8D, // GL_SEPARATE_ATTRIBS
 	};
 
-	enum FillMode : uint32_t
+	enum FLUFF_API FillMode : uint32_t
 	{
 		FILL_POINT		= 0x1B00, // GL_POINT
 		FILL_LINE		= 0x1B01, // GL_LINE
 		FILL_POLYGON	= 0x1B02, // GL_FILL
 	};
 
-	enum PolygonMode : uint32_t
+	enum FLUFF_API PolygonMode : uint32_t
 	{
 		POLY_POINT		= 0x2A01, // GL_POLYGON_OFFSET_POINT
 		POLY_LINE		= 0x2A02, // GL_POLYGON_OFFSET_LINE
 		POLY_FILL		= 0x8037, // GL_POLYGON_OFFSET_FILL
 	};
 
-	enum RenderOrder : uint32_t
+	enum FLUFF_API RenderOrder : uint32_t
 	{
 		CLOCKWISE			= 0x0900, // GL_CW
 		COUNTER_CLOCKWISE	= 0x0901, // GL_CCW
 	};
 
-	enum DepthWriteMask : uint32_t
+	enum FLUFF_API DepthWriteMask : uint32_t
 	{
 		DEPTH_MASK_WRITE_NONE = 0x0,
 		DEPTH_MASK_WRITE_ALL  = 0xFFFFFFFF
 	};
 
-	enum StencilOp : uint32_t
+	enum FLUFF_API StencilOp : uint32_t
 	{
 		STENCIL_ZERO			= 0x0000, // GL_ZERO
 		STENCIL_KEEP			= 0x1E00, // GL_KEEP
@@ -105,7 +105,7 @@ namespace fluff { namespace gfx
 
 	};
 
-	enum PrimitiveTopology : uint32_t
+	enum FLUFF_API PrimitiveTopology : uint32_t
 	{
 		TOPO_POINT		= 0x0000, // GL_POINTS
 		TOPO_LINE		= 0x0001, // GL_LINES
@@ -113,13 +113,24 @@ namespace fluff { namespace gfx
 		TOPO_PATCH		= 0x000E, // GL_PATCHES
 	};
 
-	struct TransformFeedbackDesc
+	struct FLUFF_API TransformFeedbackDesc
 	{
 		uint32_t					NumFeedback = 0;
 		char **						OutputVars	= nullptr;
 		enum TransformBufferMode	BufferMode	= SEPARATE;
 
-		FLUFF_API ~TransformFeedbackDesc();
+		~TransformFeedbackDesc()
+		{
+			if (OutputVars && NumFeedback)
+			{
+				for (uint32_t i = 0; i < NumFeedback; i++)
+				{
+					if (OutputVars[i]) delete [] OutputVars[i];
+				}
+				delete[] OutputVars;
+				OutputVars = nullptr;
+			}
+		}
 	private:
 		friend class cereal::access;
 
@@ -127,7 +138,7 @@ namespace fluff { namespace gfx
 		void save(Archive & ar) const
 		{
 			std::vector<std::string> outs;
-			for (uint32_t i = 0; i < NumFeedback; i++)
+			for (auto i = 0; i < NumFeedback; i++)
 			{
 				outs.push_back(OutputVars[i]);
 			}
@@ -142,7 +153,7 @@ namespace fluff { namespace gfx
 
 			ar(NumFeedback, outs, BufferMode);
 			if (NumFeedback) OutputVars = new char *[NumFeedback];
-			for (size_t i = 0; i < NumFeedback; i++)
+			for (uint32_t i = 0; i < NumFeedback; i++)
 			{
 				OutputVars[i] = new char[outs[i].length() + 1];
 				memcpy(OutputVars[i], outs[i].data(), outs[i].length());
@@ -151,7 +162,7 @@ namespace fluff { namespace gfx
 		}
 	};
 
-	struct RenderTargetBlendDesc
+	struct FLUFF_API RenderTargetBlendDesc
 	{
 		enum BlendFunction SourceFunction			= ONE;
 		enum BlendFunction DestinationFunction		= ZERO;
@@ -167,7 +178,7 @@ namespace fluff { namespace gfx
 		}
 	};
 
-	struct BlendStateDesc
+	struct FLUFF_API BlendStateDesc
 	{
 		bool							AlphaToCoverage;
 		bool							IndependentBlendTarget;
@@ -190,7 +201,7 @@ namespace fluff { namespace gfx
 		}
 	};
 
-	struct RasterizerDesc
+	struct FLUFF_API RasterizerDesc
 	{
 		FillMode	Fill					= FILL_POLYGON;
 		Face		CullMode				= BACK;
@@ -213,7 +224,7 @@ namespace fluff { namespace gfx
 		}
 	};
 
-	struct DepthStencilOpDesc
+	struct FLUFF_API DepthStencilOpDesc
 	{
 		StencilOp			StencilFailOp		= STENCIL_KEEP;
 		StencilOp			StencilDepthFailOp	= STENCIL_KEEP;
@@ -229,7 +240,7 @@ namespace fluff { namespace gfx
 		}
 	};
 
-	struct DepthStencilDesc
+	struct FLUFF_API DepthStencilDesc
 	{
 		bool				DepthEnable			= false;
 		DepthWriteMask		WriteMask			= DEPTH_MASK_WRITE_ALL;
@@ -251,7 +262,7 @@ namespace fluff { namespace gfx
 		}
 	};
 
-	struct GraphicsPipelineDesc
+	FLUFF_API struct GraphicsPipelineDesc
 	{
 					char*	 				VertexShaderFile				= nullptr;
 					char*	 				TesselationEvaluationShaderFile	= nullptr;
@@ -324,10 +335,10 @@ namespace fluff { namespace gfx
 		}
 	};
 
-	void FLUFF_API Serialize(rapidjson::Document & Doc, GraphicsPipelineDesc& Descriptor, const char * Name);
-	GraphicsPipelineDesc FLUFF_API Deserialize(rapidjson::Document & Doc, const char * PipelineName);
+	FLUFF_API void Serialize(rapidjson::Document & Doc, GraphicsPipelineDesc& Descriptor, const char * Name);
+	FLUFF_API GraphicsPipelineDesc Deserialize(rapidjson::Document & Doc, const char * PipelineName);
 
-	class GraphicsPipeline
+	class FLUFF_API GraphicsPipeline
 	{
 		GraphicsPipelineDesc			Descriptor_;
 		FrameBuffer*				RenderTarget_;
@@ -341,20 +352,20 @@ namespace fluff { namespace gfx
 			ar(Descriptor_, Name_);
 		}
 	public:
-		FLUFF_API GraphicsPipeline();
+		GraphicsPipeline();
 
 		/*
 			Enables the graphics pipeline and sets the 
 			defined states
 		*/
-		void FLUFF_API Enable() const;
+		void Enable() const;
 
 		/*
 			Gets the shader associated with the pipeline
 
 			Returns the shader
 		*/
-		Shader FLUFF_API * GetShader()
+		Shader* GetShader()
 		{
 			return ShaderHandle_;
 		}
@@ -364,7 +375,7 @@ namespace fluff { namespace gfx
 
 			Returns render target
 		*/
-		FrameBuffer FLUFF_API * GetRenderTarget()
+		FrameBuffer* GetRenderTarget()
 		{
 			return RenderTarget_;
 		}
@@ -374,7 +385,7 @@ namespace fluff { namespace gfx
 
 			Returns if pipeline should blend
 		*/
-		bool FLUFF_API Blended()
+		bool Blended()
 		{
 			return Descriptor_.BlendState.ShouldBlend;
 		}
@@ -384,7 +395,7 @@ namespace fluff { namespace gfx
 
 			Returns name of pipeline
 		*/
-		const std::string FLUFF_API GetName()
+		const std::string GetName()
 		{
 			return Name_;
 		}
@@ -413,7 +424,7 @@ namespace fluff { namespace gfx
 		 */
 		static void SetDefault();
 
-		void FLUFF_API Create(std::shared_ptr<ECSManager> & Manager);
+		void Create(std::shared_ptr<ECSManager> & Manager);
 	};
 	
 } }

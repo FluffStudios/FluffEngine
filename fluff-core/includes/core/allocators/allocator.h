@@ -22,9 +22,9 @@ namespace fluff
 		FLUFF_API PoolAllocator();
 		explicit FLUFF_API PoolAllocator(size_t Count);
 		FLUFF_API ~PoolAllocator();
-		void FLUFF_API * Alloc(size_t Size);
-		void FLUFF_API Free(void * Ptr);
-		void FLUFF_API Dispose();
+		void * Alloc(size_t Size);
+		void Free(void * Ptr);
+		void Dispose();
 	private:
 		static bool Sort(const Block Left, const Block Right);
 	};

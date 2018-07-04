@@ -10,7 +10,6 @@
 #include <core/transformation_component.h>
 
 #include <core/timer.h>
-#include <common.h>
 
 namespace fluff { namespace physics {
 
@@ -19,10 +18,10 @@ namespace fluff { namespace physics {
 		PhysicsActor * pActor_;
 		PhysicsMaterial * pMaterial_;
 	public:
-		FLUFF_API PhysicsComponent(ActorType Actor, GeometryType Geometry, GeometryDesc * GeomDesc, TransformationComponent * Transform, PhysicsMaterialDescriptor Material, PhysicsSystem * System, float Density = 0);
-		FLUFF_API ~PhysicsComponent();
+		PhysicsComponent(ActorType Actor, GeometryType Geometry, GeometryDesc * GeomDesc, TransformationComponent * Transform, PhysicsMaterialDescriptor Material, PhysicsSystem * System, float Density = 0);
+		~PhysicsComponent();
 
-		PhysicsActor FLUFF_API * GetActor() const { return pActor_; }
+		PhysicsActor * GetActor() const { return pActor_; }
 	};
 
 } }

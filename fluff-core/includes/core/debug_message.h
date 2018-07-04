@@ -6,7 +6,7 @@
 
 namespace fluff
 {
-	class DebugMessage
+	class FLUFF_API DebugMessage
 	{
 	public:
 		/*
@@ -15,7 +15,7 @@ namespace fluff
 			Severity - Significance of error
 			Message - Error Message
 		*/
-		FLUFF_API DebugMessage(std::shared_ptr<ECSManager> & Manager, SEVERITY Severity, const char * Message)
+		DebugMessage(std::shared_ptr<ECSManager> & Manager, SEVERITY Severity, const char * Message)
 		{
 			Manager->GetEventManager()->EmitEvent<DebugEvent>(Severity, Message);
 		}

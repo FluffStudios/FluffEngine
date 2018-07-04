@@ -26,9 +26,9 @@ namespace fluff
 	FLUFF_API std::vector<float> GenerateWhiteNoise(size_t Rows, size_t Columns, size_t X, size_t Z, size_t Seed)
 	{
 		std::vector<float> res(Rows * Columns);
-		for (auto y = 0; y < Rows; y++)
+		for (size_t y = 0; y < Rows; y++)
 		{
-			for (auto x = 0; x < Columns; x++)
+			for (size_t x = 0; x < Columns; x++)
 			{
 				srand(static_cast<uint32_t>(Seed + abs(49632 * (int)(x + X * Columns)) + abs(325176 * (int)(y + Z * Rows))));
 				float random = (float) rand() / (float) RAND_MAX;

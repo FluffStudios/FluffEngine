@@ -4,7 +4,7 @@
 
 namespace fluff { namespace gfx {
 
-	struct ShaderBufferDesc
+	struct FLUFF_API ShaderBufferDesc
 	{
 		unsigned int ByteWidth;
 		unsigned int ReadWrite;
@@ -14,19 +14,19 @@ namespace fluff { namespace gfx {
 		unsigned int StructureByteStride;
 	};
 
-	enum READ_WRITE
+	enum FLUFF_API READ_WRITE
 	{
 		MAP_WRITE = 0x0002,
 		MAP_READ = 0x0001,
 	};
 
-	enum USAGE
+	enum FLUFF_API USAGE
 	{
 		MAP_COHERENT = 0x00000080,
 		MAP_PERSISTENT = 0x00000040
 	};
 
-	class ShaderBuffer
+	class FLUFF_API ShaderBuffer
 	{
 		uint32_t Id_;
 		ShaderBufferDesc Descriptor_;
@@ -37,16 +37,16 @@ namespace fluff { namespace gfx {
 
 			Descriptor - Describes data stored and access
 		*/
-		explicit FLUFF_API ShaderBuffer(ShaderBufferDesc Descriptor);
+		explicit ShaderBuffer(ShaderBufferDesc Descriptor);
 
-		FLUFF_API ~ShaderBuffer() { Release(); }
+		~ShaderBuffer() { Release(); }
 
 		/*
 			Sets the data to be stored
 
 			Data - pointer to data stored
 		*/
-		void FLUFF_API Set(void *Data) const;
+		void Set(void *Data) const;
 
 		/*
 			Writes data to buffer
@@ -55,7 +55,7 @@ namespace fluff { namespace gfx {
 			Offset - where to begin storing at
 			Size - length of buffer
 		*/
-		void FLUFF_API SubData(void *Data, int Offset, int Size);
+		void SubData(void *Data, int Offset, int Size);
 
 		/*
 			Maps a region of the buffer for usage
@@ -64,7 +64,7 @@ namespace fluff { namespace gfx {
 			Size - length of read
 			Returns buffer to store data in
 		*/
-		void FLUFF_API * Map(int Offset, int Size) const;
+		void* Map(int Offset, int Size) const;
 
 		/*
 			Unmaps all buffers
@@ -81,12 +81,12 @@ namespace fluff { namespace gfx {
 		/*
 			Releases resources held by the buffer
 		*/
-		void FLUFF_API Release();
+		void Release();
 
 		/*
 			Enables buffer
 		*/
-		void FLUFF_API Enable() const;
+		void Enable() const;
 
 		/*
 			Binds a range of data for reading in shader
@@ -95,7 +95,7 @@ namespace fluff { namespace gfx {
 			Begin - Beginning offset
 			Size - Size of data to bind
 		*/
-		void FLUFF_API BindRange(int Index, int Begin, int Size) const;
+		void BindRange(int Index, int Begin, int Size) const;
 
 		/*
 			Disables all shader buffers

@@ -13,7 +13,7 @@
 
 namespace fluff { namespace gfx {
 
-	struct Vertex
+	struct FLUFF_API Vertex
 	{
 		float Position[3];
 		float TextureCoordinates[3];
@@ -26,14 +26,14 @@ namespace fluff { namespace gfx {
 		/*
 			Creates default vertex object
 		 */
-		FLUFF_API Vertex() { };
+		Vertex() { };
 
 		/*
 			Creates a vertex from a serialized vertex
 			
 			Serial - Serialized vertex
 		 */
-		explicit FLUFF_API Vertex(utilities::VertexSerial Serial)
+		explicit Vertex(utilities::VertexSerial Serial)
 		{
 			memcpy(Position, Serial.Position, 3 * sizeof(float));
 			memcpy(TextureCoordinates, Serial.Uv, 3 * sizeof(float));
@@ -45,7 +45,7 @@ namespace fluff { namespace gfx {
 		}
 	};
 
-	class Mesh
+	class FLUFF_API Mesh
 	{
 		static size_t IDCounter_;
 		size_t ID_;
@@ -138,8 +138,8 @@ namespace fluff { namespace gfx {
 		size_t VertexCount;
 		size_t IndexCount;
 
-		FLUFF_API Mesh() { }
-		FLUFF_API ~Mesh();
+		Mesh() { }
+		~Mesh();
 
 		/*
 			Checks if two meshes are equivalent by ID
@@ -165,7 +165,7 @@ namespace fluff { namespace gfx {
 			Normals - Normal vector array
 			Indices - Index buffer
 		 */
-		FLUFF_API Mesh(std::vector<float> & Positions, std::vector<float> & UVs, std::vector<float> & Normals, std::vector<uint32_t> & Indices)
+		explicit Mesh(std::vector<float> & Positions, std::vector<float> & UVs, std::vector<float> & Normals, std::vector<uint32_t> & Indices)
 		{
 			ID_ = IDCounter_++;
 			Positions_ = static_cast<float*>(Allocator::Alloc(Positions.size() * sizeof(float)));
@@ -194,7 +194,7 @@ namespace fluff { namespace gfx {
 			VertexCount - Number of vertices
 			IndexCount - Number of indices
 		 */
-		FLUFF_API Mesh(float * Positions, float * UVs, float * Normals, unsigned int * Indices, const size_t VertexCount, const size_t IndexCount)
+		Mesh(float * Positions, float * UVs, float * Normals, unsigned int * Indices, const size_t VertexCount, const size_t IndexCount)
 		{
 			ID_ = IDCounter_++;
 			Positions_ = static_cast<float*>(Allocator::Alloc(VertexCount * 3 * sizeof(float)));
@@ -221,7 +221,7 @@ namespace fluff { namespace gfx {
 			BiTangents - Bitangent vector array
 			Indices - Index buffer
 		 */
-		FLUFF_API Mesh(std::vector<float> & Positions, std::vector<float> & UVs, std::vector<float> & Normals, std::vector<float> & Tangents, std::vector<float> & BiTangents, std::vector<uint32_t> & Indices)
+		explicit Mesh(std::vector<float> & Positions, std::vector<float> & UVs, std::vector<float> & Normals, std::vector<float> & Tangents, std::vector<float> & BiTangents, std::vector<uint32_t> & Indices)
 		{
 			ID_ = IDCounter_++;
 			Positions_ = new float[Positions.size()];
@@ -248,21 +248,21 @@ namespace fluff { namespace gfx {
 			Vertices - Vertex array
 			Indices - Index array
 		 */
-		FLUFF_API Mesh(std::vector<Vertex> & Vertices, std::vector<unsigned int> & Indices);
+		explicit Mesh(std::vector<Vertex> & Vertices, std::vector<unsigned int> & Indices);
 		
 		/*
 			Creates a mesh from a serialized mesh
 			
 			Serial - Serialized mesh
 		 */
-		explicit FLUFF_API Mesh(utilities::SerializationMesh& Serial);
+		explicit Mesh(utilities::SerializationMesh& Serial);
 
 		/*
 			Creates a mesh from a serialized mesh
 			
 			Serial - Serialized mesh
 		 */
-		explicit FLUFF_API Mesh(utilities::SerializationMesh* Serial, size_t Count);
+		explicit Mesh(utilities::SerializationMesh* Serial, size_t Count);
 
 		/*
 			Adds vertex to mesh
@@ -270,7 +270,7 @@ namespace fluff { namespace gfx {
 			Vert - Vertex to add
 			Offset - Where to add vertex at
 		 */
-		void FLUFF_API AddVertex(const Vertex& Vert, size_t Offset);
+		void AddVertex(const Vertex& Vert, size_t Offset);
 
 		/*
 			Gets the position vector array
@@ -319,7 +319,7 @@ namespace fluff { namespace gfx {
 			
 			Positions - New positions
 		 */
-		inline void SetPositions(std::vector<float> & Positions)
+		void SetPositions(std::vector<float> & Positions)
 		{
 			if (Positions_) delete [] Positions_;
 			Positions_ = new float[Positions.size()];
@@ -331,7 +331,7 @@ namespace fluff { namespace gfx {
 			
 			UVs - New texture coordinates
 		 */
-		inline void SetUVs(std::vector<float> & UVs)
+		void SetUVs(std::vector<float> & UVs)
 		{
 			if (TextureCoords_) delete[] TextureCoords_;
 			TextureCoords_ = new float[UVs.size()];
@@ -343,7 +343,7 @@ namespace fluff { namespace gfx {
 			
 			Normals - New normals
 		 */
-		inline void SetNormals(std::vector<float> & Normals)
+		void SetNormals(std::vector<float> & Normals)
 		{
 			if (Normals_) delete[] Normals_;
 			Normals_ = new float[Normals.size()];
@@ -355,7 +355,7 @@ namespace fluff { namespace gfx {
 		 
 			Indices	- New indices
 		 */
-		inline void SetIndices(std::vector<unsigned int> & Indices)
+		void SetIndices(std::vector<unsigned int> & Indices)
 		{
 			if (Indices_) delete[] Indices_;
 			Indices_ = new unsigned int[Indices.size()];
@@ -367,7 +367,7 @@ namespace fluff { namespace gfx {
 
 			Returns index count
 		*/
-		inline uint32_t GetIndexCount() const
+		uint32_t GetIndexCount() const
 		{
 			return static_cast<uint32_t>(IndexCount);
 		}
@@ -377,7 +377,7 @@ namespace fluff { namespace gfx {
 
 			Return vertex count
 		*/
-		inline uint32_t GetVertexCount() const
+		uint32_t GetVertexCount() const
 		{
 			return static_cast<uint32_t>(VertexCount);
 		}
@@ -387,7 +387,7 @@ namespace fluff { namespace gfx {
 
 			Return ID
 		*/
-		inline size_t GetID() const
+		size_t GetID() const
 		{
 			return ID_;
 		}

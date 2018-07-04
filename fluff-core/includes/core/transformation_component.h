@@ -21,7 +21,7 @@ namespace fluff
 		/*
 			Creates default transformation
 		*/
-		FLUFF_API TransformationComponent()
+		TransformationComponent()
 		{
 			Scale = glm::vec3(1, 1, 1);
 			CreateTransformationMatrix();
@@ -34,7 +34,7 @@ namespace fluff
 			Rotation - Rotation on each axis in degrees
 			Scale - Scaling factor across each axis
 		*/
-		FLUFF_API TransformationComponent(const glm::vec3 Position, const glm::vec3 Rotation, const glm::vec3 Scale) : TransformationComponent()
+		TransformationComponent(const glm::vec3 Position, const glm::vec3 Rotation, const glm::vec3 Scale) : TransformationComponent()
 		{ 
 			this->Position = Position;
 			this->Rotation = Rotation;
@@ -46,7 +46,7 @@ namespace fluff
 
 			Returns position
 		*/
-		glm::vec3 FLUFF_API GetPosition() const
+		glm::vec3 GetPosition() const
 		{
 			return this->Position;
 		}
@@ -56,13 +56,13 @@ namespace fluff
 
 			Position - new position
 		*/
-		void FLUFF_API SetPosition(const glm::vec3 Position)
+		void SetPosition(const glm::vec3 Position)
 		{
 			this->Position = Position;
 			CreateTransformationMatrix();
 		}
 
-		glm::vec3 FLUFF_API GetRotation() const
+		glm::vec3 GetRotation() const
 		{
 			return Rotation;
 		}
@@ -72,7 +72,7 @@ namespace fluff
 
 			RotationInDegrees - new rotation
 		*/
-		void FLUFF_API SetRotation(const glm::vec3 RotationInDegrees)
+		void SetRotation(const glm::vec3 RotationInDegrees)
 		{
 			glm::vec3 new_rot(fmod(RotationInDegrees.x + 360.0f, 360), fmod(RotationInDegrees.y + 360.0f, 360), fmod(RotationInDegrees.z + 360.0f, 360));
 			this->Rotation = new_rot;
@@ -84,7 +84,7 @@ namespace fluff
 
 			Returns scale
 		*/
-		glm::vec3 FLUFF_API GetScale() const
+		glm::vec3 GetScale() const
 		{
 			return this->Scale;
 		}
@@ -94,7 +94,7 @@ namespace fluff
 
 			Returns scale
 		*/
-		void FLUFF_API SetScale(const glm::vec3 Scale)
+		void SetScale(const glm::vec3 Scale)
 		{
 			this->Scale = Scale;
 			CreateTransformationMatrix();
@@ -105,13 +105,13 @@ namespace fluff
 
 			Returns transformation matrix
 		*/
-		glm::mat4 FLUFF_API GetTransformationMatrix() const
+		glm::mat4 GetTransformationMatrix() const
 		{
 			return this->TransformationMatrix;
 		}
 
 	private:
-		glm::mat4 FLUFF_API CreateTransformationMatrix()
+		glm::mat4 CreateTransformationMatrix()
 		{
 			glm::mat4 pos(1.0f);
 			glm::mat4 sca(1.0f);

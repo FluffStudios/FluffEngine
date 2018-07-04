@@ -11,7 +11,7 @@ namespace fluff { namespace render {
 		/*
 			Creates a new screenshot
 		*/
-		FLUFF_API Screenshot(std::shared_ptr<ECSManager> & Manager)
+		Screenshot(std::shared_ptr<ECSManager> & Manager)
 		{
 			Manager->GetEventManager()->EmitEvent<ScreenshotEvent>(Window::GetCurrentWindow()->GetWidth().GetValue(), Window::GetCurrentWindow()->GetHeight().GetValue());
 		}

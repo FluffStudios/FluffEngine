@@ -4,19 +4,6 @@
 
 #define FLUFF_API
 
-#ifdef FLUFF_API_DLL
-#ifdef _WIN32
-#ifdef FLUFF_API_EXPORT
-#define FLUFF_API __declspec(dllexport)
-#else
-#define FLUFF_API __declspec(dllimport)
-#endif
-#endif
-#else
-#define FLUFF_API
-#endif
-
-
 inline void FluffErrorMsg(const char * File, unsigned int Line, const char * Description)
 {
 #if defined(_DEBUG) || defined(DEBUG)

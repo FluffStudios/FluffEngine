@@ -14,7 +14,7 @@
 
 namespace fluff {
 
-	class TextureLibrary
+	class FLUFF_API TextureLibrary
 	{
 		static std::vector<std::string> FileNames_;
 		static std::unordered_map<std::string, gfx::Texture *> TextureMap_;

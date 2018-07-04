@@ -8,7 +8,7 @@ namespace fluff { namespace ecs {
 	class SystemManager;
 
 	template<typename SystemType>
-	class System : public ISystem
+	class FLUFF_API System : public ISystem
 	{
 	public:
 		/*
@@ -25,7 +25,7 @@ namespace fluff { namespace ecs {
 		}
 	};
 
-	class SystemManager : NonCopyable
+	class FLUFF_API SystemManager : NonCopyable
 	{
 		std::unordered_map<size_t, std::shared_ptr<ISystem>> Systems_;
 		bool Init_ = false;
@@ -41,7 +41,7 @@ namespace fluff { namespace ecs {
 			Entities - EntityManager encapsulated
 			Events - EventManager encapsulated
 		*/
-		FLUFF_API SystemManager(EntityManager & Entities, EventManager & Events);
+		SystemManager(EntityManager & Entities, EventManager & Events);
 
 		/*
 			Creates system meanager
@@ -50,7 +50,7 @@ namespace fluff { namespace ecs {
 			Events - EventManager encapsulated
 			RefreshTime - Minimum time between fixed update calls
 		*/
-		FLUFF_API SystemManager(EntityManager & Entities, EventManager & Events, double RefreshTime);
+		SystemManager(EntityManager & Entities, EventManager & Events, double RefreshTime);
 		
 		/*
 			Adds a system to the manager
@@ -95,19 +95,22 @@ namespace fluff { namespace ecs {
 
 			Delta - Time between system updates
 		*/
-		void FLUFF_API UpdateAll(double DeltaTime);
+		void UpdateAll(double DeltaTime);
 
 		/*
 			Configures all systems
 		*/
-		void FLUFF_API Configure();
+		void Configure();
 
 		/*
 			Sets refresh rate of system
 
 			Hertz - Refresh rate
 		*/
-		void FLUFF_API SetRefreshRate(const uint32_t Hertz);
+		void SetRefreshRate(const uint32_t Hertz)
+		{
+			this->RefreshTime_ = 1.0 / Hertz;
+		}
 	};
 
 	template <typename Type>

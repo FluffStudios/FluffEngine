@@ -266,7 +266,7 @@ namespace fluff { namespace gfx
 		Value render_target;
 		render_target.SetArray();
 
-		for (auto i = 0; i < 8; i++)
+		for (size_t i = 0; i < 8; i++)
 		{
 			Value render_target_desc;
 			render_target_desc.SetObject();
@@ -517,7 +517,7 @@ namespace fluff { namespace gfx
 			new char*[transform_feedback["num_outputs"].GetUint()],
 			static_cast<TransformBufferMode>(transform_feedback["buffer_mode"].GetUint())
 		};
-		for (size_t i = 0; i < tfd.NumFeedback; ++i)
+		for (uint32_t i = 0; i < tfd.NumFeedback; ++i)
 		{
 			auto itr = (transform_feedback["num_outputs"].Begin() + i);
 			tfd.OutputVars[i] = (char*) itr->GetString();
@@ -653,17 +653,4 @@ namespace fluff { namespace gfx
 		};
 		return desc;
 	}
-
-	TransformFeedbackDesc::~TransformFeedbackDesc()
-	{
-		if (OutputVars && NumFeedback)
-		{
-			for (size_t i = 0; i < NumFeedback; i++)
-			{
-				if (OutputVars[i]) delete[] OutputVars[i];
-			}
-			delete[] OutputVars;
-			OutputVars = nullptr;
-		}
-	}
-}	}
+} }

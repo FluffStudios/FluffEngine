@@ -13,7 +13,7 @@ namespace fluff { namespace ecs {
 
 	typedef Simple::Signal<void(const void *)> EventSignal;
 
-	class IReceiver
+	class FLUFF_API IReceiver
 	{
 		friend class EventManager;
 		std::unordered_map<size_t, std::pair<std::weak_ptr<EventSignal>, size_t>> Connections_;
@@ -21,18 +21,18 @@ namespace fluff { namespace ecs {
 		/*
 			Destructor
 		*/
-		virtual FLUFF_API ~IReceiver();
+		virtual ~IReceiver();
 
 		/*
 			Gets count of connected signals
 
 			Returns number of connected signals
 		*/
-		const size_t FLUFF_API ConnectionSignalCount() const;
+		const size_t ConnectionSignalCount() const;
 	};
 
 	template <typename T>
-	class Receiver : public IReceiver
+	class FLUFF_API Receiver : public IReceiver
 	{
 	public:
 		/*
@@ -45,7 +45,7 @@ namespace fluff { namespace ecs {
 	inline Receiver<T>::~Receiver()
 	{ }
 
-	class EventManager : NonCopyable
+	class FLUFF_API EventManager : NonCopyable
 	{
 	protected:
 		std::vector<std::shared_ptr<EventSignal>> Handlers_;
@@ -65,12 +65,12 @@ namespace fluff { namespace ecs {
 		/*
 			Creates new event manager
 		*/
-		FLUFF_API EventManager();
+		EventManager();
 		
 		/*
 			Destructor
 		*/
-		virtual FLUFF_API ~EventManager();
+		virtual ~EventManager();
 
 		/*
 			Subscribes receiver to event
@@ -144,7 +144,7 @@ namespace fluff { namespace ecs {
 
 			Returns connected receiver count
 		*/
-		const size_t FLUFF_API ConnectedReceiverCount() const
+		const size_t ConnectedReceiverCount() const
 		{
 			size_t Count = 0;
 			for (auto handler : Handlers_)
@@ -154,7 +154,7 @@ namespace fluff { namespace ecs {
 			return Count;
 		}
 	protected:
-		std::shared_ptr<EventSignal> FLUFF_API & SignalFor(size_t SignalID);
+		std::shared_ptr<EventSignal> & SignalFor(size_t SignalID);
 	};
 
 } }

@@ -8,7 +8,7 @@
 
 namespace fluff { namespace gfx {
 
-	class Texture
+	class FLUFF_API Texture
 	{
 	protected:
 		uint32_t Id_ = 0;
@@ -21,12 +21,12 @@ namespace fluff { namespace gfx {
 		/*
 			Creates a new texture
 		*/
-		FLUFF_API Texture() { }
+		Texture() { }
 
 		/*
 			Destructor
 		*/
-		virtual FLUFF_API ~Texture() { Release(); }
+		virtual ~Texture() { Release(); }
 
 		/*
 			Gets the texture handle
@@ -64,25 +64,25 @@ namespace fluff { namespace gfx {
 		/*
 			Releases texture resources
 		*/
-		void FLUFF_API Release();
+		void Release();
 
 		/*
 			Enables texture
 		*/
-		virtual void FLUFF_API Enable() { }
+		virtual void Enable() { }
 
 		/*
 			Disables texture
 		*/
-		virtual void FLUFF_API Disable() { }
+		virtual void Disable() { }
 
 		/*
 			Makes texture handle resident to GPU
 		*/
-		void FLUFF_API MakeTextureHandleResident() const;
+		void MakeTextureHandleResident() const;
 	};
 
-	class Texture2D : public Texture
+	class FLUFF_API Texture2D : public Texture
 	{
 	public:
 		/*
@@ -90,14 +90,14 @@ namespace fluff { namespace gfx {
 
 			Tex - Parent texture object
 		*/
-		explicit FLUFF_API Texture2D(Texture Tex)
+		explicit Texture2D(Texture Tex)
 			: Texture(Tex), Location(0)
 		{
 		}
 
-		FLUFF_API Texture2D() { }
+		Texture2D() { }
 
-		FLUFF_API ~Texture2D() { }
+		~Texture2D() { }
 
 		/*
 			Creates new Texture2D from data 
@@ -105,29 +105,29 @@ namespace fluff { namespace gfx {
 			Data - byte array
 			CreateInfo - texture creation parameters
 		 */
-		FLUFF_API Texture2D(std::vector<unsigned char*> &Data, TextureCreateInfo CreateInfo);
+		Texture2D(std::vector<unsigned char*> &Data, TextureCreateInfo CreateInfo);
 
-		FLUFF_API Texture2D(std::vector<unsigned char> Data, TextureCreateInfo CreateInfo);
+		Texture2D(std::vector<unsigned char> Data, TextureCreateInfo CreateInfo);
 
-		explicit FLUFF_API Texture2D(TextureData & Data);
+		Texture2D(TextureData & Data);
 
 		/*
 			Enable texture
 		 */
-		void FLUFF_API Enable() override;
+		void Enable() override;
 
 		/*
 			Disable texture
 		 */
-		void FLUFF_API Disable() override;
+		void Disable() override;
 
 		uint32_t Location;
 	private:
-		void FLUFF_API Initialize(std::vector<unsigned char*> &Data);
-		void FLUFF_API Initialize(std::vector<unsigned char> Data);
+		void Initialize(std::vector<unsigned char*> &Data);
+		void Initialize(std::vector<unsigned char> Data);
 	};
 
-	class Texture3D : public Texture
+	class FLUFF_API Texture3D : public Texture
 	{
 	public:
 		/*
@@ -135,12 +135,12 @@ namespace fluff { namespace gfx {
 			
 			@param Tex - base texture
 		 */
-		explicit FLUFF_API Texture3D(Texture Tex)
+		explicit Texture3D(Texture Tex)
 			: Texture(Tex)
 		{
 		}
 
-		FLUFF_API ~Texture3D() { }
+		~Texture3D() { }
 
 		/*
 			Creates new Texture3D from data 
@@ -148,22 +148,22 @@ namespace fluff { namespace gfx {
 			Data - byte array
 			CreateInfo - texture creation parameters
 		 */
-		FLUFF_API Texture3D(std::vector<unsigned char*> &Data, TextureCreateInfo CreateInfo);
+		Texture3D(std::vector<unsigned char*> &Data, TextureCreateInfo CreateInfo);
 
 		/*
 			Enable texture
 		 */
-		void FLUFF_API Enable() override;
+		void Enable() override;
 
 		/*
 			Disable texture
 		 */
-		void FLUFF_API Disable() override;
+		void Disable() override;
 	private:
-		void FLUFF_API Initialize(std::vector<unsigned char*> &Data);
+		void Initialize(std::vector<unsigned char*> &Data);
 	};
 
-	class TextureCubeMap : public Texture
+	class FLUFF_API TextureCubeMap : public Texture
 	{
 	public:
 		/*
@@ -171,12 +171,12 @@ namespace fluff { namespace gfx {
 			
 			Tex - base texture
 		 */
-		explicit FLUFF_API TextureCubeMap(Texture Tex)
+		explicit TextureCubeMap(Texture Tex)
 			: Texture(Tex)
 		{
 		}
 
-		FLUFF_API ~TextureCubeMap() { }
+		~TextureCubeMap() { }
 
 		/*
 			Creates new TextureCubeMap from data 
@@ -184,19 +184,19 @@ namespace fluff { namespace gfx {
 			Data - byte array
 			CreateInfo - texture creation parameters
 		 */
-		FLUFF_API TextureCubeMap(std::vector<unsigned char*> &Data, TextureCreateInfo CreateInfo);
+		TextureCubeMap(std::vector<unsigned char*> &Data, TextureCreateInfo CreateInfo);
 
 		/*
 			Enable texture
 		 */
-		void FLUFF_API Enable() override;
+		void Enable() override;
 
 		/*
 			Disable texture
 		 */
-		void FLUFF_API Disable() override;
+		void Disable() override;
 	private:
-		void FLUFF_API Initialize(std::vector<unsigned char*> &Data);
+		void Initialize(std::vector<unsigned char*> &Data);
 	};
 
 	/*
