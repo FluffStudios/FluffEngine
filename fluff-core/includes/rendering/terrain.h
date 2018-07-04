@@ -4,12 +4,12 @@
 #include <rendering/renderable.h>
 #include <util/FastNoise.h>
 
-namespace luminos { namespace render
+namespace fluff { namespace render
 {
 	
-	class LUMINOS_API Terrain : public Renderable
+	class FLUFF_API Terrain : public Renderable
 	{
-		int16_t * HeightMap_;
+		float * HeightMap_;
 		size_t VertexCountPerSide_;
 	public:
 		/*
@@ -111,7 +111,7 @@ namespace luminos { namespace render
 		*/
 		static Terrain* GenerateTerrain(std::vector<float32_t> Positions, std::vector<float32_t> Normals, std::vector<float32_t> UVCoordinate, std::vector<uint32_t> Indices, Material * Mat = nullptr);
 	
-		int16_t * GetHeightMap() const
+		float * GetHeightMap() const
 		{
 			return HeightMap_;
 		}

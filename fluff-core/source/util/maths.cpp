@@ -5,9 +5,9 @@
 #include <valarray>
 #include <complex>
 
-namespace luminos
+namespace fluff
 {
-	LUMINOS_API std::vector<float> GenerateWhiteNoise(size_t Rows, size_t Columns, size_t Seed)
+	FLUFF_API std::vector<float> GenerateWhiteNoise(size_t Rows, size_t Columns, size_t Seed)
 	{
 		std::vector<float> data;
 
@@ -23,7 +23,7 @@ namespace luminos
 		return data;
 	}
 
-	LUMINOS_API std::vector<float> GenerateWhiteNoise(size_t Rows, size_t Columns, size_t X, size_t Z, size_t Seed)
+	FLUFF_API std::vector<float> GenerateWhiteNoise(size_t Rows, size_t Columns, size_t X, size_t Z, size_t Seed)
 	{
 		std::vector<float> res(Rows * Columns);
 		for (auto y = 0; y < Rows; y++)
@@ -193,7 +193,7 @@ namespace luminos
 		return tmp;
 	}
 
-	LUMINOS_API std::vector<float> Normalize(std::vector<float> Input, float32_t Lower, float32_t Upper)
+	FLUFF_API std::vector<float> Normalize(std::vector<float> Input, float32_t Lower, float32_t Upper)
 	{
 		float32_t min = std::numeric_limits<float>::max();
 		float32_t max = -std::numeric_limits<float>::max();

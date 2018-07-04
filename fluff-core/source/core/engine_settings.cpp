@@ -7,7 +7,7 @@
 
 #include <iostream>
 
-namespace luminos
+namespace fluff
 {
 	EngineSettings EngineSettings::CurrentEngineSettings;
 

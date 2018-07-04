@@ -11,14 +11,12 @@
 
 #include <core/timer.h>
 
-namespace luminos { namespace physics {
+namespace fluff { namespace physics {
 
 	class PhysicsComponent : public ecs::Component<PhysicsComponent>
 	{
 		PhysicsActor * pActor_;
 		PhysicsMaterial * pMaterial_;
-		physx::PxGeometry * pGeometry_;
-
 	public:
 		PhysicsComponent(ActorType Actor, GeometryType Geometry, GeometryDesc * GeomDesc, TransformationComponent * Transform, PhysicsMaterialDescriptor Material, PhysicsSystem * System, float Density = 0);
 		~PhysicsComponent();

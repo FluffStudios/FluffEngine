@@ -3,7 +3,7 @@
 #include <unordered_map>
 #include <string>
 #include <gfx/texture.h>
-#include <core/texture_data.h>
+#include <gfx/texture_data.h>
 
 #include <core/assets/util.h>
 #include <cereal/access.hpp>
@@ -12,9 +12,9 @@
 
 #include <common.h>
 
-namespace luminos {
+namespace fluff {
 
-	class LUMINOS_API TextureLibrary
+	class FLUFF_API TextureLibrary
 	{
 		static std::vector<std::string> FileNames_;
 		static std::unordered_map<std::string, gfx::Texture *> TextureMap_;

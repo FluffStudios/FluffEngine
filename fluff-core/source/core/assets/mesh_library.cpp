@@ -1,6 +1,6 @@
 #include <core/assets/mesh_library.h>
 
-namespace luminos {
+namespace fluff {
 
 	std::vector<std::string> MeshLibrary::FileNames_;
 	std::unordered_map<std::string, gfx::Mesh *> MeshLibrary::MeshMap_;
@@ -26,7 +26,7 @@ namespace luminos {
 		auto it = MeshMap_.find(TextureName);
 		if (it == MeshMap_.end())
 		{
-			LUMINOS_ERROR_FUNC("MESH COULD NOT BE FOUND");
+			FLUFF_ERROR_FUNC("MESH COULD NOT BE FOUND");
 			return nullptr;
 		}
 		return it->second;

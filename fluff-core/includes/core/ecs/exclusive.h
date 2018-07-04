@@ -3,10 +3,10 @@
 #include <common.h>
 #include <core/ecs/system.h>
 
-namespace luminos { namespace ecs {
+namespace fluff { namespace ecs {
 
 	template <typename Type, typename ... Dependencies>
-	class LUMINOS_API Exclusive : public System<Exclusive<Type, Dependencies ...>>, public Receiver<Exclusive<Type, Dependencies ...>>
+	class FLUFF_API Exclusive : public System<Exclusive<Type, Dependencies ...>>, public Receiver<Exclusive<Type, Dependencies ...>>
 	{
 	public:
 		/*

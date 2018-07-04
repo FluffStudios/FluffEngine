@@ -3,10 +3,10 @@
 #include <core/ecs/ievent.h>
 #include <common.h>
 
-namespace luminos { namespace ecs {
+namespace fluff { namespace ecs {
 
 	template <typename T>
-	class LUMINOS_API Event : public IEvent
+	class FLUFF_API Event : public IEvent
 	{
 	public:
 		/*

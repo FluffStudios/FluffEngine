@@ -4,8 +4,8 @@
 #include <core/ecs/system.h>
 #include <core/ecs/entity.h>
 
-namespace luminos { namespace render {
-	class LUMINOS_API LightingManager
+namespace fluff { namespace render {
+	class FLUFF_API LightingManager
 	{
 		ecs::EntityManager * EntityManager_;
 		ecs::EventManager  * EventManager_;

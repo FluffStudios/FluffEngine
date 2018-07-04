@@ -3,8 +3,9 @@
 #include <functional>
 #include <vector>
 #include <core/beans/listenable.h>
+#include <iostream>
 
-namespace luminos
+namespace fluff
 {
 	template<class T>
 	class Property : public Listenable<T>
@@ -108,6 +109,12 @@ namespace luminos
 				index++;
 			}
 			Function_.erase(Function_.begin() + index);
+		}
+
+		friend static std::ostream& operator << (std::ostream & Out, const Property Prop)
+		{
+			Out << Prop.GetValue();
+			return Out;
 		}
 	private:
 		template<typename T, typename... U>

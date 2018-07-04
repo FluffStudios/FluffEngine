@@ -1,6 +1,5 @@
 #pragma once
 
-#include <glew.h>
 #include <vector>
 #include <core/ecs/ecs_manager.h>
 
@@ -12,7 +11,7 @@
 
 #define MAX_UNIFORM_COUNT 128
 
-namespace luminos { namespace gfx {
+namespace fluff { namespace gfx {
 
 	/**
 	 * Represents a shader program.
@@ -20,9 +19,9 @@ namespace luminos { namespace gfx {
 	 * @author Nick Clark
 	 * @version 18-October-17
 	 */
-	class LUMINOS_API Shader
+	class FLUFF_API Shader
 	{
-		GLuint Id_ = 0;
+		uint32_t Id_ = 0;
 		std::shared_ptr<ECSManager> & Manager_;
 	public:
 		/*
@@ -124,7 +123,7 @@ namespace luminos { namespace gfx {
 
 			Returns handle of shader
 		 */
-		GLuint GetHandle() const { return Id_; }
+		uint32_t GetHandle() const { return Id_; }
 
 		/*
 			Binds texture to location
@@ -135,7 +134,7 @@ namespace luminos { namespace gfx {
 		void BindTextureLocation(const char * Name, unsigned int Location) const;
 
 	private:
-		unsigned int CreateShaderStage(const char *File, GLuint Type) const;
+		unsigned int CreateShaderStage(const char *File, uint32_t Type) const;
 		void LinkProgram() const;
 		void VerifyProgram() const;
 		void DetachShaderStages(std::vector<unsigned int> Stages) const;

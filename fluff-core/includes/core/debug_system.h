@@ -4,10 +4,10 @@
 #include <core/ecs/system.h>
 #include <core/debug_event.h>
 
-namespace luminos
+namespace fluff
 {
 
-	struct LUMINOS_API DebugSystem : public ecs::System<DebugSystem>, public ecs::Receiver<DebugSystem>
+	struct FLUFF_API DebugSystem : public ecs::System<DebugSystem>, public ecs::Receiver<DebugSystem>
 	{
 	public:
 		/*

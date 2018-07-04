@@ -2,18 +2,18 @@
 
 #include <common.h>
 
-#include <serialization_mesh.h>
+#include <serialization-legacy/serialization_mesh.h>
 #include <vector>
 #include <common.h>
-#include <allocator.h>
+#include <core/allocators/allocator.h>
 
 #include <cereal/access.hpp>
 #include <cereal/types/vector.hpp>
 #include <common.h>
 
-namespace luminos { namespace gfx { 
+namespace fluff { namespace gfx {
 
-	struct LUMINOS_API Vertex
+	struct FLUFF_API Vertex
 	{
 		float Position[3];
 		float TextureCoordinates[3];
@@ -45,7 +45,7 @@ namespace luminos { namespace gfx {
 		}
 	};
 
-	class LUMINOS_API Mesh
+	class FLUFF_API Mesh
 	{
 		static size_t IDCounter_;
 		size_t ID_;

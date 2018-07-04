@@ -3,12 +3,12 @@
 #include <core/ecs/isystem.h>
 #include <unordered_map>
 
-namespace luminos { namespace ecs {
+namespace fluff { namespace ecs {
 
 	class SystemManager;
 
 	template<typename SystemType>
-	class LUMINOS_API System : public ISystem
+	class FLUFF_API System : public ISystem
 	{
 	public:
 		/*
@@ -25,7 +25,7 @@ namespace luminos { namespace ecs {
 		}
 	};
 
-	class LUMINOS_API SystemManager : NonCopyable
+	class FLUFF_API SystemManager : NonCopyable
 	{
 		std::unordered_map<size_t, std::shared_ptr<ISystem>> Systems_;
 		bool Init_ = false;
@@ -86,7 +86,7 @@ namespace luminos { namespace ecs {
 		std::shared_ptr<Type> GetSystem()
 		{
 			auto it = Systems_.find(Type::GetFamilyID());
-			LUMINOS_ASSERT(it != Systems_.end())
+			FLUFF_ASSERT(it != Systems_.end())
 			return it == Systems_.end() ? std::shared_ptr<Type>() : std::shared_ptr<Type>(std::static_pointer_cast<Type>(it->second));
 		}
 

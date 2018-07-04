@@ -3,9 +3,9 @@
 #include <core/ecs/entity.h>
 #include <common.h>
 
-namespace luminos { namespace gfx {
+namespace fluff { namespace gfx {
 
-	struct LUMINOS_API ModelSubmittedEvent : public ecs::Event<ModelSubmittedEvent>
+	struct FLUFF_API ModelSubmittedEvent : public ecs::Event<ModelSubmittedEvent>
 	{
 		/*
 			Creates a new Model Submitted Event

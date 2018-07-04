@@ -14,17 +14,17 @@ namespace Simple {
 
 		/// ProtoSignal is the template implementation for callback list.
 		template <typename, typename>
-		class LUMINOS_API ProtoSignal;  // undefined
+		class FLUFF_API ProtoSignal;  // undefined
 
 							/// CollectorInvocation invokes signal handlers differently depending on return
 							/// type.
 		template <typename, typename>
-		struct LUMINOS_API CollectorInvocation;
+		struct FLUFF_API CollectorInvocation;
 
 		/// CollectorLast returns the result of the last signal handler from a signal
 		/// emission.
 		template <typename Result>
-		struct LUMINOS_API CollectorLast {
+		struct FLUFF_API CollectorLast {
 			typedef Result CollectorResult;
 			explicit CollectorLast() : last_() {}
 			inline bool operator()(Result r) {
@@ -39,11 +39,11 @@ namespace Simple {
 
 		/// CollectorDefault implements the default signal handler collection behaviour.
 		template <typename Result>
-		struct LUMINOS_API CollectorDefault : CollectorLast<Result> {};
+		struct FLUFF_API CollectorDefault : CollectorLast<Result> {};
 
 		/// CollectorDefault specialisation for signals with void return type.
 		template <>
-		struct LUMINOS_API CollectorDefault<void> {
+		struct FLUFF_API CollectorDefault<void> {
 			typedef void CollectorResult;
 			void result() {}
 			inline bool operator()(void) { return true; }
@@ -51,7 +51,7 @@ namespace Simple {
 
 		/// CollectorInvocation specialisation for regular signals.
 		template <class Collector, class R, class... Args>
-		struct LUMINOS_API CollectorInvocation<Collector, R(Args...)> {
+		struct FLUFF_API CollectorInvocation<Collector, R(Args...)> {
 			inline bool invoke(Collector &collector, const std::function<R(Args...)> &cbf,
 				Args... args) {
 				return collector(cbf(args...));
@@ -60,7 +60,7 @@ namespace Simple {
 
 		/// CollectorInvocation specialisation for signals with void return type.
 		template <class Collector, class... Args>
-		struct LUMINOS_API CollectorInvocation<Collector, void(Args...)> {
+		struct FLUFF_API CollectorInvocation<Collector, void(Args...)> {
 			inline bool invoke(Collector &collector,
 				const std::function<void(Args...)> &cbf, Args... args) {
 				cbf(args...);
@@ -70,7 +70,7 @@ namespace Simple {
 
 		/// ProtoSignal template specialised for the callback signature and collector.
 		template <class Collector, class R, class... Args>
-		class LUMINOS_API ProtoSignal<R(Args...), Collector> : private CollectorInvocation<
+		class FLUFF_API ProtoSignal<R(Args...), Collector> : private CollectorInvocation<
 			Collector, R(Args...)> {
 		protected:
 			typedef std::function<R(Args...)> CbFunction;

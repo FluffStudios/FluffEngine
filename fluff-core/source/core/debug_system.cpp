@@ -1,7 +1,7 @@
 #include <core/debug_system.h>
 #include <iostream>
 
-namespace luminos
+namespace fluff
 {
 	DebugSystem::DebugSystem()
 	{

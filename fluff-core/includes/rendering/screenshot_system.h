@@ -5,7 +5,7 @@
 #include <core/ecs/ecs_manager.h>
 #include <memory>
 
-namespace luminos { namespace render {
+namespace fluff { namespace render {
 
 	struct ScreenshotSystem : public ecs::System<ScreenshotSystem>, public ecs::Receiver<ScreenshotSystem>
 	{

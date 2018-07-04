@@ -3,10 +3,10 @@
 #include <rendering/material.h>
 #include <gfx/model.h>
 
-namespace luminos { namespace render {
+namespace fluff { namespace render {
 
 	using namespace gfx;
-	class LUMINOS_API Renderable
+	class FLUFF_API Renderable
 	{
 	protected:
 		Material * Material_;

@@ -1,16 +1,13 @@
 #pragma once
 
 #include <rendering/scene_renderer.h>
-#include <rendering/ui_renderer.h>
-
 #include <core/ecs/ecs_manager.h>
 
-namespace luminos { namespace render {
+namespace fluff { namespace render {
 
 	class RenderSystem : public ecs::System<RenderSystem>
 	{
 		std::shared_ptr<SceneRenderer> Scene_;
-		std::shared_ptr<UIRenderer> UI_;
 	public:
 		/*
 			Deleted default contstructor
@@ -35,7 +32,6 @@ namespace luminos { namespace render {
 		void Update(ecs::EntityManager & EntityManager, ecs::EventManager & EventManager, double Delta) override;
 
 		std::shared_ptr<SceneRenderer> & GetSceneRenderer() { return Scene_; }
-		std::shared_ptr<UIRenderer> & GetUIRenderer() { return UI_; }
 	};
 
 } }

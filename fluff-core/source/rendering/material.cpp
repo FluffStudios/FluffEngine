@@ -1,7 +1,8 @@
 #include <rendering/material.h>
-#include "allocator.h"
+#include <core/allocators/allocator.h>
+#include <glew.h>
 
-namespace luminos { namespace render
+namespace fluff { namespace render
 {
 	
 	Material::Material(GraphicsPipeline * Pipeline)
@@ -153,5 +154,11 @@ namespace luminos { namespace render
 		std::vector<TextureUniform*> res;
 		for (auto & i : Textures_) res.push_back(i.get());
 		return res;
+	}
+
+	void Material::SetModelMatrix(void * Modl) const
+	{
+		auto loc = ModelUniform_->GetLocation();
+		glUniformMatrix4fv(loc, 1, GL_FALSE, (float*)Modl);
 	}
 } }

@@ -3,7 +3,7 @@
 #include <core/ecs/entity.h>
 #include <gfx/shader_buffers/lighting.h>
 
-namespace luminos { namespace render {
+namespace fluff { namespace render {
 
 	struct DirectionalLightComponent : public ecs::Component<DirectionalLightComponent>
 	{

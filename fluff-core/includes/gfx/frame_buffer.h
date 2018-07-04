@@ -2,12 +2,11 @@
 
 #define MAX_ATTACHMENTS 16
 
-#include <glew.h>
 #include <vector>
 #include <common.h>
 #include <core/ecs/ecs_manager.h>
 
-namespace luminos { namespace gfx {
+namespace fluff { namespace gfx {
 
 	enum ACTION
 	{
@@ -15,7 +14,7 @@ namespace luminos { namespace gfx {
 		READ = 0x8CA8
 	};
 
-	class LUMINOS_API FrameBuffer
+	class FLUFF_API FrameBuffer
 	{
 		struct Buffer
 		{
@@ -192,10 +191,7 @@ namespace luminos { namespace gfx {
 			PRECONDITION: Framebuffer must be bound
 			Returns if framebuffer is valid
 		*/
-		inline bool IsValid() const
-		{
-			return glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE;
-		}
+		bool IsValid() const;
 
 		/*
 			Sets the buffers to draw to in the framebuffer

@@ -4,9 +4,9 @@
 #include <core/ecs/system.h>
 #include <core/ecs/entity.h>
 
-namespace luminos
+namespace fluff
 {
-	class LUMINOS_API ECSManager
+	class FLUFF_API ECSManager
 	{
 		ecs::EntityManager * EntityManager_;
 		ecs::EventManager  * EventManager_;

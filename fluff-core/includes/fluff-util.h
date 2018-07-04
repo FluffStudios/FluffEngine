@@ -1,0 +1,26 @@
+#pragma once
+
+#include <core/allocators/allocator.h>
+#include <common.h>
+#include <debug.h>
+#include <file/filereader.h>
+#include <file/filewriter.h>
+#include <json_serializable.h>
+#include <non_copyable.h>
+#include <serialization-legacy/serialization_animation.h>
+#include <serialization-legacy/serialization_animationbehavior.h>
+#include <serialization-legacy/serialization_animbehave.h>
+#include <serialization-legacy/serialization_array.h>
+#include <serialization-legacy/serialization_bone.h>
+#include <serialization-legacy/serialization_database.h>
+#include <serialization-legacy/serialization_field.h>
+#include <serialization-legacy/serialization_mesh.h>
+#include <serialization-legacy/serialization_meshanim.h>
+#include <serialization-legacy/serialization_model.h>
+#include <serialization-legacy/serialization_modelloader.h>
+#include <serialization-legacy/serialization_nodeanim.h>
+#include <serialization-legacy/serialization_object.h>
+#include <serialization-legacy/serialization_string.h>
+#include <serialization-legacy/serialization_utilities.h>
+#include <serialization-legacy/serialization_vertex.h>
+#include <file/shader_utility.h>

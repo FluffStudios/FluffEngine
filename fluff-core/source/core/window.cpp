@@ -4,39 +4,38 @@
 #include <core/inputs/mouse.h>
 #include <common.h>
 #include <gfx/error_callback.h>
-#include <ui/nk_ui.h>
 #include "gfx/context.h"
 #include <core/timer.h>
+#include <glew.h>
+#include <glfw3.h>
 
 static void key_callback(GLFWwindow *Window, int Key, int Scancode, int Action, int Mods)
 {
-	luminos::Keyboard::Update(Key, Action == GLFW_PRESS || Action == GLFW_REPEAT);
+	fluff::Keyboard::Update(Key, Action == GLFW_PRESS || Action == GLFW_REPEAT);
 }
 
  static void char_callback(GLFWwindow *window, unsigned int codepoint)
 {
-	(void) window;
-	luminos::ui::nk_glfw3_set_char(codepoint);
 }
 
 static void cursor_pos_callback(GLFWwindow *Window, double Xpos, double Ypos)
 {
-	luminos::Cursor::Update(Xpos, Ypos);
+	fluff::Cursor::Update(Xpos, Ypos);
 }
 
 static void mouse_button_callback(GLFWwindow *window, int button, int action, int mods)
 {
-	luminos::Mouse::Update(button, action == GLFW_PRESS);
+	fluff::Mouse::Update(button, action == GLFW_PRESS);
 }
 
-static void scroll_input(GLFWwindow *window, float xoff, float yoff)
+static void scroll_input(GLFWwindow *window, double xoff, double yoff)
 {
-	
+	fluff::Mouse::Update(xoff, yoff);
 }
 
 static void window_resize_callback(GLFWwindow *window, int width, int height)
 {
-	auto win = static_cast<luminos::Window*>(glfwGetWindowUserPointer(window));
+	auto win = static_cast<fluff::Window*>(glfwGetWindowUserPointer(window));
 
 	int l, r, t, b;
 	glfwGetWindowFrameSize(window, &l, &t, &r, &b);
@@ -48,25 +47,30 @@ static void window_resize_callback(GLFWwindow *window, int width, int height)
 
 static void framebuffer_resize_callback(GLFWwindow * window, int width, int height)
 {
-	auto win = static_cast<luminos::Window*>(glfwGetWindowUserPointer(window));
+	auto win = static_cast<fluff::Window*>(glfwGetWindowUserPointer(window));
 	win->SetBufferSize(width, height);
 }
 
-namespace luminos
+namespace fluff
 {
+	struct Window::WindowImpl
+	{
+		GLFWwindow *Handle_;
+	};
+
 	std::vector<Window*> Window::Windows_;
 	Window* Window::CurrentHandle_;
 	bool Window::GlewInit_ = false;
 
 	Window::Window(const char* Name, unsigned int Width, unsigned int Height, bool VSYNC, bool Fullscreen)
-		:Name_(Name), Width_(Width), Height_(Height), Vsync_(VSYNC), Fullscreen_(Fullscreen)
+		:Name_(Name), Width_(Width), Height_(Height), Vsync_(VSYNC), Fullscreen_(Fullscreen), Impl_(new Window::WindowImpl)
 	{
 		Initialize();
 	}
 
 	Window::~Window()
 	{
-		if (Handle_ != nullptr)
+		if (Impl_->Handle_ != nullptr)
 		{
 			CloseWindow();
 		}
@@ -84,16 +88,24 @@ namespace luminos
 
 	bool Window::Update() const
 	{
+		fluff::Mouse::Update(0.0, 0.0);
 		glfwPollEvents();
-		glfwSwapBuffers(Handle_);
-		return glfwWindowShouldClose(Handle_) == 0;
+		glfwSwapBuffers(Impl_->Handle_);
+		return glfwWindowShouldClose(Impl_->Handle_) == 0;
 	}
 
 	void Window::CloseWindow()
 	{
-		ui::nk_glfw3_shutdown();
-		glfwDestroyWindow(Handle_);
-		Handle_ = nullptr;
+		glfwDestroyWindow(Impl_->Handle_);
+		Impl_->Handle_ = nullptr;
+	}
+
+	void Window::SetDimensions(unsigned int Width, unsigned int Height)
+	{
+		Width_.SetValue(Width);
+		Height_.SetValue(Height);
+		glfwSetWindowSize(Impl_->Handle_, Width, Height);
+		glViewport(0, 0, Width, Height);
 	}
 
 	Window* Window::CreateWindow(const char* Name, unsigned int Width, unsigned int Height, bool Vsync, bool Fullscreen)
@@ -112,12 +124,17 @@ namespace luminos
 	void Window::SetCurrentWindow(Window *WindowHandle)
 	{
 		CurrentHandle_ = WindowHandle;
-		glfwFocusWindow(CurrentHandle_->Handle_);
+		glfwFocusWindow(CurrentHandle_->Impl_->Handle_);
+	}
+
+	void * Window::GetHandle() const
+	{
+		return Impl_->Handle_;
 	}
 
 	void Window::GetWindowBorders(int * left, int * top, int * right, int * bottom)
 	{
-		glfwGetWindowFrameSize(Handle_, left, top, right, bottom);
+		glfwGetWindowFrameSize(Impl_->Handle_, left, top, right, bottom);
 	}
 
 	void Window::Initialize()
@@ -132,8 +149,8 @@ namespace luminos
 #endif
 		if (!glfwInit() && !GlewInit_)
 		{
-			LUMINOS_ERROR_FUNC("Could not initialize GLFW!")
-			LUMINOS_ASSERT()
+			FLUFF_ERROR_FUNC("Could not initialize GLFW!")
+			FLUFF_ASSERT()
 			GlewInit_ = true;
 		}
 
@@ -144,38 +161,39 @@ namespace luminos
 			glfwWindowHint(GLFW_GREEN_BITS, mode->greenBits);
 			glfwWindowHint(GLFW_BLUE_BITS, mode->blueBits);
 			glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
-			Handle_ = glfwCreateWindow(Width_.GetValue(), Height_.GetValue(), Name_, NULL, NULL);
-			glfwSetWindowMonitor(Handle_, glfwGetPrimaryMonitor(), 0, 0, mode->width, mode->height, mode->refreshRate);
+			Impl_->Handle_ = glfwCreateWindow(Width_.GetValue(), Height_.GetValue(), Name_, NULL, NULL);
+			glfwSetWindowMonitor(Impl_->Handle_, glfwGetPrimaryMonitor(), 0, 0, mode->width, mode->height, mode->refreshRate);
 		}
 		else
 		{
-			Handle_ = glfwCreateWindow(Width_.GetValue(), Height_.GetValue(), Name_, NULL, NULL);
+			Impl_->Handle_ = glfwCreateWindow(Width_.GetValue(), Height_.GetValue(), Name_, NULL, NULL);
 		}
 
 		int x, y;
-		glfwGetFramebufferSize(Handle_, &x, &y);
+		glfwGetFramebufferSize(Impl_->Handle_, &x, &y);
 		this->FramebufferWidth_ = x;
 		this->FramebufferHeight_ = y;
 
-		LUMINOS_ASSERT(Handle_);
+		FLUFF_ASSERT(Impl_->Handle_);
 
-		glfwSetKeyCallback(Handle_, key_callback);
-		glfwSetMouseButtonCallback(Handle_, mouse_button_callback);
-		glfwSetCursorPosCallback(Handle_, cursor_pos_callback);
-		glfwSetWindowUserPointer(Handle_, this);
-		glfwSetFramebufferSizeCallback(Handle_, framebuffer_resize_callback);
-		glfwMakeContextCurrent(Handle_);
+		glfwSetKeyCallback(Impl_->Handle_, key_callback);
+		glfwSetMouseButtonCallback(Impl_->Handle_, mouse_button_callback);
+		glfwSetCursorPosCallback(Impl_->Handle_, cursor_pos_callback);
+		glfwSetWindowUserPointer(Impl_->Handle_, this);
+		glfwSetFramebufferSizeCallback(Impl_->Handle_, framebuffer_resize_callback);
+		glfwSetScrollCallback(Impl_->Handle_, scroll_input);
+		glfwMakeContextCurrent(Impl_->Handle_);
 		glfwSwapInterval(Vsync_ ? 1 : 0);
 
-		glfwSetWindowSizeCallback(Handle_, window_resize_callback);
-		glfwSetCharCallback(Handle_, char_callback);
+		glfwSetWindowSizeCallback(Impl_->Handle_, window_resize_callback);
+		glfwSetCharCallback(Impl_->Handle_, char_callback);
 		const int result = glewInit();
 		if (result != GLEW_OK)
 		{
 			CloseWindow();
 			glfwTerminate();
-			LUMINOS_ERROR_FUNC("Could not initialize GLEW!")
-			LUMINOS_ASSERT()
+			FLUFF_ERROR_FUNC("Could not initialize GLEW!")
+			FLUFF_ASSERT()
 		}
 #if defined(DEBUG) || defined(_DEBUG)
 		glEnable(GL_DEBUG_OUTPUT);

@@ -1,6 +1,7 @@
 #include <gfx/sampler.h>
+#include <glew.h>
 
-namespace luminos { namespace gfx
+namespace fluff { namespace gfx
 {
 
 	void SetFilterData(unsigned int Target, TextureFilter CreateInfo)

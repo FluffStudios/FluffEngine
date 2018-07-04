@@ -1,8 +1,9 @@
 #include <gfx/frame_buffer.h>
 #include <core/debug_message.h>
 #include <common.h>
+#include <glew.h>
 
-namespace luminos { namespace gfx {
+namespace fluff { namespace gfx {
 
 	uint32_t FrameBuffer::BoundDrawBuffer_ = 0;
 	uint32_t FrameBuffer::BoundReadBuffer_ = 0;
@@ -217,6 +218,11 @@ namespace luminos { namespace gfx {
 		glFramebufferRenderbuffer(GL_RENDERBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, id);
 		this->DepthBuffer_ = id;
 		return id;
+	}
+
+	bool FrameBuffer::IsValid() const
+	{
+		return glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE;
 	}
 
 	void FrameBuffer::SetDrawBuffers(uint32_t * IDs, uint32_t Count) const

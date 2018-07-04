@@ -1,23 +1,22 @@
 #pragma once
 
-#include <glew.h>
 #include <gfx/texture_info.h>
 #include <string>
 #include <vector>
 #include <unordered_map>
-#include <core/texture_data.h>
+#include <gfx/texture_data.h>
 
-namespace luminos { namespace gfx {
+namespace fluff { namespace gfx {
 
-	class LUMINOS_API Texture
+	class FLUFF_API Texture
 	{
 	protected:
-		GLuint Id_ = 0;
-		GLuint64 Handle_ = 0;
+		uint32_t Id_ = 0;
+		uint64_t Handle_ = 0;
 		TextureCreateInfo CreateInfo_;
 		std::string Name_ = "null";
 
-		static std::unordered_map<GLuint, std::string> IDMap_;
+		static std::unordered_map<uint32_t, std::string> IDMap_;
 	public:
 		/*
 			Creates a new texture
@@ -34,7 +33,7 @@ namespace luminos { namespace gfx {
 			
 			Returns handle
 		 */
-		inline GLuint& GetHandle() { return Id_; }
+		inline uint32_t & GetHandle() { return Id_; }
 
 		/*
 			Sets the name of the texture
@@ -65,11 +64,7 @@ namespace luminos { namespace gfx {
 		/*
 			Releases texture resources
 		*/
-		inline void Release() 
-		{ 
-			glDeleteTextures(1, &Id_);
-			Id_ = 0;
-		}
+		void Release();
 
 		/*
 			Enables texture
@@ -84,13 +79,10 @@ namespace luminos { namespace gfx {
 		/*
 			Makes texture handle resident to GPU
 		*/
-		inline void MakeTextureHandleResident() const
-		{
-			glMakeTextureHandleResidentARB(Handle_);
-		}
+		void MakeTextureHandleResident() const;
 	};
 
-	class LUMINOS_API Texture2D : public Texture
+	class FLUFF_API Texture2D : public Texture
 	{
 	public:
 		/*
@@ -129,13 +121,13 @@ namespace luminos { namespace gfx {
 		 */
 		void Disable() override;
 
-		GLuint Location;
+		uint32_t Location;
 	private:
 		void Initialize(std::vector<unsigned char*> &Data);
 		void Initialize(std::vector<unsigned char> Data);
 	};
 
-	class LUMINOS_API Texture3D : public Texture
+	class FLUFF_API Texture3D : public Texture
 	{
 	public:
 		/*
@@ -171,7 +163,7 @@ namespace luminos { namespace gfx {
 		void Initialize(std::vector<unsigned char*> &Data);
 	};
 
-	class LUMINOS_API TextureCubeMap : public Texture
+	class FLUFF_API TextureCubeMap : public Texture
 	{
 	public:
 		/*
@@ -214,13 +206,6 @@ namespace luminos { namespace gfx {
 		StartSlot - Starting texture slot
 		NumViews - Number of views
 	 */
-	inline void BindTextures(Texture **Textures, int StartSlot, int NumViews)
-	{
-		for (auto i = 0; i < NumViews; i++)
-		{
-			Textures[i]->Enable();
-			glActiveTexture(GL_TEXTURE0 + i + StartSlot);
-		}
-	}
+	void BindTextures(Texture **Textures, int StartSlot, int NumViews);
 
 } }

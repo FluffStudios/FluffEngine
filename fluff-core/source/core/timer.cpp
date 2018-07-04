@@ -2,7 +2,7 @@
 
 #include <glfw3.h>
 
-namespace luminos
+namespace fluff
 {
 	Timer Timer::Instance_;
 	

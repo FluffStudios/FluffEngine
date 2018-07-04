@@ -4,7 +4,7 @@
 #include <core/ecs/ecs_manager.h>
 #include <core/window.h>
 
-namespace luminos { namespace render {
+namespace fluff { namespace render {
 
 	struct Screenshot
 	{

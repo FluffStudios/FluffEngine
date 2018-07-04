@@ -1,6 +1,6 @@
 #include <core/inputs/cursor.h>
 
-namespace luminos
+namespace fluff
 {
 	float Cursor::X_ = 0;
 	float Cursor::Y_ = 0;

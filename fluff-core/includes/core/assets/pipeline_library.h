@@ -14,9 +14,9 @@
 #include <core/ecs/ecs_manager.h>
 #include <common.h>
 
-namespace luminos {
+namespace fluff {
 
-	class LUMINOS_API PipelineLibrary
+	class FLUFF_API PipelineLibrary
 	{
 		static std::vector<std::string> FileNames_;
 		static std::unordered_map<std::string, gfx::GraphicsPipeline*> GraphicsPipelineMap_;

@@ -1,11 +1,10 @@
 #pragma once
 
-#include <glew.h>
 #include <common.h>
 
-namespace luminos { namespace gfx {
+namespace fluff { namespace gfx {
 
-	struct LUMINOS_API ShaderBufferDesc
+	struct FLUFF_API ShaderBufferDesc
 	{
 		unsigned int ByteWidth;
 		unsigned int ReadWrite;
@@ -15,21 +14,21 @@ namespace luminos { namespace gfx {
 		unsigned int StructureByteStride;
 	};
 
-	enum LUMINOS_API READ_WRITE
+	enum FLUFF_API READ_WRITE
 	{
-		MAP_WRITE = GL_MAP_WRITE_BIT,
-		MAP_READ = GL_MAP_READ_BIT,
+		MAP_WRITE = 0x0002,
+		MAP_READ = 0x0001,
 	};
 
-	enum LUMINOS_API USAGE
+	enum FLUFF_API USAGE
 	{
-		MAP_COHERENT = GL_MAP_COHERENT_BIT,
-		MAP_PERSISTENT = GL_MAP_PERSISTENT_BIT
+		MAP_COHERENT = 0x00000080,
+		MAP_PERSISTENT = 0x00000040
 	};
 
-	class LUMINOS_API ShaderBuffer
+	class FLUFF_API ShaderBuffer
 	{
-		GLuint Id_;
+		uint32_t Id_;
 		ShaderBufferDesc Descriptor_;
 		void *Data_ = nullptr;
 	public:
@@ -77,7 +76,7 @@ namespace luminos { namespace gfx {
 
 			Returns shader buffer handle
 		*/
-		inline GLuint GetHandle() const { return Id_; }
+		inline uint32_t GetHandle() const { return Id_; }
 
 		/*
 			Releases resources held by the buffer

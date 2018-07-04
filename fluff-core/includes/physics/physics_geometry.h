@@ -2,7 +2,7 @@
 
 #include <physics/physics_manager.h>
 
-namespace luminos {
+namespace fluff {
 	namespace physics {
 
 		enum GeometryType
@@ -33,7 +33,7 @@ namespace luminos {
 
 		struct HeightFieldDesc : public GeometryDesc
 		{
-			int16_t * HeightMap;
+			float * HeightMap;
 			uint32_t NumRows;
 			uint32_t NumCols;
 			

@@ -10,9 +10,9 @@
 
 #include <debug.h>
 
-namespace luminos { namespace render {
+namespace fluff { namespace render {
 
-	enum LUMINOS_API AssetType : uint32_t
+	enum FLUFF_API AssetType : uint32_t
 	{
 		LIBRARY_MESH,
 		LIBRARY_MATERIAL,
@@ -20,7 +20,7 @@ namespace luminos { namespace render {
 		LIBRARY_TEXTURE
 	};
 
-	struct LUMINOS_API AssetLocationLibrary
+	struct FLUFF_API AssetLocationLibrary
 	{
 		std::unordered_map<std::string, AssetType> AssetTypes;
 	private:
@@ -33,7 +33,7 @@ namespace luminos { namespace render {
 		}
 	};
 
-	class LUMINOS_API ResourceLibrary
+	class FLUFF_API ResourceLibrary
 	{
 		std::unordered_map<std::string, void *> Textures_;
 		std::unordered_map<std::string, void *> GPipelines_;

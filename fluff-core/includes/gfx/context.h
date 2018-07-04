@@ -14,9 +14,9 @@
 #include <string>
 #include <unordered_map>
 
-namespace luminos { namespace gfx {
+namespace fluff { namespace gfx {
 
-		class LUMINOS_API Context
+		class FLUFF_API Context
 		{
 			std::vector<Mesh*> Meshes_;
 			std::vector<Model*> Models_;
@@ -60,38 +60,14 @@ namespace luminos { namespace gfx {
 
 				Returns rendering device
 			*/
-			static const std::string& GetGraphicsCard()
-			{
-				if (!Init_)
-				{
-					unsigned char* renderer = const_cast<unsigned char*>(glGetString(GL_RENDERER));
-					Renderer = reinterpret_cast<char*>(renderer);
-
-					unsigned char* vendor = const_cast<unsigned char*>(glGetString(GL_VENDOR));
-					Vendor = reinterpret_cast<char*>(vendor);
-					Init_ = true;
-				}
-				return Renderer;
-			}
+			static const std::string& GetGraphicsCard();
 
 			/*
 				Gets a string representing the OpenGL vendor
 
 				Returns device vendor
 			*/
-			static const std::string& GetVendor()
-			{
-				if (!Init_)
-				{
-					unsigned char* renderer = const_cast<unsigned char*>(glGetString(GL_RENDERER));
-					Renderer = reinterpret_cast<char*>(renderer);
-
-					unsigned char* vendor = const_cast<unsigned char*>(glGetString(GL_VENDOR));
-					Vendor = reinterpret_cast<char*>(vendor);
-					Init_ = true;
-				}
-				return Vendor;
-			}
+			static const std::string& GetVendor();
 
 			/*
 				Loads unorganized data to vertex buffer

@@ -5,7 +5,7 @@
 
 #define MAX_LIGHTS_SCENE 32
 
-namespace luminos { namespace render {
+namespace fluff { namespace render {
 
 	struct SceneLighting
 	{

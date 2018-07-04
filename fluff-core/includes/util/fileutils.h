@@ -4,7 +4,7 @@
 
 #include <stb_image.h>
 
-namespace luminos
+namespace fluff
 {
 	/*
 		Reads image from file

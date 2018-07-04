@@ -1,15 +1,14 @@
 #pragma once
 
-#include <glew.h>
-#include "common.h"
-#include "texture_info.h"
+#include <common.h>
+#include <gfx/texture_info.h>
 
-namespace luminos { namespace gfx
+namespace fluff { namespace gfx
 {
 
-	class LUMINOS_API Sampler
+	class FLUFF_API Sampler
 	{
-		GLuint Sampler_;
+		unsigned int Sampler_;
 		TextureFilter Filter_;
 	public:
 		/*

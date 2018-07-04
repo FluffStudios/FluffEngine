@@ -12,7 +12,7 @@
 #include <core/core.h>
 #include <rendering/scene_lighting.h>
 
-namespace luminos { namespace render {
+namespace fluff { namespace render {
 
 	class SceneRenderer : public ecs::System<SceneRenderer>, public ecs::Receiver<SceneRenderer>
 	{

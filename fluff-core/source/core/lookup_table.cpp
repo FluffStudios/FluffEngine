@@ -1,6 +1,6 @@
 #include <core/lookup_table.h>
 
-namespace luminos
+namespace fluff
 {
 	std::unordered_map<std::string, int64_t> ComponentLookupTable::IDMap_;
 

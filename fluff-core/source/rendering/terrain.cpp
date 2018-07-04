@@ -1,9 +1,9 @@
 #include <rendering/terrain.h>
 #include <gfx/context.h>
 #include <util/maths.h>
-#include <allocator.h>
+#include <core/allocators/allocator.h>
 
-namespace luminos { namespace render
+namespace fluff { namespace render
 {
 	
 	Terrain::Terrain(const unsigned int VertexCountPerSide) 
@@ -13,7 +13,7 @@ namespace luminos { namespace render
 
 	Terrain::Terrain(const Terrain & Other) : Renderable(Other.Material_, Other.Model_)
 	{
-		HeightMap_ = new int16_t[Other.VertexCountPerSide_ * Other.VertexCountPerSide_];
+		HeightMap_ = new float[Other.VertexCountPerSide_ * Other.VertexCountPerSide_];
 		this->VertexCountPerSide_ = Other.VertexCountPerSide_;
 
 		memmove(HeightMap_, Other.HeightMap_, sizeof(int16_t) * VertexCountPerSide_ * VertexCountPerSide_);
@@ -38,17 +38,17 @@ namespace luminos { namespace render
 		unsigned int * indices = static_cast<unsigned int*>(Allocator::Alloc(sizeof(unsigned int) * 6 * (VertexCountPerSide - 1) * (VertexCountPerSide - 1)));
 
 		size_t vertex_pointer = 0;
-		this->HeightMap_ = new int16_t[VertexCountPerSide * VertexCountPerSide];
+		this->HeightMap_ = new float[VertexCountPerSide * VertexCountPerSide];
 
 		for (int x = VertexCountPerSide - 1; x >= 0; x--)
 		{
 			for (auto z = 0; z < VertexCountPerSide; z++)
 			{
-				positions[3 * vertex_pointer + 0] = -((int32_t) VertexCountPerSide - x - 1);
 				auto height = Noise.GetValue(x + TransformHandle->GetPosition().x, z + TransformHandle->GetPosition().z) * Amplitude;
-				HeightMap_[(VertexCountPerSide - x - 1) * (VertexCountPerSide) + z] = (int16_t) height;
+				HeightMap_[(VertexCountPerSide - x - 1) * (VertexCountPerSide) + z] = height;
 				
-				positions[3 * vertex_pointer + 1] = (int16_t) height;
+				positions[3 * vertex_pointer + 0] = -((int32_t)VertexCountPerSide - x - 1);
+				positions[3 * vertex_pointer + 1] = height;
 				positions[3 * vertex_pointer + 2] = z;
 
 				uvs[3 * vertex_pointer + 0] = (0);
@@ -59,7 +59,7 @@ namespace luminos { namespace render
 		}
 
 		TransformHandle->SetPosition(TransformHandle->GetPosition() * static_cast<float>(Size));
-		TransformHandle->SetScale(glm::vec3(1, -1, 1));
+		TransformHandle->SetScale(TransformHandle->GetScale() * glm::vec3(-1, 1, 1));
 
 		size_t indexPointer = 0;
 		for (auto gz = 0; gz < VertexCountPerSide - 1; gz++) {
@@ -162,7 +162,7 @@ namespace luminos { namespace render
 		unsigned int * indices = static_cast<unsigned int*>(Allocator::Alloc(sizeof(unsigned int) * 6 * (VertexCountPerSide - 1) * (VertexCountPerSide - 1)));
 
 		size_t vertex_pointer = 0;
-		auto HeightMap = new int16_t[VertexCountPerSide * VertexCountPerSide];
+		auto HeightMap = new float[VertexCountPerSide * VertexCountPerSide];
 
 		for (int x = VertexCountPerSide - 1; x >= 0; x--)
 		{
@@ -172,7 +172,7 @@ namespace luminos { namespace render
 				auto height = 0;
 				HeightMap[vertex_pointer] = height;
 
-				positions[3 * vertex_pointer + 1] = (int16_t)height;
+				positions[3 * vertex_pointer + 1] = height;
 				positions[3 * vertex_pointer + 2] = z;
 
 				uvs[3 * vertex_pointer + 0] = (0);
@@ -370,7 +370,7 @@ namespace luminos { namespace render
 		auto model = Context::LoadMesh(mesh);
 		auto t = new Terrain(VertexCountPerSide, MaterialHandle, model);
 
-		t->HeightMap_ = new int16_t[VertexCountPerSide * VertexCountPerSide];
+		t->HeightMap_ = new float[VertexCountPerSide * VertexCountPerSide];
 		t->VertexCountPerSide_ = VertexCountPerSide;
 		for (auto i = 0; i < positions.size(); i += 3) t->HeightMap_[(i - 1) / 3] = positions[i];
 		return t;
@@ -488,7 +488,7 @@ namespace luminos { namespace render
 		auto model = Context::LoadMesh(mesh);
 		auto t = new Terrain(VertexCountPerSide, MaterialHandle, model);
 
-		t->HeightMap_ = new int16_t[VertexCountPerSide * VertexCountPerSide];
+		t->HeightMap_ = new float[VertexCountPerSide * VertexCountPerSide];
 		t->VertexCountPerSide_ = VertexCountPerSide;
 		for (auto i = 0; i < 3 * VertexCountPerSide * VertexCountPerSide; i += 3) t->HeightMap_[(i - 1) / 3] = positions[i];
 
@@ -502,8 +502,8 @@ namespace luminos { namespace render
 
 	Terrain* Terrain::GenerateTerrainFromNoiseFunction(unsigned VertexCountPerSide, unsigned Samples, Material* MaterialHandle, Transformation* TransformHandle, FastNoise& Noise, const float32_t Amplitude, const unsigned int Size)
 	{
-		LUMINOS_ASSERT(VertexCountPerSide >= Samples)
-		LUMINOS_ASSERT((VertexCountPerSide % Samples) == 0)
+		FLUFF_ASSERT(VertexCountPerSide >= Samples)
+		FLUFF_ASSERT((VertexCountPerSide % Samples) == 0)
 		const auto division = VertexCountPerSide / Samples;
 		VertexCountPerSide += 1;
 		Samples += 1;
@@ -595,7 +595,7 @@ namespace luminos { namespace render
 		TransformHandle->SetPosition(TransformHandle->GetPosition() * static_cast<float>(Size));
 		TransformHandle->SetScale(glm::vec3(1, 1, 1));
 
-		t->HeightMap_ = new int16_t[VertexCountPerSide * VertexCountPerSide];
+		t->HeightMap_ = new float[VertexCountPerSide * VertexCountPerSide];
 		t->VertexCountPerSide_ = VertexCountPerSide;
 		for (auto i = 0; i < positions.size(); i += 3) t->HeightMap_[(i - 1) / 3] = positions[i];
 		return t;

@@ -5,9 +5,9 @@
 #include <core/window.h>
 #include <common.h>
 
-namespace luminos
+namespace fluff
 {
-	class LUMINOS_API IGameState
+	class FLUFF_API IGameState
 	{
 	protected:
 		std::shared_ptr<ECSManager> pManager_;
@@ -17,10 +17,11 @@ namespace luminos
 		virtual void Configure() = 0;
 		virtual void Run() = 0;
 		virtual void Shutdown() = 0;
+		virtual bool ShouldShutdown() = 0;
 		std::shared_ptr<ECSManager>& GetManager() { return pManager_; }
 	};
 
-	class LUMINOS_API Game
+	class FLUFF_API Game
 	{
 		IGameState * ActiveState_;
 	public:
@@ -29,13 +30,14 @@ namespace luminos
 		void Shutdown();
 	};
 
-	class LUMINOS_API Engine
+	class FLUFF_API Engine
 	{
 		static struct LuminosEngine
 		{
 			EngineSettings Settings;
 			Window * ActiveWindow;
 		} Instance;
+
 	public:
 		static void Configure(const EngineSettings Settings);
 		static void Play(Game * pGame, IGameState * State);

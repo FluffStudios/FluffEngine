@@ -25,11 +25,11 @@
 #include <rendering/resource_library.h>
 #include <core/assets/pipeline_library.h>
 
-namespace luminos { namespace render {
+namespace fluff { namespace render {
 
-	using namespace luminos::gfx;
+	using namespace fluff::gfx;
 
-	class LUMINOS_API Material
+	class Material
 	{
 		GraphicsPipeline * PipelineHandle_;
 		std::vector<std::shared_ptr<Uniform>> Uniforms_;
@@ -65,57 +65,57 @@ namespace luminos { namespace render {
 	public:
 		std::string Name;
 
-		Material() { }
+		FLUFF_API Material() { }
 
 		/*
 			Creates material from a graphics pipeline
 
 			Pipeline -  Pipeline to create from
 		*/
-		explicit Material(GraphicsPipeline * Pipeline);
+		explicit FLUFF_API Material(GraphicsPipeline * Pipeline);
 		
 		/*
 			Destructor
 		*/
-		~Material();
+		FLUFF_API ~Material();
 
 		/*
 			Checks if two materials use the same pipeline and shader
 
 			Returns if materials are equivalent
 		*/
-		bool operator ==(const Material& Other) const;
+		bool FLUFF_API operator ==(const Material& Other) const;
 
 		/*
 			Checks if two materials do not use the same piepeline or shader
 
 			Returns if materials are not equivalent
 		*/
-		bool operator !=(const Material& Other) const;
+		bool FLUFF_API operator !=(const Material& Other) const;
 
 		/*
 			Gets a pointer to the encapsulated shader
 			
 			Returns pointer to shader
 		 */
-		Shader* GetShader() const;
+		Shader FLUFF_API * GetShader() const;
 
 		/*
 			Gets a pointer to the encapsulated pipeline
 			
 			Returns pointer to pipeline
 		 */
-		inline GraphicsPipeline* GetPipeline() const;
+		GraphicsPipeline FLUFF_API * GetPipeline() const;
 
 		/*
 			Updates the uniform values to the shader
 		 */
-		void Update() const;
+		void FLUFF_API Update() const;
 
 		/*
 			Binds textures for usage
 		*/
-		void BindTextures() const;
+		void FLUFF_API BindTextures() const;
 
 		/*
 			Creates a new texture uniform
@@ -125,7 +125,7 @@ namespace luminos { namespace render {
 			InitialValue - beginning value of uniform
 			Returns a pointer to the uniform just created
 		*/
-		std::shared_ptr<Uniform> & CreateUniform(UniformType Type, char * UniformName, void * InitialValue = nullptr);
+		std::shared_ptr<Uniform> FLUFF_API & CreateUniform(UniformType Type, char * UniformName, void * InitialValue = nullptr);
 
 		/*
 			Creates a new texture uniform
@@ -135,7 +135,7 @@ namespace luminos { namespace render {
 			BindLocation - Place to bind in the shader
 			Name - Name of uniform
 		*/
-		std::shared_ptr<TextureUniform> & CreateTextureUniform(TextureType Type, Texture * Tex, uint32_t BindLocation, char * Name);
+		std::shared_ptr<TextureUniform> FLUFF_API & CreateTextureUniform(TextureType Type, Texture * Tex, uint32_t BindLocation, char * Name);
 
 		/*
 			Creates a new texture uniform
@@ -145,16 +145,16 @@ namespace luminos { namespace render {
 			BindLocation - Place to bind in the shader
 			Name - Name of uniform
 		*/
-		std::shared_ptr<TextureUniform> & CreateTextureUniform(TextureType Type, uint32_t * Tex, uint32_t BindLocation, char * Name);
+		std::shared_ptr<TextureUniform> FLUFF_API & CreateTextureUniform(TextureType Type, uint32_t * Tex, uint32_t BindLocation, char * Name);
 
 		/*
 			Gets a pointer to all of the texture uniforms
 
 			Returns texture uniforms
 		*/
-		std::vector<TextureUniform*> GetTextures() const;
+		std::vector<TextureUniform*> FLUFF_API GetTextures() const;
 
-		std::shared_ptr<Uniform> & GetUniform(const std::string & Name)
+		inline std::shared_ptr<Uniform> & GetUniform(const std::string & Name)
 		{
 			for (auto i : Uniforms_)
 				if (strcmp(i->GetName(), Name.c_str()) == 0)
@@ -164,7 +164,7 @@ namespace luminos { namespace render {
 			return std::shared_ptr<Uniform>();
 		}
 
-		std::shared_ptr<TextureUniform> & GetTextureUniform(const std::string & Name)
+		inline std::shared_ptr<TextureUniform> & GetTextureUniform(const std::string & Name)
 		{
 			for (auto i : Textures_)
 				if (i->Name_ == Name)
@@ -179,18 +179,14 @@ namespace luminos { namespace render {
 
 			Modl - Pointer to model matrix data
 		*/
-		inline void SetModelMatrix(void * Modl) const
-		{
-			auto loc = ModelUniform_->GetLocation();
-			glUniformMatrix4fv(loc, 1, GL_FALSE, (float*) Modl);
-		}
+		void FLUFF_API SetModelMatrix(void * Modl) const;
 
 		/*
 			Sets if the materials is transparent
 
 			Transparent - is transparent
 		*/
-		inline void SetTransparent(const bool Transparent) 
+		inline void SetTransparent(const bool Transparent)
 		{
 			Transparent_ = Transparent;
 		}

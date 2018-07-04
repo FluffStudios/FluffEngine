@@ -1,6 +1,6 @@
 #include <core/ecs/isystem.h>
 
-namespace luminos { namespace ecs {
+namespace fluff { namespace ecs {
 
 	size_t ISystem::FamilyIDCounter = 0;
 

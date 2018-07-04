@@ -2,7 +2,7 @@
 
 #include <gfx/shader_buffers/components.h>
 
-namespace luminos { namespace gfx {
+namespace fluff { namespace gfx {
 
 	struct alignas(64) DirectionalLight
 	{

@@ -1,6 +1,6 @@
 #include <core/ecs/pool.h>
 
-namespace luminos { namespace ecs {
+namespace fluff { namespace ecs {
 
 	IPool::IPool(size_t ElementSize, size_t ChunkSize)
 		: ElementSize_(ElementSize), ChunkSize_(ChunkSize_), Capacity_(0)
@@ -32,13 +32,13 @@ namespace luminos { namespace ecs {
 
 	void * IPool::GetAt(size_t Index)
 	{
-		LUMINOS_ASSERT(Index < Size_)
+		FLUFF_ASSERT(Index < Size_)
 		return Chunks_[Index / ChunkSize_] + ((Index % ChunkSize_) * ElementSize_);
 	}
 
 	const void * IPool::GetAt(size_t Index) const
 	{
-		LUMINOS_ASSERT(Index < Size_)
+		FLUFF_ASSERT(Index < Size_)
 		return Chunks_[Index / ChunkSize_] + ((Index % ChunkSize_) * ElementSize_);
 	}
 

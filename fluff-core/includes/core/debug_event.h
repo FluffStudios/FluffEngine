@@ -3,16 +3,16 @@
 #include <common.h>
 #include <core/ecs/event.h>
 
-namespace luminos
+namespace fluff
 {
-	enum LUMINOS_API SEVERITY
+	enum FLUFF_API SEVERITY
 	{
 		MESSAGE,
 		WARNING,
 		FATAL
 	};
 
-	struct LUMINOS_API DebugEvent : public ecs::Event<DebugEvent>
+	struct FLUFF_API DebugEvent : public ecs::Event<DebugEvent>
 	{
 		/*
 			Creates a new Debug Event

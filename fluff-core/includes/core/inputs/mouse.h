@@ -18,12 +18,14 @@
 #define MOUSE_BUTTON_RIGHT     MOUSE_BUTTON_2
 #define MOUSE_BUTTON_MIDDLE    MOUSE_BUTTON_3
 
-namespace luminos
+namespace fluff
 {
-	class LUMINOS_API Mouse
+	class FLUFF_API Mouse
 	{
 	private:
 		static bool keys[MAX_BUTTON_COUNT];
+		static float scrollX;
+		static float scrollY;
 	public:
 		/*
 			Checks if key is pressed
@@ -36,8 +38,8 @@ namespace luminos
 #if defined(DEBUG) || defined(_DEBUG)
 			if (KeyID < 0 || KeyID > MAX_BUTTON_COUNT) 
 			{
-				LUMINOS_ASSERT()
-				LUMINOS_ERROR_FUNC("Invalid KeyID!")
+				FLUFF_ASSERT(false)
+				FLUFF_ERROR_FUNC("Invalid KeyID!")
 			}
 #endif
 			return keys[KeyID];
@@ -54,11 +56,43 @@ namespace luminos
 #if defined(DEBUG) || defined(_DEBUG)
 			if (KeyID < 0 || KeyID > MAX_BUTTON_COUNT)
 			{
-				LUMINOS_ASSERT()
-					LUMINOS_ERROR_FUNC("Invalid KeyID!")
+				FLUFF_ASSERT(false)
+				FLUFF_ERROR_FUNC("Invalid KeyID!")
 			}
 #endif
-			keys[KeyID] = Status;
+			Mouse::keys[KeyID] = Status;
+		}
+
+		/*
+			Updates scroll status
+
+			ScrollX - change in x
+			ScrollY - change in y
+		*/
+		inline static void Update(double ScrollX, double ScrollY)
+		{
+			Mouse::scrollX = ScrollX;
+			Mouse::scrollY = ScrollY;
+		}
+
+		/*
+			Gets the scroll x value
+
+			Returns scroll x
+		*/
+		inline static float ScrollX()
+		{
+			return Mouse::scrollX;
+		}
+
+		/*
+			Gets the scroll y value
+
+			Returns scroll y
+		*/
+		inline static float ScrollY()
+		{
+			return Mouse::scrollY;
 		}
 	};
 }

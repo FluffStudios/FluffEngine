@@ -1,7 +1,7 @@
 #include <core/ecs/system.h>
 #include <core/timer.h>
 
-namespace luminos { namespace ecs
+namespace fluff { namespace ecs
 {
 	
 	SystemManager::SystemManager(EntityManager& Entities, EventManager& Events)
@@ -16,9 +16,12 @@ namespace luminos { namespace ecs
 
 	void SystemManager::UpdateAll(const double DeltaTime)
 	{
-		LUMINOS_ASSERT(Init_)
+		FLUFF_ASSERT(Init_)
 		Timer::Update(FixedRefreshTime_);
-		for (auto it : Systems_) it.second->Update(EntityManager_, EventManager_, DeltaTime);
+		for (auto it : Systems_)
+		{
+			it.second->Update(EntityManager_, EventManager_, DeltaTime);
+		}
 		auto tmp = this->LastUpdateTime_;
 		if (Timer::CurrentTime() >= this->LastUpdateTime_ + this->FixedRefreshTime_)
 		{

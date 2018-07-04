@@ -1,8 +1,10 @@
 #pragma once
 
-namespace luminos { namespace gfx {
+#include <common.h>
 
-	LUMINOS_API struct VertexLayout
+namespace fluff { namespace gfx {
+
+	struct FLUFF_API VertexLayout
 	{
 		unsigned int Attribute;
 		unsigned int Dimensions;

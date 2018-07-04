@@ -3,9 +3,9 @@
 #include <common.h>
 #include <vector>
 
-namespace luminos { namespace ecs {
+namespace fluff { namespace ecs {
 
-	class LUMINOS_API IPool
+	class FLUFF_API IPool
 	{
 	protected:
 		size_t ElementSize_ = 0;
@@ -87,7 +87,7 @@ namespace luminos { namespace ecs {
 	};
 	
 	template<typename T, size_t ChunkSize = 8192>
-	class LUMINOS_API Pool : public IPool
+	class FLUFF_API Pool : public IPool
 	{
 	public:
 		/*
@@ -110,7 +110,7 @@ namespace luminos { namespace ecs {
 		*/
 		virtual void Destroy(size_t Index) override
 		{
-			LUMINOS_ASSERT(Index < Size_)
+			FLUFF_ASSERT(Index < Size_)
 			auto ptr = static_cast<T*>(GetAt(Index));
 			ptr->~T();
 		}

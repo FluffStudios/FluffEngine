@@ -4,10 +4,10 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <common.h>
 
-namespace luminos
+namespace fluff
 {
 
-	class LUMINOS_API Transformation
+	class FLUFF_API Transformation
 	{
 		glm::vec3 Position;
 		glm::quat Rotation;

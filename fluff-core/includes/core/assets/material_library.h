@@ -13,9 +13,9 @@
 #include <common.h>
 #include <core/ecs/ecs_manager.h>
 
-namespace luminos {
+namespace fluff {
 
-	class LUMINOS_API MaterialLibrary
+	class FLUFF_API MaterialLibrary
 	{
 		static std::vector<std::string> FileNames_;
 		static std::unordered_map<std::string, render::Material *> MaterialMap_;

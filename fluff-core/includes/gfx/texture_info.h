@@ -4,9 +4,9 @@
 
 #include <cereal/access.hpp>
 
-namespace luminos { namespace gfx
+namespace fluff { namespace gfx
 {
-	enum LUMINOS_API TextureFilter : uint32_t
+	enum FLUFF_API TextureFilter : uint32_t
 	{
 		FILTER_MIN_NEAREST_MAG_NEAREST,
 		FILTER_MIN_NEAREST_MAG_LINEAR,
@@ -23,7 +23,7 @@ namespace luminos { namespace gfx
 		FILTER_ANISOTROPIC
 	};
 
-	enum LUMINOS_API TextureFormat : uint32_t
+	enum FLUFF_API TextureFormat : uint32_t
 	{
 		RGBA32,
 		RGBA16,
@@ -35,7 +35,7 @@ namespace luminos { namespace gfx
 		RGB
 	};
 
-	struct LUMINOS_API AnisotropicFilter
+	struct FLUFF_API AnisotropicFilter
 	{
 		bool Enabled = false;
 		float Min = 0;
@@ -50,7 +50,7 @@ namespace luminos { namespace gfx
 		}
 	};
 
-	struct LUMINOS_API TextureCreateInfo
+	struct FLUFF_API TextureCreateInfo
 	{
 		TextureFilter Filter;
 		TextureFormat Format;

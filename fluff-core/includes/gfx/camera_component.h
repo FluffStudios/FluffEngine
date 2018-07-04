@@ -14,9 +14,9 @@
 #define UP glm::vec3(0, 1, 0);
 #endif
 
-namespace luminos { namespace gfx {
+namespace fluff { namespace gfx {
 
-	class LUMINOS_API CameraComponent : public ecs::Component<CameraComponent>
+	class FLUFF_API CameraComponent : public ecs::Component<CameraComponent>
 	{
 		glm::vec3 Position_;
 		glm::vec3 Direction_ = FORWARD;
@@ -34,7 +34,7 @@ namespace luminos { namespace gfx {
 
 		Position - New position
 		*/
-		void SetPosition(const glm::vec3& Position)
+		inline void SetPosition(const glm::vec3& Position)
 		{
 			this->Position_ = Position;
 			ViewMatrix();
@@ -45,9 +45,10 @@ namespace luminos { namespace gfx {
 
 		Rotation - New rotation
 		*/
-		void SetDirection(const glm::vec3& Direction)
+		inline void SetDirection(const glm::vec3& Direction)
 		{
 			this->Direction_ = Direction;
+			ViewMatrix();
 		}
 
 		/*
@@ -103,7 +104,7 @@ namespace luminos { namespace gfx {
 		*/
 		inline bool operator != (const CameraComponent & Other) const { return !(*this == Other); }
 	private:
-		void ViewMatrix()
+		inline void ViewMatrix()
 		{
 			ViewMatrix_ = glm::lookAt(Position_, Position_ + Direction_, Up_);
 		}

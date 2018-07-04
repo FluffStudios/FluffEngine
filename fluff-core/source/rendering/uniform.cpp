@@ -1,6 +1,7 @@
 #include <rendering/uniform.h>
+#include <glew.h>
 
-namespace luminos { namespace render {
+namespace fluff { namespace render {
 
 	Uniform::Uniform(UniformType Type, uint32_t ShaderHandle, char * UniformName, void * InitialValue)
 	{
@@ -48,8 +49,13 @@ namespace luminos { namespace render {
 
 	void Uniform::SetValue(const void * Value) const
 	{
-		LUMINOS_ASSERT(Value != nullptr)
+		FLUFF_ASSERT(Value != nullptr)
 		memcpy(Value_, Value, Size_);
+	}
+
+	void Uniform::GetLocation(uint32_t ShaderID)
+	{
+		Location_ = glGetUniformLocation(ShaderID, Name_);
 	}
 
 	size_t Uniform::GetSize() const
@@ -73,8 +79,8 @@ namespace luminos { namespace render {
 			case MAT4:	 return sizeof(float) * 4 * 4;
 			default:
 			{
-				LUMINOS_ERROR_FUNC("INVALID ENUM - UNIFORMTYPE");
-				LUMINOS_ASSERT();
+				FLUFF_ERROR_FUNC("INVALID ENUM - UNIFORMTYPE");
+				FLUFF_ASSERT();
 			}
 		}
 	}
@@ -83,7 +89,7 @@ namespace luminos { namespace render {
 	{
 		int32_t max_loc;
 		glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &max_loc);
-		LUMINOS_ASSERT(max_loc > BindLocation && BindLocation >= 0);
+		FLUFF_ASSERT(max_loc > BindLocation && BindLocation >= 0);
 		Type_ = Type;
 		ShaderHandle_ = ShaderHandle;
 		Location_ = glGetUniformLocation(ShaderHandle_, Name);
@@ -98,7 +104,7 @@ namespace luminos { namespace render {
 	{
 		int32_t max_loc;
 		glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &max_loc);
-		LUMINOS_ASSERT(max_loc > BindLocation && BindLocation >= 0);
+		FLUFF_ASSERT(max_loc > BindLocation && BindLocation >= 0);
 		Type_ = Type;
 		ShaderHandle_ = ShaderHandle;
 		Location_ = glGetUniformLocation(ShaderHandle_, Name);
@@ -117,6 +123,11 @@ namespace luminos { namespace render {
 		glUniform1i(Location_, BindLocation_);
 		glActiveTexture(GL_TEXTURE0 + BindLocation_);
 		glBindTexture(GL_TEXTURE_2D, *TextureHandle_);
+	}
+
+	void TextureUniform::GetLocation(uint32_t ShaderID)
+	{
+		Location_ = glGetUniformLocation(ShaderID, Name_.c_str());
 	}
 
 } }

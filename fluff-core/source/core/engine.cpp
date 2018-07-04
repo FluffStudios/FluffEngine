@@ -1,7 +1,7 @@
 #include <core/engine.h>
 #include <core/timer.h>
 
-namespace luminos
+namespace fluff
 {
 	void Game::SetGameState(IGameState * GameState)
 	{
@@ -11,8 +11,8 @@ namespace luminos
 
 	void Game::PlayState() const
 	{
-		this->ActiveState_->Run();
 		this->ActiveState_->GetManager()->GetSystemManager()->UpdateAll(Timer::DeltaTime());
+		this->ActiveState_->Run();
 	}
 
 	void Game::Shutdown()
@@ -35,7 +35,7 @@ namespace luminos
 	void Engine::Play(Game * pGame, IGameState * State)
 	{
 		pGame->SetGameState(State);
-		while (Instance.ActiveWindow->Update())
+		while (Instance.ActiveWindow->Update() && !State->ShouldShutdown())
 		{
 			pGame->PlayState();
 		}

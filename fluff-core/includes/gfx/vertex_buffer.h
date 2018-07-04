@@ -1,25 +1,22 @@
 #pragma once
 
-#include <glew.h>
 #include <common.h>
 #include <vector>
 #include <gfx/vertex_layout.h>
 #include <set>
+#include <memory>
 
-namespace luminos { namespace gfx {
+namespace fluff { namespace gfx {
 
-	class LUMINOS_API VertexBuffer
+	class FLUFF_API VertexBuffer
 	{
-		GLuint Vao_;
-		std::set<unsigned int> Attribs_;
-		std::vector<GLuint> Vbos_;
 	public:
 		/*
 			Creates a new Vertex Buffer
 		 */
 		VertexBuffer();
 
-		~VertexBuffer() { Release(); }
+		~VertexBuffer();
 		
 		/*
 			Binds buffer and enables attribute pointers
@@ -85,18 +82,15 @@ namespace luminos { namespace gfx {
 			Other - other vertex buffer
 			Returns if equivalent
 		*/
-		bool operator == (const VertexBuffer & Other)
-		{
-			return this->Vao_ == Other.Vao_;
-		}
+		bool operator == (const VertexBuffer & Other);
 
 		/*
 			Gets ID of vertex buffer
 		*/
-		GLuint GetID() const
-		{
-			return Vao_;
-		}
+		unsigned int GetID() const;
+	private:
+		struct VertexBufferImpl;
+		std::unique_ptr<VertexBufferImpl> Buffer_;
 	};
 
 } }

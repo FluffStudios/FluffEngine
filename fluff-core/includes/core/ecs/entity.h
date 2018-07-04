@@ -16,14 +16,14 @@
 #define MAX_COMPONENT_COUNT 512
 #endif
 
-namespace luminos { namespace ecs {
+namespace fluff { namespace ecs {
 
 	class EntityManager;
 
 	template<typename Comp, typename EM = EntityManager>
 	class ComponentHandle;
 
-	class LUMINOS_API ID
+	class FLUFF_API ID
 	{
 		friend class EntityManager;
 		uint64_t ID_;
@@ -107,7 +107,7 @@ namespace luminos { namespace ecs {
 	private:
 	};
 
-	class LUMINOS_API Entity
+	class FLUFF_API Entity
 	{
 		ID Id_ = INVALID;
 		EntityManager * Manager_;
@@ -211,7 +211,7 @@ namespace luminos { namespace ecs {
 		template<typename Comp, typename ... Arguments>
 		ComponentHandle<Comp> AddComponent(Arguments && ... Args)
 		{
-			LUMINOS_ASSERT(IsValid())
+			FLUFF_ASSERT(IsValid())
 				return Manager_->AddComponent<Comp>(Id_, std::forward<Arguments>(Args)...);
 		}
 
@@ -224,7 +224,7 @@ namespace luminos { namespace ecs {
 		template<typename Comp>
 		ComponentHandle<Comp> CopyComponent(const Comp & Type)
 		{
-			LUMINOS_ASSERT(IsValid())
+			FLUFF_ASSERT(IsValid())
 				return Manager_->AddComponent<Comp>(Id_, Type);
 		}
 
@@ -240,7 +240,7 @@ namespace luminos { namespace ecs {
 		template<typename Comp, typename ... Arguments>
 		ComponentHandle<Comp> ReplaceComponent(Arguments && ... Args)
 		{
-			LUMINOS_ASSERT(IsValid())
+			FLUFF_ASSERT(IsValid())
 				auto handle = GetComponent<Comp>();
 			if (handle)
 				*(handle.Get()) = Comp(std::forward<Arguments>(Args)...);
@@ -257,7 +257,7 @@ namespace luminos { namespace ecs {
 		template<typename Comp>
 		void RemoveComponent()
 		{
-			LUMINOS_ASSERT(IsValid())
+			FLUFF_ASSERT(IsValid())
 				Manager_->RemoveComponent<Comp>(Id_);
 		}
 
@@ -270,7 +270,7 @@ namespace luminos { namespace ecs {
 		template<typename C, typename = typename std::enable_if<!std::is_const<C>::value>::type>
 		ComponentHandle<C> GetComponent()
 		{
-			LUMINOS_ASSERT(IsValid())
+			FLUFF_ASSERT(IsValid())
 				return Manager_->Component<C>(Id_);
 		}
 
@@ -283,7 +283,7 @@ namespace luminos { namespace ecs {
 		template<typename C, typename = typename std::enable_if<std::is_const<C>::value>::type>
 		const ComponentHandle<C, const EntityManager> GetComponent() const
 		{
-			LUMINOS_ASSERT(IsValid())
+			FLUFF_ASSERT(IsValid())
 				return const_cast<const EntityManager*>(Manager_)->Component<const C>(Id_);
 		}
 
@@ -296,7 +296,7 @@ namespace luminos { namespace ecs {
 		template<typename ... Components>
 		std::tuple<ComponentHandle<Components>...> GetComponents()
 		{
-			LUMINOS_ASSERT(IsValid())
+			FLUFF_ASSERT(IsValid())
 				return Manager_->GetComponent<Components...>(Id_);
 		}
 
@@ -309,7 +309,7 @@ namespace luminos { namespace ecs {
 		template<typename ... Components>
 		std::tuple<ComponentHandle<const Components, const EntityManager>...> GetComponents() const
 		{
-			LUMINOS_ASSERT(IsValid())
+			FLUFF_ASSERT(IsValid())
 				return const_cast<const EntityManager*>(Manager_)->GetComponent<const Components...>(Id_);
 		}
 
@@ -322,7 +322,7 @@ namespace luminos { namespace ecs {
 		template<typename Comp>
 		bool HasComponent() const
 		{
-			LUMINOS_ASSERT(IsValid())
+			FLUFF_ASSERT(IsValid())
 				return Manager_->HasComponent<Comp>(Id_);
 		}
 
@@ -337,7 +337,7 @@ namespace luminos { namespace ecs {
 		template<typename A, typename ... Arguments>
 		void Unpack(ComponentHandle<A> &Arg, ComponentHandle<Arguments> & ... Args)
 		{
-			LUMINOS_ASSERT(IsValid())
+			FLUFF_ASSERT(IsValid())
 				Manager_->Unpack<A, Arguments>(Id_, Arg, Args ...);
 		}
 
@@ -356,7 +356,7 @@ namespace luminos { namespace ecs {
 	};
 
 	template<typename ComponentType, typename EM>
-	class LUMINOS_API ComponentHandle
+	class FLUFF_API ComponentHandle
 	{
 		friend class EntityManager;
 		EM * Manager_;
@@ -394,7 +394,7 @@ namespace luminos { namespace ecs {
 		*/
 		ComponentType * operator -> ()
 		{
-			LUMINOS_ASSERT(IsValid());
+			FLUFF_ASSERT(IsValid());
 			return Manager_->template GetComponentPtr<ComponentType>(Id_);
 		}
 
@@ -405,7 +405,7 @@ namespace luminos { namespace ecs {
 		*/
 		const ComponentType * operator -> () const
 		{
-			LUMINOS_ASSERT(IsValid());
+			FLUFF_ASSERT(IsValid());
 			return Manager_->template GetComponentPtr<ComponentType>(Id_);
 		}
 
@@ -423,7 +423,7 @@ namespace luminos { namespace ecs {
 		*/
 		ComponentType * Get()
 		{
-			LUMINOS_ASSERT(IsValid())
+			FLUFF_ASSERT(IsValid())
 			return Manager_->template GetComponentPtr<ComponentType>(Id_);
 		}
 
@@ -434,7 +434,7 @@ namespace luminos { namespace ecs {
 		*/
 		const ComponentType * Get() const
 		{
-			LUMINOS_ASSERT(IsValid())
+			FLUFF_ASSERT(IsValid())
 			return Manager_->template GetComponentPtr<ComponentType>(Id_);
 		}
 
@@ -443,7 +443,7 @@ namespace luminos { namespace ecs {
 		*/
 		void Remove()
 		{
-			LUMINOS_ASSERT(IsValid())
+			FLUFF_ASSERT(IsValid())
 			Manager_->template Remove<ComponentType>(Id_);
 		}
 
@@ -454,7 +454,7 @@ namespace luminos { namespace ecs {
 		*/
 		Entity GetEntity()
 		{
-			LUMINOS_ASSERT(IsValid())
+			FLUFF_ASSERT(IsValid())
 			return Manager_->Get(Id_);
 		}
 
@@ -482,7 +482,7 @@ namespace luminos { namespace ecs {
 	private:
 	};
 
-	struct LUMINOS_API IComponent
+	struct FLUFF_API IComponent
 	{
 		void operator delete (void * Ptr) { Fail(); }
 		void operator delete[] (void * Ptr) { Fail(); }
@@ -500,7 +500,7 @@ namespace luminos { namespace ecs {
 	};
 
 	template<typename Type>
-	struct LUMINOS_API Component : public IComponent
+	struct FLUFF_API Component : public IComponent
 	{
 		typedef ComponentHandle<Type> Handle;
 		typedef ComponentHandle<const Type, const EntityManager> ConstHandle;
@@ -513,14 +513,14 @@ namespace luminos { namespace ecs {
 				FamilyID_ = family;
 				ComponentLookupTable::Add<Component<Type>>();
 			}
-			LUMINOS_ASSERT(family < MAX_COMPONENT_COUNT)
+			FLUFF_ASSERT(family < MAX_COMPONENT_COUNT)
 			return family;
 		}
 	private:
 		friend class EntityManager;
 	};
 
-	struct LUMINOS_API EntityCreatedEvent : public Event<EntityCreatedEvent>
+	struct FLUFF_API EntityCreatedEvent : public Event<EntityCreatedEvent>
 	{
 		explicit EntityCreatedEvent(Entity Ent) : E(Ent) { }
 		virtual ~EntityCreatedEvent();
@@ -528,7 +528,7 @@ namespace luminos { namespace ecs {
 		Entity E;
 	};
 
-	struct LUMINOS_API EntityDestroyedEvent : public Event<EntityDestroyedEvent>
+	struct FLUFF_API EntityDestroyedEvent : public Event<EntityDestroyedEvent>
 	{
 		explicit EntityDestroyedEvent(Entity Ent) : E(Ent) { }
 		virtual ~EntityDestroyedEvent();
@@ -537,7 +537,7 @@ namespace luminos { namespace ecs {
 	};
 
 	template<typename Comp>
-	struct LUMINOS_API ComponentAddedEvent : public Event<ComponentAddedEvent<Comp>>
+	struct FLUFF_API ComponentAddedEvent : public Event<ComponentAddedEvent<Comp>>
 	{
 		ComponentAddedEvent(const Entity Ent, ComponentHandle<Comp> Handle) : E(Ent), Handle(Handle) { }
 
@@ -546,7 +546,7 @@ namespace luminos { namespace ecs {
 	};
 
 	template<typename Comp>
-	struct LUMINOS_API ComponentRemovedEvent : public Event<ComponentRemovedEvent<Comp>>
+	struct FLUFF_API ComponentRemovedEvent : public Event<ComponentRemovedEvent<Comp>>
 	{
 		ComponentRemovedEvent(const Entity Ent, ComponentHandle<Comp> Handle) : E(Ent), Handle(Handle) { }
 
@@ -554,7 +554,7 @@ namespace luminos { namespace ecs {
 		ComponentHandle<Comp> Handle;
 	};
 
-	class LUMINOS_API IComponentHelper
+	class FLUFF_API IComponentHelper
 	{
 	public:
 		/*
@@ -578,7 +578,7 @@ namespace luminos { namespace ecs {
 	};
 
 	template<typename Comp>
-	class LUMINOS_API ComponentHelper : public IComponentHelper
+	class FLUFF_API ComponentHelper : public IComponentHelper
 	{
 	public:
 		/*
@@ -626,7 +626,7 @@ namespace luminos { namespace ecs {
 		Dst.CopyComponent<Comp>(*(Src.GetComponent<Comp>().Get()));
 	}
 
-	class LUMINOS_API EntityManager : NonCopyable
+	class FLUFF_API EntityManager : NonCopyable
 	{
 		std::vector<std::bitset<MAX_COMPONENT_COUNT>> EntityComponentMasks_;
 		std::vector<uint32_t> EntityVersions_;
@@ -649,7 +649,7 @@ namespace luminos { namespace ecs {
 		virtual ~EntityManager() { Reset(); };
 
 		template<class Type, bool All = false>
-		class LUMINOS_API ViewIterator : public std::iterator<std::input_iterator_tag, ID>
+		class FLUFF_API ViewIterator : public std::iterator<std::input_iterator_tag, ID>
 		{
 		protected:
 			EntityManager * Manager_;
@@ -749,13 +749,13 @@ namespace luminos { namespace ecs {
 		};
 		
 		template<bool All>
-		class LUMINOS_API BaseView
+		class FLUFF_API BaseView
 		{
 			friend class EntityManager;
 			EntityManager * Manager_;
 			std::bitset<MAX_COMPONENT_COUNT> Mask_;
 		public:
-			class LUMINOS_API Iterator : public ViewIterator<Iterator, All> {
+			class FLUFF_API Iterator : public ViewIterator<Iterator, All> {
 				public:
 					/*
 						Creates a new iterator
@@ -815,7 +815,7 @@ namespace luminos { namespace ecs {
 		};
 
 		template<bool All, typename ... Components>
-		class LUMINOS_API TypedView : public BaseView<All>
+		class FLUFF_API TypedView : public BaseView<All>
 		{
 			friend class EntityManager;
 			explicit TypedView(EntityManager * Manager) : BaseView<All>(Manager) { }
@@ -839,7 +839,7 @@ namespace luminos { namespace ecs {
 		typedef BaseView<true> DebugView;
 
 		template<typename ... Components>
-		class LUMINOS_API UnpackingView
+		class FLUFF_API UnpackingView
 		{
 		public:
 			struct Unpacker
@@ -999,9 +999,9 @@ namespace luminos { namespace ecs {
 		template<typename Comp, typename ... Arguments>
 		ComponentHandle<Comp> AddComponent(ID Id, Arguments && ... Args)
 		{
-			LUMINOS_ASSERT(IsValid(Id))
+			FLUFF_ASSERT(IsValid(Id))
 			const size_t family_id = ComponentFamilyID<Comp>();
-			LUMINOS_ASSERT(!EntityComponentMasks_[Id.Index()].test(family_id));
+			FLUFF_ASSERT(!EntityComponentMasks_[Id.Index()].test(family_id));
 
 			Pool<Comp> * pool = AccomodateComponent<Comp>();
 			::new(pool->GetAt(Id.Index())) Comp(std::forward<Arguments>(Args)...);
@@ -1021,7 +1021,7 @@ namespace luminos { namespace ecs {
 		template<typename Comp>
 		void RemoveComponent(ID Id)
 		{
-			LUMINOS_ASSERT(IsValid(Id));
+			FLUFF_ASSERT(IsValid(Id));
 			const size_t family = ComponentFamilyID<Comp>();
 			const auto index = Id.Index();
 			auto pool = ComponentPools_[family];
@@ -1041,7 +1041,7 @@ namespace luminos { namespace ecs {
 		template<typename Comp>
 		bool HasComponent(ID Id) const
 		{
-			LUMINOS_ASSERT(IsValid(Id))
+			FLUFF_ASSERT(IsValid(Id))
 
 			const size_t family = ComponentFamilyID<Comp>();
 			if (family >= ComponentPools_.size()) return false;
@@ -1060,7 +1060,7 @@ namespace luminos { namespace ecs {
 		template <typename Comp, typename = typename std::enable_if<!std::is_const<Comp>::value>::type>
 		ComponentHandle<Comp> Component(ID Id)
 		{
-			LUMINOS_ASSERT(IsValid(Id))
+			FLUFF_ASSERT(IsValid(Id))
 			
 			const size_t family = ComponentFamilyID<Comp>();
 			if (family >= ComponentPools_.size()) return ComponentHandle<Comp>();
@@ -1078,7 +1078,7 @@ namespace luminos { namespace ecs {
 		*/
 		template <typename C, typename = typename std::enable_if<std::is_const<C>::value>::type>
 		ComponentHandle<C, const EntityManager> Component(ID Id) const {
-			LUMINOS_ASSERT(IsValid(Id))
+			FLUFF_ASSERT(IsValid(Id))
 
 			const size_t family = ComponentFamilyID<C>();
 			if (family >= ComponentPools_.size()) return ComponentHandle<C, const EntityManager>();
@@ -1171,7 +1171,7 @@ namespace luminos { namespace ecs {
 		template<typename Comp>
 		void Unpack(ID Id, ComponentHandle<Comp> &Handle)
 		{
-			LUMINOS_ASSERT(IsValid(Id))
+			FLUFF_ASSERT(IsValid(Id))
 			Handle = Component<Comp>(Id);
 		}
 
@@ -1187,7 +1187,7 @@ namespace luminos { namespace ecs {
 		template<typename A, typename ... Arguments>
 		void Unpack(ID Id, ComponentHandle<A> &Handle, ComponentHandle<Arguments> & ... Args)
 		{
-			LUMINOS_ASSERT(IsValid(Id))
+			FLUFF_ASSERT(IsValid(Id))
 			Handle = Component<A>(Id);
 			Unpack<Arguments ...>(Id, Args ...);
 		}
@@ -1264,7 +1264,7 @@ namespace luminos { namespace ecs {
 		*/
 		std::bitset<MAX_COMPONENT_COUNT> ComponentMask(ID Id)
 		{
-			LUMINOS_ASSERT(Id != Entity::INVALID)
+			FLUFF_ASSERT(Id != Entity::INVALID)
 			return EntityComponentMasks_.at(Id.Index());
 		}
 
@@ -1330,9 +1330,9 @@ namespace luminos { namespace ecs {
 		*/
 		template <typename Comp>
 		Comp * GetComponentPtr(ID id) {
-			LUMINOS_ASSERT(IsValid(id))
+			FLUFF_ASSERT(IsValid(id))
 			IPool *pool = ComponentPools_[ComponentFamilyID<Comp>()];
-			LUMINOS_ASSERT(pool)
+			FLUFF_ASSERT(pool)
 			return static_cast<Comp*>(pool->GetAt(id.Index()));
 		}
 
@@ -1345,9 +1345,9 @@ namespace luminos { namespace ecs {
 		*/
 		template <typename Comp>
 		const Comp * GetComponentPtr(ID id) const {
-			LUMINOS_ASSERT(IsValid(id))
+			FLUFF_ASSERT(IsValid(id))
 			IPool *pool = ComponentPools_[ComponentFamilyID<Comp>()];
-			LUMINOS_ASSERT(pool)
+			FLUFF_ASSERT(pool)
 			return static_cast<const Comp*>(pool->GetAt(id.Index()));
 		}
 

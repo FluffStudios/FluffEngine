@@ -9,11 +9,11 @@
 #include <functional>
 #include <unordered_map>
 
-namespace luminos { namespace ecs {
+namespace fluff { namespace ecs {
 
 	typedef Simple::Signal<void(const void *)> EventSignal;
 
-	class LUMINOS_API IReceiver
+	class FLUFF_API IReceiver
 	{
 		friend class EventManager;
 		std::unordered_map<size_t, std::pair<std::weak_ptr<EventSignal>, size_t>> Connections_;
@@ -32,7 +32,7 @@ namespace luminos { namespace ecs {
 	};
 
 	template <typename T>
-	class LUMINOS_API Receiver : public IReceiver
+	class FLUFF_API Receiver : public IReceiver
 	{
 	public:
 		/*
@@ -45,7 +45,7 @@ namespace luminos { namespace ecs {
 	inline Receiver<T>::~Receiver()
 	{ }
 
-	class LUMINOS_API EventManager : NonCopyable
+	class FLUFF_API EventManager : NonCopyable
 	{
 	protected:
 		std::vector<std::shared_ptr<EventSignal>> Handlers_;
@@ -99,7 +99,7 @@ namespace luminos { namespace ecs {
 		void UnsubscribeFromEvent(Receiver & R)
 		{
 			IReceiver & receiver = R;
-			LUMINOS_ASSERT(receiver.Connections_.find(Event<EventType>::EventFamilyID()) != receiver.Connections_.end())
+			FLUFF_ASSERT(receiver.Connections_.find(Event<EventType>::EventFamilyID()) != receiver.Connections_.end())
 			auto pair = receiver.Connections_[Event<EventType>::EventFamilyID()];
 			auto conn = pair.second;
 			auto &ptr = pair.first;

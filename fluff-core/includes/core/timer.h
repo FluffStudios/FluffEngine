@@ -3,13 +3,13 @@
 #include <common.h>
 #include <core/beans/property.h>
 
-namespace luminos { namespace ecs {
+namespace fluff { namespace ecs {
 	class SystemManager;
 } }
 
-namespace luminos
+namespace fluff
 {
-	class Timer
+	class FLUFF_API Timer
 	{
 		friend class ecs::SystemManager;
 		Property<uint16_t> FPS_;

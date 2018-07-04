@@ -1,12 +1,14 @@
 #pragma once
 
-#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/transform.hpp>
 #include <glm/gtx/quaternion.hpp>
+#include <glm/gtx/euler_angles.hpp>
+#include <glm/glm.hpp>
 #include <common.h>
 #include <core/beans/property.h>
 #include <cmath>
 
-namespace luminos
+namespace fluff
 {
 	class TransformationComponent
 	{
@@ -60,14 +62,9 @@ namespace luminos
 			CreateTransformationMatrix();
 		}
 
-		/*
-			Gets the rotation in euler angles as degrees
-
-			Returns rotation
-		*/
 		glm::vec3 GetRotation() const
 		{
-			return this->Rotation;
+			return Rotation;
 		}
 
 		/*
@@ -120,12 +117,11 @@ namespace luminos
 			glm::mat4 sca(1.0f);
 
 			pos = glm::translate(pos, Position);
+			auto rot = glm::rotate(glm::radians(Rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
+			rot *= glm::rotate(glm::radians(Rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
+			rot *= glm::rotate(glm::radians(Rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
 			sca = glm::scale(sca, Scale);
 
-			glm::mat4 rot(1.0f);
-			rot = glm::rotate(rot, glm::radians(Rotation.x), glm::vec3(1, 0, 0));
-			rot = glm::rotate(rot, glm::radians(Rotation.y), glm::vec3(0, 1, 0));
-			rot = glm::rotate(rot, glm::radians(Rotation.z), glm::vec3(0, 0, 1));
 			return (TransformationMatrix = pos * rot * sca);
 		}
 	};

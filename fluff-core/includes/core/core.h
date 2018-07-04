@@ -29,3 +29,5 @@
 #include <core/ecs/signal.h>
 #include <core/ecs/system.h>
 #include <core/ecs/ecs_manager.h>
+
+#include <core/profiling/function_timer.h>

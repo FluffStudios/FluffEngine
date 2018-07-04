@@ -2,9 +2,9 @@
 
 #include <common.h>
 
-namespace luminos { namespace ecs {
+namespace fluff { namespace ecs {
 
-	class LUMINOS_API IEvent
+	class FLUFF_API IEvent
 	{
 	public:
 		/*

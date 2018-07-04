@@ -1,7 +1,7 @@
 #include <core/ecs/entity.h>
-#include <serialization_utilities.h>
+#include <serialization-legacy/serialization_utilities.h>
 
-namespace luminos { namespace ecs {
+namespace fluff { namespace ecs {
 
 	const ID Entity::INVALID;
 	size_t IComponent::FamilyID_ = 0;
@@ -48,7 +48,7 @@ namespace luminos { namespace ecs {
 
 	void Entity::Destroy()
 	{
-		LUMINOS_ASSERT(IsValid())
+		FLUFF_ASSERT(IsValid())
 		Manager_->Destroy(Id_);
 		Invalidate();
 	}
@@ -64,7 +64,7 @@ namespace luminos { namespace ecs {
 
 	Entity EntityManager::Get(ID Id)
 	{
-		LUMINOS_ASSERT(Id != Entity::INVALID)
+		FLUFF_ASSERT(Id != Entity::INVALID)
 		return Entity(this, Id);
 	}
 
@@ -110,7 +110,7 @@ namespace luminos { namespace ecs {
 
 	Entity EntityManager::CreateCopy(Entity Ent)
 	{
-		LUMINOS_ASSERT(Ent.IsValid())
+		FLUFF_ASSERT(Ent.IsValid())
 		auto clone = Create();
 		auto mask = Ent.ComponentMask();
 		for (size_t i = 0; i < ComponentHelpers_.size(); i++)
@@ -126,7 +126,7 @@ namespace luminos { namespace ecs {
 
 	void EntityManager::Destroy(ID Id)
 	{
-		LUMINOS_ASSERT(this->IsValid(Id))
+		FLUFF_ASSERT(this->IsValid(Id))
 
 		const auto index = Id.Index();
 		auto mask = EntityComponentMasks_[index];

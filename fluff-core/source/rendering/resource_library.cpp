@@ -4,7 +4,7 @@
 #include <cereal/external/rapidjson/prettywriter.h>
 #include <cstdio>
 
-namespace luminos { namespace render {
+namespace fluff { namespace render {
 
 	ResourceLibrary ResourceLibrary::Instance_;
 

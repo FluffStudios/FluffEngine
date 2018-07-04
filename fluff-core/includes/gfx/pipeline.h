@@ -18,10 +18,10 @@
 #define DEFAULT_STENCIL_READ_MASK	0xff
 #define DEFAULT_STENCIL_WRITE_MASK	0xff
 
-namespace luminos { namespace gfx
+namespace fluff { namespace gfx
 {
 
-	enum LUMINOS_API BlendFunction : uint32_t
+	enum FLUFF_API BlendFunction : uint32_t
 	{
 		ZERO							= 0x0000, // GL_ZERO						
 		ONE								= 0x0001, // GL_ONE						
@@ -40,7 +40,7 @@ namespace luminos { namespace gfx
 		BLEND_ONE_MINUS_CONSTANT_ALPHA	= 0x8004, // GL_ONE_MINUS_CONSTANT_ALPHA
 	};
 
-	enum LUMINOS_API Face : uint32_t
+	enum FLUFF_API Face : uint32_t
 	{
 		FRONT			= 0x0404, // GL_FRONT
 		BACK			= 0x0405, // GL_BACK
@@ -48,7 +48,7 @@ namespace luminos { namespace gfx
 		NONE			= 0x0000, // GL_NONE
 	};
 
-	enum LUMINOS_API ComparisonFunction : uint32_t
+	enum FLUFF_API ComparisonFunction : uint32_t
 	{
 		NEVER			= 0x0200, // GL_NEVER
 		LESS			= 0x0201, // GL_LESS
@@ -60,39 +60,39 @@ namespace luminos { namespace gfx
 		ALWAYS			= 0x0207, // GL_ALWAYS
 	};
 
-	enum LUMINOS_API TransformBufferMode : uint32_t
+	enum FLUFF_API TransformBufferMode : uint32_t
 	{
 		INTERLEAVED = 0x8C8C, // GL_INTERLEAVED_ATTRIBS
 		SEPARATE	= 0x8C8D, // GL_SEPARATE_ATTRIBS
 	};
 
-	enum LUMINOS_API FillMode : GLuint
+	enum FLUFF_API FillMode : uint32_t
 	{
 		FILL_POINT		= 0x1B00, // GL_POINT
 		FILL_LINE		= 0x1B01, // GL_LINE
 		FILL_POLYGON	= 0x1B02, // GL_FILL
 	};
 
-	enum LUMINOS_API PolygonMode : uint32_t
+	enum FLUFF_API PolygonMode : uint32_t
 	{
 		POLY_POINT		= 0x2A01, // GL_POLYGON_OFFSET_POINT
 		POLY_LINE		= 0x2A02, // GL_POLYGON_OFFSET_LINE
 		POLY_FILL		= 0x8037, // GL_POLYGON_OFFSET_FILL
 	};
 
-	enum LUMINOS_API RenderOrder : uint32_t
+	enum FLUFF_API RenderOrder : uint32_t
 	{
 		CLOCKWISE			= 0x0900, // GL_CW
 		COUNTER_CLOCKWISE	= 0x0901, // GL_CCW
 	};
 
-	enum LUMINOS_API DepthWriteMask : uint32_t
+	enum FLUFF_API DepthWriteMask : uint32_t
 	{
 		DEPTH_MASK_WRITE_NONE = 0x0,
 		DEPTH_MASK_WRITE_ALL  = 0xFFFFFFFF
 	};
 
-	enum LUMINOS_API StencilOp : uint32_t
+	enum FLUFF_API StencilOp : uint32_t
 	{
 		STENCIL_ZERO			= 0x0000, // GL_ZERO
 		STENCIL_KEEP			= 0x1E00, // GL_KEEP
@@ -105,7 +105,7 @@ namespace luminos { namespace gfx
 
 	};
 
-	enum LUMINOS_API PrimitiveTopology : uint32_t
+	enum FLUFF_API PrimitiveTopology : uint32_t
 	{
 		TOPO_POINT		= 0x0000, // GL_POINTS
 		TOPO_LINE		= 0x0001, // GL_LINES
@@ -113,7 +113,7 @@ namespace luminos { namespace gfx
 		TOPO_PATCH		= 0x000E, // GL_PATCHES
 	};
 
-	struct LUMINOS_API TransformFeedbackDesc
+	struct FLUFF_API TransformFeedbackDesc
 	{
 		uint32_t					NumFeedback = 0;
 		char **						OutputVars	= nullptr;
@@ -162,7 +162,7 @@ namespace luminos { namespace gfx
 		}
 	};
 
-	struct LUMINOS_API RenderTargetBlendDesc
+	struct FLUFF_API RenderTargetBlendDesc
 	{
 		enum BlendFunction SourceFunction			= ONE;
 		enum BlendFunction DestinationFunction		= ZERO;
@@ -178,7 +178,7 @@ namespace luminos { namespace gfx
 		}
 	};
 
-	struct LUMINOS_API BlendStateDesc
+	struct FLUFF_API BlendStateDesc
 	{
 		bool							AlphaToCoverage;
 		bool							IndependentBlendTarget;
@@ -201,7 +201,7 @@ namespace luminos { namespace gfx
 		}
 	};
 
-	struct LUMINOS_API RasterizerDesc
+	struct FLUFF_API RasterizerDesc
 	{
 		FillMode	Fill					= FILL_POLYGON;
 		Face		CullMode				= BACK;
@@ -224,7 +224,7 @@ namespace luminos { namespace gfx
 		}
 	};
 
-	struct LUMINOS_API DepthStencilOpDesc
+	struct FLUFF_API DepthStencilOpDesc
 	{
 		StencilOp			StencilFailOp		= STENCIL_KEEP;
 		StencilOp			StencilDepthFailOp	= STENCIL_KEEP;
@@ -240,7 +240,7 @@ namespace luminos { namespace gfx
 		}
 	};
 
-	struct LUMINOS_API DepthStencilDesc
+	struct FLUFF_API DepthStencilDesc
 	{
 		bool				DepthEnable			= false;
 		DepthWriteMask		WriteMask			= DEPTH_MASK_WRITE_ALL;
@@ -262,7 +262,7 @@ namespace luminos { namespace gfx
 		}
 	};
 
-	LUMINOS_API struct GraphicsPipelineDesc
+	FLUFF_API struct GraphicsPipelineDesc
 	{
 					char*	 				VertexShaderFile				= nullptr;
 					char*	 				TesselationEvaluationShaderFile	= nullptr;
@@ -335,10 +335,10 @@ namespace luminos { namespace gfx
 		}
 	};
 
-	LUMINOS_API void Serialize(rapidjson::Document & Doc, GraphicsPipelineDesc& Descriptor, const char * Name);
-	LUMINOS_API GraphicsPipelineDesc Deserialize(rapidjson::Document & Doc, const char * PipelineName);
+	FLUFF_API void Serialize(rapidjson::Document & Doc, GraphicsPipelineDesc& Descriptor, const char * Name);
+	FLUFF_API GraphicsPipelineDesc Deserialize(rapidjson::Document & Doc, const char * PipelineName);
 
-	class LUMINOS_API GraphicsPipeline
+	class FLUFF_API GraphicsPipeline
 	{
 		GraphicsPipelineDesc			Descriptor_;
 		FrameBuffer*				RenderTarget_;

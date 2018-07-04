@@ -1,7 +1,7 @@
-#include <core/texture_data.h>
+#include <gfx/texture_data.h>
 #include <stb_image.h>
 
-namespace luminos {
+namespace fluff { namespace gfx {
 	
 	TextureData::TextureData()
 	{
@@ -34,7 +34,7 @@ namespace luminos {
 		int channels;
 		stbi_info(File.c_str(), &CreateInfo_.Width, &CreateInfo_.Height, &channels);
 		auto buf = stbi_load(File.c_str(), &CreateInfo_.Width, &CreateInfo_.Height, &bpp, NumChannels);
-		LUMINOS_ASSERT(buf)
+		FLUFF_ASSERT(buf)
 		Buffer_.resize(CreateInfo_.Width * CreateInfo_.Height * NumChannels * (bpp / channels));
 		memcpy_s(Buffer_.data(), Buffer_.size(), buf, Buffer_.size());
 		stbi_image_free(buf);
@@ -59,4 +59,4 @@ namespace luminos {
 		return CreateInfo_;
 	}
 
-}
+} }

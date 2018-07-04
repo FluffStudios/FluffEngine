@@ -4,9 +4,9 @@
 #include <core/debug_event.h>
 #include <core/ecs/ecs_manager.h>
 
-namespace luminos
+namespace fluff
 {
-	class LUMINOS_API DebugMessage
+	class FLUFF_API DebugMessage
 	{
 	public:
 		/*

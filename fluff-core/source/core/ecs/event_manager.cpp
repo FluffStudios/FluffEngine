@@ -1,6 +1,6 @@
 #include <core/ecs/event_manager.h>
 
-namespace luminos { namespace ecs {
+namespace fluff { namespace ecs {
 
 	IReceiver::~IReceiver()
 	{

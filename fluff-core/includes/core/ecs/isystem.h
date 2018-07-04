@@ -3,11 +3,11 @@
 #include <non_copyable.h>
 #include <core/ecs/event_manager.h>
 
-namespace luminos { namespace ecs {
+namespace fluff { namespace ecs {
 
 	class EntityManager;
 
-	class LUMINOS_API ISystem
+	class FLUFF_API ISystem
 	{
 	protected:
 		size_t FamilyID_;
@@ -49,7 +49,7 @@ namespace luminos { namespace ecs {
 		/*
 			Destructor
 		*/
-		~ISystem();
+		virtual ~ISystem();
 	};
 
 } }

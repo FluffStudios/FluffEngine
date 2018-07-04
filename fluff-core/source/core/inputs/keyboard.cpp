@@ -1,6 +1,6 @@
 #include <core/inputs/keyboard.h>
 
-namespace luminos
+namespace fluff
 {
 	bool Keyboard::keys[MAX_KEY_COUNT];
 }

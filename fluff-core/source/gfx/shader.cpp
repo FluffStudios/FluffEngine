@@ -2,12 +2,13 @@
 
 #include <iostream>
 #include <common.h>
-#include <shader_utility.h>
+#include <file/shader_utility.h>
 #include <core/debug_message.h>
 
 #include <core/window.h>
+#include <glew.h>
 
-namespace luminos {
+namespace fluff {
 	namespace gfx {
 
 		Shader::Shader(std::shared_ptr<ECSManager> & Manager, const char *Vertex, const char *Fragment)

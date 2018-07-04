@@ -8,8 +8,9 @@
 #include <core/ecs/exclusive.h>
 #include <gfx/camera_component.h>
 #include <core/assets/material_library.h>
+#include <glew.h>
 
-namespace luminos { namespace render {
+namespace fluff { namespace render {
 
 	SceneRenderer::SceneRenderer(std::shared_ptr<ECSManager> & Manager, glm::mat4& ProjectionMatrix)
 		: Manager_(Manager)
@@ -262,7 +263,7 @@ namespace luminos { namespace render {
 				}
 			}
 		}
-		LUMINOS_ASSERT(Entities_.size() == StateChanges_.size())
+		FLUFF_ASSERT(Entities_.size() == StateChanges_.size())
 
 		counter = 0;
 		for (auto model : transparent_sort_map)
@@ -283,7 +284,7 @@ namespace luminos { namespace render {
 				}
 			}
 		}
-		LUMINOS_ASSERT(TEntities_.size() == TStateChanges_.size())
+		FLUFF_ASSERT(TEntities_.size() == TStateChanges_.size())
 	}
 
 	void SceneRenderer::Receive(const ecs::EntityDestroyedEvent & EntityDestroyed)

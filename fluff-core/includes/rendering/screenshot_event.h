@@ -3,7 +3,7 @@
 #include <common.h>
 #include <core/ecs/event.h>
 
-namespace luminos { namespace render {
+namespace fluff { namespace render {
 
 	struct ScreenshotEvent : ecs::Event<ScreenshotEvent>
 	{

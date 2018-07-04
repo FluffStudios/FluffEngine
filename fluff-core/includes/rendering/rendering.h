@@ -13,5 +13,4 @@
 #include <rendering/screenshot_system.h>
 #include <rendering/scene_lighting.h>
 #include <rendering/terrain.h>
-#include <rendering/ui_renderer.h>
 #include <rendering/uniform.h>

@@ -1,9 +1,10 @@
 #include <gfx/context.h>
-#include "allocator.h"
+#include <core/allocators/allocator.h>
 #include <gfx/model_submit_event.h>
 #include <core/core.h>
+#include <glew.h>
 
-namespace luminos { namespace gfx {
+namespace fluff { namespace gfx {
 
 	Context Context::Singleton_;
 	std::string Context::Renderer;
@@ -23,6 +24,34 @@ namespace luminos { namespace gfx {
 	void Context::WriteToStencilBuffer(bool ShouldWrite)
 	{
 		glStencilMask(ShouldWrite);
+	}
+
+	const std::string & Context::GetGraphicsCard()
+	{
+		if (!Init_)
+		{
+			unsigned char* renderer = const_cast<unsigned char*>(glGetString(GL_RENDERER));
+			Renderer = reinterpret_cast<char*>(renderer);
+
+			unsigned char* vendor = const_cast<unsigned char*>(glGetString(GL_VENDOR));
+			Vendor = reinterpret_cast<char*>(vendor);
+			Init_ = true;
+		}
+		return Renderer;
+	}
+
+	const std::string & Context::GetVendor()
+	{
+		if (!Init_)
+		{
+			unsigned char* renderer = const_cast<unsigned char*>(glGetString(GL_RENDERER));
+			Renderer = reinterpret_cast<char*>(renderer);
+
+			unsigned char* vendor = const_cast<unsigned char*>(glGetString(GL_VENDOR));
+			Vendor = reinterpret_cast<char*>(vendor);
+			Init_ = true;
+		}
+		return Vendor;
 	}
 
 	Model* Context::LoadMesh(std::unordered_map<VertexLayout, std::vector<float>> Data, std::vector<unsigned int> Indices)

@@ -2,9 +2,18 @@
 #include <gfx/mesh.h>
 #include "gfx/vertex_layout.h"
 
-namespace luminos { namespace gfx {
+#include <glew.h>
+
+namespace fluff { namespace gfx {
+
+	struct VertexBuffer::VertexBufferImpl {
+		GLuint Id;
+		std::set<unsigned int> Attribs;
+		std::vector<GLuint> Vbos;
+	};
 
 	VertexBuffer::VertexBuffer()
+		: Buffer_(new VertexBuffer::VertexBufferImpl)
 	{
 		GLint major;
 		GLint minor;
@@ -13,18 +22,23 @@ namespace luminos { namespace gfx {
 		glGetIntegerv(GL_MINOR_VERSION, &minor);
 		if (major >= 4 && minor >= 5)
 		{
-			glCreateVertexArrays(1, &Vao_);
+			glCreateVertexArrays(1, &(Buffer_->Id));
 		}
 		else
 		{
-			glGenVertexArrays(1, &Vao_);
+			glGenVertexArrays(1, &(Buffer_->Id));
 		}
+	}
+
+	VertexBuffer::~VertexBuffer()
+	{
+		Release();
 	}
 
 	void VertexBuffer::Bind()
 	{
-		glBindVertexArray(Vao_);
-		for (auto attr : Attribs_) 
+		glBindVertexArray(Buffer_->Id);
+		for (auto attr : Buffer_->Attribs) 
 		{
 			glEnableVertexAttribArray(attr);
 		}
@@ -32,7 +46,7 @@ namespace luminos { namespace gfx {
 
 	void VertexBuffer::Unbind()
 	{
-		for (auto attr : Attribs_)
+		for (auto attr : Buffer_->Attribs)
 		{
 			glDisableVertexAttribArray(attr);
 		}
@@ -41,11 +55,11 @@ namespace luminos { namespace gfx {
 
 	void VertexBuffer::Release()
 	{
-		if (Vao_)
+		if (Buffer_->Id)
 		{
-			glDeleteBuffers(static_cast<GLsizei>(Vbos_.size()), Vbos_.data());
-			glDeleteVertexArrays(1, &Vao_);
-			Vao_ = 0;
+			glDeleteBuffers(static_cast<GLsizei>(Buffer_->Vbos.size()), Buffer_->Vbos.data());
+			glDeleteVertexArrays(1, &(Buffer_->Id));
+			Buffer_->Id = 0;
 		}
 	}
 
@@ -74,8 +88,8 @@ namespace luminos { namespace gfx {
 			glBindBuffer(GL_ARRAY_BUFFER, vbo);
 			glVertexAttribPointer(Layout.Attribute, Layout.Dimensions, GL_FLOAT, GL_FALSE, static_cast<GLsizei>(Layout.Stride), reinterpret_cast<const void*>(Layout.Offset));
 						
-			Vbos_.push_back(vbo);
-			Attribs_.insert(static_cast<const unsigned int>(Layout.Attribute));
+			Buffer_->Vbos.push_back(vbo);
+			Buffer_->Attribs.insert(static_cast<const unsigned int>(Layout.Attribute));
 		}
 	}
 
@@ -99,8 +113,8 @@ namespace luminos { namespace gfx {
 		glBufferStorage(GL_ARRAY_BUFFER, Count * sizeof(float), Data, 0);
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
 		glVertexAttribPointer(Layout.Attribute, Layout.Dimensions, GL_UNSIGNED_INT, GL_FALSE, static_cast<GLsizei>(Layout.Stride), reinterpret_cast<const void*>(Layout.Offset));
-		Vbos_.push_back(vbo);
-		Attribs_.insert(static_cast<const unsigned int>(Layout.Attribute));
+		Buffer_->Vbos.push_back(vbo);
+		Buffer_->Attribs.insert(static_cast<const unsigned int>(Layout.Attribute));
 	}
 
 	void VertexBuffer::LoadToBuffer(int* Data, size_t Count, VertexLayout Layout)
@@ -123,8 +137,8 @@ namespace luminos { namespace gfx {
 		glBufferStorage(GL_ARRAY_BUFFER, Count * sizeof(float), Data, 0);
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
 		glVertexAttribPointer(Layout.Attribute, Layout.Dimensions, GL_INT, GL_FALSE, static_cast<GLsizei>(Layout.Stride), reinterpret_cast<const void*>(Layout.Offset));
-		Vbos_.push_back(vbo);
-		Attribs_.insert(static_cast<const unsigned int>(Layout.Attribute));
+		Buffer_->Vbos.push_back(vbo);
+		Buffer_->Attribs.insert(static_cast<const unsigned int>(Layout.Attribute));
 	}
 
 	void VertexBuffer::LoadToBuffer(std::vector<float> Positions, std::vector<float> VertexData)
@@ -147,8 +161,8 @@ namespace luminos { namespace gfx {
 		glBufferStorage(GL_ARRAY_BUFFER, Positions.size() * sizeof(float), Positions.data(), 0);
 		glBindBuffer(GL_ARRAY_BUFFER, pos);
 		glVertexAttribPointer(POSITION_ATTRIB, 3, GL_FLOAT, GL_FALSE, 0, 0);
-		Vbos_.push_back(pos);
-		Attribs_.insert(POSITION_ATTRIB);
+		Buffer_->Vbos.push_back(pos);
+		Buffer_->Attribs.insert(POSITION_ATTRIB);
 		GLuint buf;
 		if (major >= 4 && minor >= 5)
 		{
@@ -167,13 +181,13 @@ namespace luminos { namespace gfx {
 		glVertexAttribPointer(BITANGENT_ATTRIB, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex) - 3 * sizeof(float), reinterpret_cast<const void*>(offsetof(Vertex, Vertex::Tangent) - offsetof(Vertex, Vertex::Position)));
 		glVertexAttribPointer(DIFFUSE_ATTRIB, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex) - 3 * sizeof(float), reinterpret_cast<const void*>(offsetof(Vertex, Vertex::BiTangent) - offsetof(Vertex, Vertex::Position)));
 		glVertexAttribPointer(SPECULAR_ATTRIB, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex) - 3 * sizeof(float), reinterpret_cast<const void*>(offsetof(Vertex, Vertex::Diffuse) - offsetof(Vertex, Vertex::Position)));
-		Vbos_.push_back(buf);
-		Attribs_.insert(static_cast<const unsigned int>(UV_ATTRIB));
-		Attribs_.insert(static_cast<const unsigned int>(NORMAL_ATTRIB));
-		Attribs_.insert(static_cast<const unsigned int>(TANGENT_ATTRIB));
-		Attribs_.insert(static_cast<const unsigned int>(BITANGENT_ATTRIB));
-		Attribs_.insert(static_cast<const unsigned int>(DIFFUSE_ATTRIB));
-		Attribs_.insert(static_cast<const unsigned int>(SPECULAR_ATTRIB));
+		Buffer_->Vbos.push_back(buf);
+		Buffer_->Attribs.insert(static_cast<const unsigned int>(UV_ATTRIB));
+		Buffer_->Attribs.insert(static_cast<const unsigned int>(NORMAL_ATTRIB));
+		Buffer_->Attribs.insert(static_cast<const unsigned int>(TANGENT_ATTRIB));
+		Buffer_->Attribs.insert(static_cast<const unsigned int>(BITANGENT_ATTRIB));
+		Buffer_->Attribs.insert(static_cast<const unsigned int>(DIFFUSE_ATTRIB));
+		Buffer_->Attribs.insert(static_cast<const unsigned int>(SPECULAR_ATTRIB));
 	}
 
 	void VertexBuffer::LoadIndices(unsigned int* Data, size_t Count)
@@ -195,7 +209,17 @@ namespace luminos { namespace gfx {
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index);
 		glBufferStorage(GL_ELEMENT_ARRAY_BUFFER, Count * sizeof(unsigned int), Data, 0);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index);
-		Vbos_.push_back(index);
+		Buffer_->Vbos.push_back(index);
+	}
+
+	bool VertexBuffer::operator==(const VertexBuffer & Other)
+	{
+		return Other.Buffer_->Id = Buffer_->Id;
+	}
+
+	GLuint VertexBuffer::GetID() const
+	{
+		return Buffer_->Id;
 	}
 
 } }

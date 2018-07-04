@@ -13,7 +13,7 @@
 #include <core/debug_message.h>
 #include <glew.h>
 
-namespace luminos { namespace render {
+namespace fluff { namespace render {
 
 	ScreenshotSystem::ScreenshotSystem(std::shared_ptr<ECSManager> & Manager)
 		: Manager_(Manager)

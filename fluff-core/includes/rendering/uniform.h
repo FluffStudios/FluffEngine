@@ -1,8 +1,6 @@
 #pragma once
 
 #include <common.h>
-#include <glew.h>
-
 #include <vector>
 
 #include <cereal/access.hpp>
@@ -11,7 +9,7 @@
 #include <gfx/texture.h>
 #include <core/assets/texture_library.h>
 
-namespace luminos { namespace render {
+namespace fluff { namespace render {
 
 	enum UniformType : uint32_t
 	{
@@ -32,7 +30,7 @@ namespace luminos { namespace render {
 		MAT4
 	};
 
-	class LUMINOS_API Uniform
+	class FLUFF_API Uniform
 	{
 	public:
 		int32_t Location_;
@@ -142,10 +140,7 @@ namespace luminos { namespace render {
 		template<typename T>
 		T* GetValue() const;
 
-		void GetLocation(uint32_t ShaderID)
-		{
-			Location_ = glGetUniformLocation(ShaderID, Name_);
-		}
+		void GetLocation(uint32_t ShaderID);
 	private:
 		size_t GetSize() const;
 	};
@@ -219,10 +214,7 @@ namespace luminos { namespace render {
 		*/
 		void Upload() const;
 
-		void GetLocation(uint32_t ShaderID)
-		{
-			Location_ = glGetUniformLocation(ShaderID, Name_.c_str());
-		}
+		void GetLocation(uint32_t ShaderID);
 	};
 }
 	template<typename T>

@@ -1,6 +1,6 @@
 #include <gfx/mesh.h>
 
-namespace luminos { namespace gfx {
+namespace fluff { namespace gfx {
 
 	size_t Mesh::IDCounter_ = 0;
 

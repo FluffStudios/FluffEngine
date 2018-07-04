@@ -1,8 +1,21 @@
 #include <gfx/texture.h>
 
-namespace luminos { namespace gfx {
+#include <glew.h>
 
-	std::unordered_map<GLuint, std::string> Texture::IDMap_;
+namespace fluff { namespace gfx {
+
+	std::unordered_map<uint32_t, std::string> Texture::IDMap_;
+
+	void Texture::Release()
+	{
+		glDeleteTextures(1, &Id_);
+		Id_ = 0;
+	}
+
+	void Texture::MakeTextureHandleResident() const
+	{
+		glMakeTextureHandleResidentARB(Handle_);
+	}
 
 	GLint GetFormat(TextureFormat Format)
 	{
@@ -507,4 +520,13 @@ namespace luminos { namespace gfx {
 		glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 	}
 
-} }
+}
+	void gfx::BindTextures(Texture ** Textures, int StartSlot, int NumViews)
+	{
+		for (auto i = 0; i < NumViews; i++)
+		{
+			Textures[i]->Enable();
+			glActiveTexture(GL_TEXTURE0 + i + StartSlot);
+		}
+	}
+}

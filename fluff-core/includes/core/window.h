@@ -1,14 +1,13 @@
 #pragma once
 
-#include <glew.h>
-#include <glfw3.h>
 #include <common.h>
 #include <core/beans/property.h>
 #include <vector>
+#include <memory>
 
-namespace luminos
+namespace fluff
 {
-	class LUMINOS_API Window
+	class FLUFF_API Window
 	{
 		const char* Name_;
 		Property<unsigned int> Width_;
@@ -17,7 +16,6 @@ namespace luminos
 		Property<unsigned int> FramebufferHeight_;
 		bool Vsync_;
 		bool Fullscreen_;
-		GLFWwindow *Handle_;
 
 		static std::vector<Window*> Windows_;
 		static Window* CurrentHandle_;
@@ -25,6 +23,8 @@ namespace luminos
 
 		Window(const char* Name, unsigned int Width, unsigned int Height, bool Vsync, bool Fullscreen);
 
+		struct WindowImpl;
+		std::unique_ptr<WindowImpl> Impl_;
 	public:
 		/*
 			Deconstructs window
@@ -65,14 +65,7 @@ namespace luminos
 			Width - new width
 			Height - new height
 		 */
-		inline void SetDimensions(unsigned int Width, unsigned int Height)
-		{
-			Width_.SetValue(Width);
-			Height_.SetValue(Height);
-			glfwSetWindowSize(Handle_, Width, Height);
-			glViewport(0, 0, Width, Height);
-		}
-
+		void SetDimensions(unsigned int Width, unsigned int Height);
 		inline void SetWidth(unsigned int Width) { Width_ = Width; }
 		inline void SetHeight(unsigned int Height) { Height_ = Height; }
 
@@ -107,7 +100,7 @@ namespace luminos
 			
 			Returns Handle Pointer
 		 */
-		GLFWwindow* GetHandle() const { return Handle_; }
+		void * GetHandle() const;
 
 		/*
 			Set window framebuffer size

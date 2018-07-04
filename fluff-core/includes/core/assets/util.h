@@ -30,8 +30,8 @@ static void ReadFromFile(std::string FileName, Type & Serial)
 	std::ifstream in(FileName.c_str(), std::ios::binary);
 	if (!in.is_open())
 	{
-		LUMINOS_ERROR_FUNC("File does not exist!")
-		LUMINOS_ASSERT(false)
+		FLUFF_ERROR_FUNC("File does not exist!")
+		FLUFF_ASSERT(false)
 		return;
 	}
 	cereal::BinaryInputArchive arch(in);
@@ -45,8 +45,8 @@ static void ReadFromJSON(std::string FileName, Type & Serial)
 	std::ifstream in(FileName.c_str());
 	if (!in.is_open())
 	{
-		LUMINOS_ERROR_FUNC("File does not exist!")
-		LUMINOS_ASSERT(false)
+		FLUFF_ERROR_FUNC("File does not exist!")
+		FLUFF_ASSERT(false)
 		return;
 	}
 	cereal::JSONInputArchive arch(in);

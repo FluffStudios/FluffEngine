@@ -5,10 +5,10 @@
 #include <core/ecs/entity.h>
 #include <common.h>
 
-namespace luminos { namespace ecs {
+namespace fluff { namespace ecs {
 
 	template <typename Type, typename ... Dependencies>
-	class LUMINOS_API Dependency : public System<Dependency<Type, Dependencies ...>>, public Receiver<Dependency<Type, Dependencies ...>>
+	class FLUFF_API Dependency : public System<Dependency<Type, Dependencies ...>>, public Receiver<Dependency<Type, Dependencies ...>>
 	{
 	public:
 		/*

@@ -3,7 +3,7 @@
 #include <glew.h>
 #include <gfx/context.h>
 
-namespace luminos { namespace gfx
+namespace fluff { namespace gfx
 {
 
 	GraphicsPipeline::GraphicsPipeline()
@@ -105,8 +105,8 @@ namespace luminos { namespace gfx
 		GraphicsPipeline * pipeline = new GraphicsPipeline;
 
 		// assert the vertex and fragment files exit
-		LUMINOS_ASSERT(Descriptor.VertexShaderFile)
-		LUMINOS_ASSERT(Descriptor.FragmentShaderFile)
+		FLUFF_ASSERT(Descriptor.VertexShaderFile)
+		FLUFF_ASSERT(Descriptor.FragmentShaderFile)
 
 		// create shader with vertex, fragment, geometry, and tesselation 
 		if (Descriptor.TesselationEvaluationShaderFile && Descriptor.TesselationControlShaderFile && Descriptor.GeometryShaderFile)
@@ -124,9 +124,9 @@ namespace luminos { namespace gfx
 			pipeline->ShaderHandle_ =new Shader(Manager, Descriptor.VertexShaderFile, Descriptor.FragmentShaderFile);
 		}
 
-		LUMINOS_ASSERT(pipeline->ShaderHandle_ != nullptr)
-		LUMINOS_ASSERT(Descriptor.RenderWidth)
-		LUMINOS_ASSERT(Descriptor.RenderHeight)
+		FLUFF_ASSERT(pipeline->ShaderHandle_ != nullptr)
+		FLUFF_ASSERT(Descriptor.RenderWidth)
+		FLUFF_ASSERT(Descriptor.RenderHeight)
 
 		// create render target
 //		pipeline->RenderTarget_ = Context::CreateFrameBuffer(Descriptor.RenderWidth, Descriptor.RenderHeight, Descriptor.RenderSampleCount, Descriptor.RenderTargetCount);
@@ -162,8 +162,8 @@ namespace luminos { namespace gfx
 	{
 
 		// assert the vertex and fragment files exit
-		LUMINOS_ASSERT(Descriptor_.VertexShaderFile)
-		LUMINOS_ASSERT(Descriptor_.FragmentShaderFile)
+		FLUFF_ASSERT(Descriptor_.VertexShaderFile)
+		FLUFF_ASSERT(Descriptor_.FragmentShaderFile)
 
 			// create shader with vertex, fragment, geometry, and tesselation 
 		if (Descriptor_.TesselationEvaluationShaderFile && Descriptor_.TesselationControlShaderFile && Descriptor_.GeometryShaderFile)
@@ -181,9 +181,9 @@ namespace luminos { namespace gfx
 			this->ShaderHandle_ = new Shader(pManager, Descriptor_.VertexShaderFile, Descriptor_.FragmentShaderFile);
 		}
 
-		LUMINOS_ASSERT(this->ShaderHandle_ != nullptr)
-		LUMINOS_ASSERT(Descriptor_.RenderWidth)
-		LUMINOS_ASSERT(Descriptor_.RenderHeight)
+		FLUFF_ASSERT(this->ShaderHandle_ != nullptr)
+		FLUFF_ASSERT(Descriptor_.RenderWidth)
+		FLUFF_ASSERT(Descriptor_.RenderHeight)
 
 			// create render target
 			//		pipeline->RenderTarget_ = Context::CreateFrameBuffer(Descriptor.RenderWidth, Descriptor.RenderHeight, Descriptor.RenderSampleCount, Descriptor.RenderTargetCount);

@@ -2,7 +2,7 @@
 
 #include <common.h>
 
-namespace luminos { namespace gfx {
+namespace fluff { namespace gfx {
 
 		struct alignas(sizeof(float32_t)) Float
 		{

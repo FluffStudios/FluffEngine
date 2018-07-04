@@ -1,6 +1,6 @@
 #pragma once
 
-namespace luminos {
+namespace fluff {
 
 	template<typename T>
 	class Listenable

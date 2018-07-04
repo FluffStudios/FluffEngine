@@ -1,5 +1,5 @@
 #include <core/core.h>
 
-namespace luminos
+namespace fluff
 {
 }

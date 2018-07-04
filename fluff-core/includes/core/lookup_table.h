@@ -2,12 +2,12 @@
 
 #include <unordered_map>
 #include <string>
-#include <serialization_database.h>
+#include <serialization-legacy/serialization_database.h>
 #include <functional>
 
 #include <cereal/types/unordered_map.hpp>
 #include <cereal/types/string.hpp>
-namespace luminos {
+namespace fluff {
 
 	class ComponentLookupTable
 	{
@@ -54,7 +54,7 @@ namespace luminos {
 #ifdef _DEBUG
 			if (map.find(typeid(Type).name()) != map.end())
 			{
-				LUMINOS_ERROR_FUNC("Performance Notification: Map already contains type!")
+				FLUFF_ERROR_FUNC("Performance Notification: Map already contains type!")
 			}
 #endif
 			map.insert(std::make_pair(typeid(Type).name(), []{

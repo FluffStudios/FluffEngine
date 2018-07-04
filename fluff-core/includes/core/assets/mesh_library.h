@@ -13,9 +13,9 @@
 #include <common.h>
 #include <core/ecs/ecs_manager.h>
 
-namespace luminos {
+namespace fluff {
 
-	class LUMINOS_API MeshLibrary
+	class FLUFF_API MeshLibrary
 	{
 		static std::vector<std::string> FileNames_;
 		static std::unordered_map<std::string, gfx::Mesh *> MeshMap_;

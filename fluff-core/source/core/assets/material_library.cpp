@@ -1,6 +1,6 @@
 #include <core/assets/material_library.h>
 
-namespace luminos {
+namespace fluff {
 
 	std::vector<std::string> MaterialLibrary::FileNames_;
 	std::unordered_map<std::string, render::Material *> MaterialLibrary::MaterialMap_;
@@ -26,7 +26,7 @@ namespace luminos {
 		auto it = MaterialMap_.find(TextureName);
 		if (it == MaterialMap_.end())
 		{
-			LUMINOS_ERROR_FUNC("MATERIAL COULD NOT BE FOUND");
+			FLUFF_ERROR_FUNC("MATERIAL COULD NOT BE FOUND");
 			return nullptr;
 		}
 		return it->second;

@@ -1,7 +1,7 @@
 #include <core/assets/pipeline_library.h>
 #include <set>
 
-namespace luminos {
+namespace fluff {
 
 	std::vector<std::string> PipelineLibrary::FileNames_;
 	std::unordered_map<std::string, gfx::GraphicsPipeline *> PipelineLibrary::GraphicsPipelineMap_;
@@ -45,7 +45,7 @@ namespace luminos {
 		auto it = GraphicsPipelineMap_.find(TextureName);
 		if (it == GraphicsPipelineMap_.end())
 		{
-			LUMINOS_ERROR_FUNC("PIPELINE COULD NOT BE FOUND");
+			FLUFF_ERROR_FUNC("PIPELINE COULD NOT BE FOUND");
 			return nullptr;
 		}
 		return it->second;

@@ -130,9 +130,9 @@
 
 #define KEY_LAST               KEY_MENU
 
-namespace luminos
+namespace fluff
 {
-	class LUMINOS_API Keyboard
+	class FLUFF_API Keyboard
 	{
 		static bool keys[MAX_KEY_COUNT];
 	public:
@@ -148,7 +148,7 @@ namespace luminos
 #if defined(DEBUG) || defined(_DEBUG)
 			if (KeyID < 0 || KeyID > MAX_KEY_COUNT) 
 			{
-				LUMINOS_ERROR_FUNC("Invalid Key ID")
+				FLUFF_ERROR_FUNC("Invalid Key ID")
 			}
 #endif
 			if (KeyID < MAX_KEY_COUNT)
@@ -170,7 +170,7 @@ namespace luminos
 #if defined(DEBUG) || defined(_DEBUG)
 			if (KeyID < 0 || KeyID > MAX_KEY_COUNT)
 			{
-				LUMINOS_ERROR_FUNC("Invalid Key ID")
+				FLUFF_ERROR_FUNC("Invalid Key ID")
 		}
 #endif
 			if (KeyID < MAX_KEY_COUNT)

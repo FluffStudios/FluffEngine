@@ -1,20 +1,20 @@
 #include <core/assets/texture_library.h>
 
-namespace luminos {
+namespace fluff {
 
 	std::unordered_map<std::string, gfx::Texture *> TextureLibrary::TextureMap_;
 	std::vector<std::string> TextureLibrary::FileNames_;
 
 	void TextureLibrary::LoadNoAdd(std::string FileName)
 	{
-		TextureData data;
+		gfx::TextureData data;
 		ReadFromFile(FileName, data);
 		TextureMap_.insert(std::make_pair(data.GetName(), new gfx::Texture2D(data)));
 	}
 
 	gfx::Texture * TextureLibrary::Load(std::string FileName)
 	{
-		TextureData data;
+		gfx::TextureData data;
 		ReadFromFile(FileName, data);
 		TextureMap_.insert(std::make_pair(data.GetName(), new gfx::Texture2D(data)));
 		FileNames_.push_back(FileName);
@@ -26,7 +26,7 @@ namespace luminos {
 		auto it = TextureMap_.find(TextureName);
 		if (it == TextureMap_.end())
 		{
-			LUMINOS_ERROR_FUNC("TEXTURE COULD NOT BE FOUND");
+			FLUFF_ERROR_FUNC("TEXTURE COULD NOT BE FOUND");
 			return nullptr;
 		}
 		return it->second;

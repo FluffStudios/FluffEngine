@@ -1,9 +1,6 @@
 #pragma once
 
-#include <Physx/PxMaterial.h>
-#include <Physx/PxPhysicsAPI.h>
-
-namespace luminos {	namespace physics {
+namespace fluff {	namespace physics {
 
 	struct PhysicsMaterialDescriptor
 	{
@@ -14,11 +11,11 @@ namespace luminos {	namespace physics {
 
 	class PhysicsMaterial
 	{
-		physx::PxMaterial * Material_;
+		void * Material_;
 	public:
-		PhysicsMaterial(physx::PxPhysics * SDK, PhysicsMaterialDescriptor Desc);
+		PhysicsMaterial(void * SDK, PhysicsMaterialDescriptor Desc);
 		~PhysicsMaterial();
-		physx::PxMaterial * GetPhysxMaterial() const;
+		void * GetPhysxMaterial() const;
 	};
 
 } }

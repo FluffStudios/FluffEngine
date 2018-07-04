@@ -3,7 +3,7 @@
 #include <rendering/renderable.h>
 #include <vector>
 
-namespace luminos { namespace render { 
+namespace fluff { namespace render { 
 
 	struct RenderableComponent
 	{
