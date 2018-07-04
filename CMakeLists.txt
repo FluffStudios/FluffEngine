@@ -27,9 +27,18 @@ if ( CMAKE_BUILD_TYPE STREQUAL "" )
 	)
 endif ( CMAKE_BUILD_TYPE STREQUAL "" )
 
+add_definitions( -D_CRT_SECURE_NO_WARNINGS )
+add_definitions( -DGLEW_STATIC )
+
 if ( CMAKE_BUILD_TYPE STREQUAL "Release" )
 add_definitions( -O2 )
+add_definitions( -NDEBUG )
+add_definitions( -D_ITERATOR_DEBUG_LEVEL=0 )
 endif ( CMAKE_BUILD_TYPE STREQUAL "Release" )
+
+if ( CMAKE_BUILD_TYPE STREQUAL "Debug" )
+add_definitions( -D_ITERATOR_DEBUG_LEVEL=2 )
+endif ( CMAKE_BUILD_TYPE STREQUAL "Debug")
 
 # Lets LOAD up our headers for the core project
 file(GLOB_RECURSE CORE_HDRS
@@ -76,14 +85,8 @@ INCLUDE(${FluffEngine_CMAKE_DIR}/FindGLM.cmake)
 # Physx
 INCLUDE(${FluffEngine_CMAKE_DIR}/FindPhysx.cmake)
 
-# Shaderc
-INCLUDE(${FluffEngine_CMAKE_DIR}/FindShaderc.cmake)
-
 # STB
 INCLUDE(${FluffEngine_CMAKE_DIR}/FindSTB.cmake)
-
-# Vulkan
-INCLUDE(${FluffEngine_CMAKE_DIR}/FindVulkan.cmake)
 
 # Define the include DIRs
 include_directories(
@@ -95,9 +98,7 @@ include_directories(
     ${CEREAL_INCLUDE_DIRS}
     ${GLM_INCLUDE_DIRS}
     ${PHYSX_INCLUDE_DIRS}
-    ${SHADERC_INCLUDE_DIRS}
     ${STB_INCLUDE_DIRS}
-    ${VULKAN_INCLUDE_DIRS}
 )
 
 # Define the link libraries
@@ -108,8 +109,6 @@ target_link_libraries( Core
     ${ASSIMP_LIBRARIES}
     ${GLM_LIBRARIES}
     ${PHYSX_LIBRARIES}
-    ${SHADERC_LIBRARIES}
-    ${VULKAN_LIBRARIES}
 )
 
 if(WIN32)
@@ -137,6 +136,7 @@ if(MSVC_IDE)
 		get_filename_component(source_path "${source}" PATH)
 		string(REPLACE "${FluffEngine_SOURCE_DIR}" "" relative_source_path "${source_path}")
 		string(REPLACE "/" "\\" source_path_msvc "${relative_source_path}")
-		source_group("${source_path_msvc}" FILES "${source}")
+		string(REPLACE "Engine\\" "" actual_source_path_msvc "${source_path_msvc}")
+		source_group("${actual_source_path_msvc}" FILES "${source}")
 	endforeach()
 endif()
