@@ -16,7 +16,7 @@
 
 namespace fluff { namespace gfx {
 
-	class FLUFF_API CameraComponent : public ecs::Component<CameraComponent>
+	class CameraComponent : public ecs::Component<CameraComponent>
 	{
 		glm::vec3 Position_;
 		glm::vec3 Direction_ = FORWARD;
@@ -27,7 +27,7 @@ namespace fluff { namespace gfx {
 		/*
 		Creates new pinhole camera
 		*/
-		CameraComponent() { }
+		FLUFF_API CameraComponent() { }
 
 		/*
 		Sets position

@@ -20,7 +20,7 @@ static void key_callback(GLFWwindow *Window, int Key, int Scancode, int Action, 
 
 static void cursor_pos_callback(GLFWwindow *Window, double Xpos, double Ypos)
 {
-	fluff::Cursor::Update(Xpos, Ypos);
+	fluff::Cursor::Update(static_cast<float>(Xpos), static_cast<float>(Ypos));
 }
 
 static void mouse_button_callback(GLFWwindow *window, int button, int action, int mods)
@@ -150,7 +150,7 @@ namespace fluff
 		if (!glfwInit() && !GlewInit_)
 		{
 			FLUFF_ERROR_FUNC("Could not initialize GLFW!")
-			FLUFF_ASSERT()
+			FLUFF_ASSERT(false)
 			GlewInit_ = true;
 		}
 
@@ -193,7 +193,7 @@ namespace fluff
 			CloseWindow();
 			glfwTerminate();
 			FLUFF_ERROR_FUNC("Could not initialize GLEW!")
-			FLUFF_ASSERT()
+			FLUFF_ASSERT(false)
 		}
 #if defined(DEBUG) || defined(_DEBUG)
 		glEnable(GL_DEBUG_OUTPUT);

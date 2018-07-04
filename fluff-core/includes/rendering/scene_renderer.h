@@ -17,10 +17,12 @@ namespace fluff { namespace render {
 	class SceneRenderer : public ecs::System<SceneRenderer>, public ecs::Receiver<SceneRenderer>
 	{
 	private:
-		struct alignas(256) ViewProj
+		struct ViewProj
 		{
 			glm::mat4 ProjectionMatrix;
 			glm::mat4 ViewMatrix;
+		private:
+			glm::mat4 buffer[2];
 		};
 
 		enum STATE_CHANGE
@@ -62,7 +64,7 @@ namespace fluff { namespace render {
 
 			ProjectionMatrix - Matrix computing linear transformation from view space to screenspace
 		*/
-		SceneRenderer(std::shared_ptr<ECSManager> & Manager, glm::mat4& ProjectionMatrix = glm::mat4(1.0));
+		FLUFF_API SceneRenderer(std::shared_ptr<ECSManager> & Manager, glm::mat4& ProjectionMatrix = glm::mat4(1.0));
 
 		/*
 			Creates new Scene Renderer
@@ -70,57 +72,57 @@ namespace fluff { namespace render {
 			Cam - Camera to calculate viewport for
 			ProjectionMatrix - Matrix computing linear transformation from view space to screenspace
 		*/
-		SceneRenderer(std::shared_ptr<ECSManager> & Manager, ecs::Entity Cam, glm::mat4& ProjectionMatrix);
+		FLUFF_API SceneRenderer(std::shared_ptr<ECSManager> & Manager, ecs::Entity Cam, glm::mat4& ProjectionMatrix);
 
 		/*
 			Destructor
 		*/
-		~SceneRenderer();
+		FLUFF_API ~SceneRenderer();
 		
 		/*
 			Configures event listeners
 
 			Events - Event manager to subscribe with
 		*/
-		void Configure(ecs::EventManager & Events);
+		void FLUFF_API Configure(ecs::EventManager & Events);
 		
 		/*
 			Reaction to a model submitted event
 
 			ModelSubmission - Event to react to
 		*/
-		void Receive(const gfx::ModelSubmittedEvent & ModelSubmission);
+		void FLUFF_API Receive(const gfx::ModelSubmittedEvent & ModelSubmission);
 
 		/*
 			Reaction to entity destroyed event
 
 			EntityDestroyed - Event to react to
 		*/
-		void Receive(const ecs::EntityDestroyedEvent & EntityDestroyed);
+		void FLUFF_API Receive(const ecs::EntityDestroyedEvent & EntityDestroyed);
 
 		/*
 			Reaction to renderable component removed event
 
 			RenderableComponent - Event to react to
 		*/
-		void Receive(const ecs::ComponentRemovedEvent<RenderableComponent> & RenderableComponent);
+		void FLUFF_API Receive(const ecs::ComponentRemovedEvent<RenderableComponent> & RenderableComponent);
 
 		/*
 			Renders the scene
 		*/
-		void Render();
+		void FLUFF_API Render();
 
-		Material * GetDeferredMaterial() const { return DeferredMaterial_; }
+		inline Material * GetDeferredMaterial() const { return DeferredMaterial_; }
 
 		inline void SetProjectionMatrix(const glm::mat4& ProjectionMatrix)
 		{
 			ViewProjMatrix_.ProjectionMatrix = ProjectionMatrix;
 		}
 	private:
-		void DeferredPass();
-		void LightingPass();
-		void TransparencyPass();
-		std::vector<ecs::ID> ClosestLights(IVec3 & LightCount);
+		void FLUFF_API DeferredPass();
+		void FLUFF_API LightingPass();
+		void FLUFF_API TransparencyPass();
+		std::vector<ecs::ID> FLUFF_API ClosestLights(IVec3 & LightCount);
 	};
 
 } }

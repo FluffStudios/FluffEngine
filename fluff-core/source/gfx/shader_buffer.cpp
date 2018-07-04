@@ -81,7 +81,7 @@ namespace fluff { namespace gfx {
 			if (Descriptor_.Usage != MAP_PERSISTENT)
 			{
 				FLUFF_ERROR_FUNC("Incorrect usage for function.")
-					FLUFF_ASSERT()
+				FLUFF_ASSERT(false)
 			}
 #endif
 			Enable();

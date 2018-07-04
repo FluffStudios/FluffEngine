@@ -6,7 +6,7 @@
 
 namespace fluff
 {
-	class FLUFF_API ECSManager
+	class ECSManager
 	{
 		ecs::EntityManager * EntityManager_;
 		ecs::EventManager  * EventManager_;
@@ -15,7 +15,7 @@ namespace fluff
 	public:
 		ECSManager()
 		{
-			EventManager_ = new ecs::EventManager;
+			EventManager_  = new ecs::EventManager;
 			EntityManager_ = new ecs::EntityManager(*EventManager_);
 			SystemManager_ = new ecs::SystemManager(*EntityManager_, *EventManager_);
 		};
@@ -25,20 +25,20 @@ namespace fluff
 
 			Returns entity manager
 		*/
-		ecs::EntityManager * GetEntityManager() { return EntityManager_; }
+		ecs::EntityManager FLUFF_API * GetEntityManager() { return EntityManager_; }
 
 		/*
 			Gets a pointer to the ECSManager's event manager
 
 			Returns event manager
 		*/
-		ecs::EventManager  * GetEventManager()  { return EventManager_;  }
+		ecs::EventManager  FLUFF_API * GetEventManager()  { return EventManager_;  }
 
 		/*
 			Gets a pointer to the ECSManager's system manager
 
 			Returns system manager
 		*/
-		ecs::SystemManager * GetSystemManager() { return SystemManager_; }
+		ecs::SystemManager FLUFF_API * GetSystemManager() { return SystemManager_; }
 	};
 }

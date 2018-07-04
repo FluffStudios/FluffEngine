@@ -39,4 +39,9 @@ namespace fluff { namespace ecs
 		Init_ = true;
 	}
 
+	void FLUFF_API SystemManager::SetRefreshRate(const uint32_t Hertz)
+	{
+		this->RefreshTime_ = 1.0 / Hertz;
+	}
+
 } }

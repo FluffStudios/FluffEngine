@@ -23,7 +23,7 @@ namespace fluff { namespace ecs {
 	template<typename Comp, typename EM = EntityManager>
 	class ComponentHandle;
 
-	class FLUFF_API ID
+	class ID
 	{
 		friend class EntityManager;
 		uint64_t ID_;
@@ -39,14 +39,14 @@ namespace fluff { namespace ecs {
 		/*
 			Creates default ID
 		*/
-		ID() : ID_(0) { }
+		FLUFF_API ID() : ID_(0) { }
 
 		/*
 			Creates an ID from a 64 bit integer
 
 			Id - ID of entity
 		*/
-		explicit ID(const uint64_t Id) : ID_(Id) 
+		explicit FLUFF_API ID(const uint64_t Id) : ID_(Id)
 		{
 			
 		}
@@ -57,7 +57,7 @@ namespace fluff { namespace ecs {
 			Index - Offset for entity in pools
 			Version - ECS Version
 		*/
-		ID(const uint32_t Index, const uint32_t Version) : ID_(uint64_t(Index) | uint64_t(Version) << 32UL) { }
+		FLUFF_API ID(const uint32_t Index, const uint32_t Version) : ID_(uint64_t(Index) | uint64_t(Version) << 32UL) { }
 
 
 		/*
@@ -65,7 +65,7 @@ namespace fluff { namespace ecs {
 
 			Returns ID
 		*/
-		uint64_t GetID() const { return ID_; }
+		uint64_t FLUFF_API GetID() const { return ID_; }
 		
 		/*
 			Checks equality between IDs
@@ -73,7 +73,7 @@ namespace fluff { namespace ecs {
 			Other - other ID
 			Returns if equivalent
 		*/
-		bool operator == (const ID& Other) const { return ID_ == Other.ID_; }
+		bool FLUFF_API operator == (const ID& Other) const { return ID_ == Other.ID_; }
 
 		/*
 			Checks inequality between IDs
@@ -81,7 +81,7 @@ namespace fluff { namespace ecs {
 			Other - other ID
 			Returns if not equivalent
 		*/
-		bool operator != (const ID& Other) const { return ID_ != Other.ID_; }
+		bool FLUFF_API operator != (const ID& Other) const { return ID_ != Other.ID_; }
 
 		/*
 			Checks if ID is less than
@@ -89,21 +89,21 @@ namespace fluff { namespace ecs {
 			Other - other ID
 			Returns if less tahn
 		*/
-		bool operator <  (const ID& Other) const { return ID_ < Other.ID_; }
+		bool FLUFF_API operator <  (const ID& Other) const { return ID_ < Other.ID_; }
 
 		/*
 			Gets the index of the ID
 
 			Returns index
 		*/
-		uint32_t Index() const { return static_cast<uint32_t>(ID_); } // AND upper bits
+		uint32_t FLUFF_API Index() const { return static_cast<uint32_t>(ID_); } // AND upper bits
 
 		/*
 			Gets the version of the ID
 
 			Returns ID
 		*/
-		uint32_t Version() const { return ID_ >> 32; } // Shift to get version
+		uint32_t FLUFF_API Version() const { return ID_ >> 32; } // Shift to get version
 	private:
 	};
 
@@ -116,7 +116,7 @@ namespace fluff { namespace ecs {
 		/*
 			Default constructor
 		*/
-		Entity() = default;
+		FLUFF_API Entity() = default;
 
 		/*
 			Creates new entity from entity manager
@@ -124,14 +124,14 @@ namespace fluff { namespace ecs {
 			Manager - Reference to entity manager which dictates entity component behavior
 			Id - ID of entity
 		*/
-		Entity(EntityManager * Manager, ID Id);
+		FLUFF_API Entity(EntityManager * Manager, ID Id);
 
 		/*
 			Creates new entity from another
 
 			Other - other entity
 		*/
-		Entity(const Entity & Other) = default;
+		FLUFF_API Entity(const Entity & Other) = default;
 
 		/*
 			Creates new entity from another
@@ -139,21 +139,21 @@ namespace fluff { namespace ecs {
 			Other - other entity to copy from
 			Returns new entity copy
 		*/
-		Entity & operator = (const Entity & Other) = default;
+		Entity FLUFF_API & operator = (const Entity & Other) = default;
 
 		/*
 			Gets the entity's manager
 
 			Returns entity's manager
 		*/
-		EntityManager * GetManager() const { return Manager_; }
+		EntityManager FLUFF_API * GetManager() const { return Manager_; }
 
 		/*
 			Checks if the entity's ID is valid
 
 			Returns if entity is valid
 		*/
-		explicit operator bool() const;
+		FLUFF_API operator bool() const;
 
 		/*
 			Checks if two entities are equivalent by ID
@@ -161,7 +161,7 @@ namespace fluff { namespace ecs {
 			Other - other entity
 			Returns is equal
 		*/
-		bool operator == (const Entity &Other) const;
+		bool FLUFF_API operator == (const Entity &Other) const;
 
 		/*
 			Checks if two entities are not equivalent by ID
@@ -169,7 +169,7 @@ namespace fluff { namespace ecs {
 			Other - other entity
 			Returns is not equal
 		*/
-		bool operator != (const Entity &Other) const;
+		bool FLUFF_API operator != (const Entity &Other) const;
 
 		/*
 			Checks if this entity is less that the other by ID
@@ -177,28 +177,28 @@ namespace fluff { namespace ecs {
 			Other - other entity
 			Returns is less that
 		*/
-		bool operator <  (const Entity &Other) const;
+		bool FLUFF_API operator <  (const Entity &Other) const;
 
 		/*
 			Checks if the entity' ID is valid
 
 			Return is ID valid
 		*/
-		bool IsValid() const;
+		bool FLUFF_API IsValid() const;
 
 		/*
 			Invalidates the entity's ID
 
 			POSTCONDITION: IsValid() returns false
 		*/
-		void Invalidate();
+		void FLUFF_API Invalidate();
 
 		/*
 			Gets the entity's ID
 
 			Returns ID
 		*/
-		ID GetID() const;
+		ID FLUFF_API GetID() const;
 
 		/*
 			Adds a component to the entity
@@ -344,19 +344,19 @@ namespace fluff { namespace ecs {
 		/*
 			Destroys the entity
 		*/
-		void Destroy();
+		void FLUFF_API Destroy();
 
 		/*
 			Gets the component mask of the entity
 
 			Returns component mask
 		*/
-		std::bitset<MAX_COMPONENT_COUNT> ComponentMask() const;
+		std::bitset<MAX_COMPONENT_COUNT> FLUFF_API ComponentMask() const;
 	private:
 	};
 
 	template<typename ComponentType, typename EM>
-	class FLUFF_API ComponentHandle
+	class ComponentHandle
 	{
 		friend class EntityManager;
 		EM * Manager_;
@@ -500,7 +500,7 @@ namespace fluff { namespace ecs {
 	};
 
 	template<typename Type>
-	struct FLUFF_API Component : public IComponent
+	struct Component : public IComponent
 	{
 		typedef ComponentHandle<Type> Handle;
 		typedef ComponentHandle<const Type, const EntityManager> ConstHandle;
@@ -520,53 +520,53 @@ namespace fluff { namespace ecs {
 		friend class EntityManager;
 	};
 
-	struct FLUFF_API EntityCreatedEvent : public Event<EntityCreatedEvent>
+	struct EntityCreatedEvent : public Event<EntityCreatedEvent>
 	{
-		explicit EntityCreatedEvent(Entity Ent) : E(Ent) { }
-		virtual ~EntityCreatedEvent();
+		explicit FLUFF_API  EntityCreatedEvent(Entity Ent) : E(Ent) { }
+		virtual FLUFF_API ~EntityCreatedEvent();
 
 		Entity E;
 	};
 
-	struct FLUFF_API EntityDestroyedEvent : public Event<EntityDestroyedEvent>
+	struct EntityDestroyedEvent : public Event<EntityDestroyedEvent>
 	{
-		explicit EntityDestroyedEvent(Entity Ent) : E(Ent) { }
-		virtual ~EntityDestroyedEvent();
+		explicit FLUFF_API EntityDestroyedEvent(Entity Ent) : E(Ent) { }
+		virtual FLUFF_API ~EntityDestroyedEvent();
 
 		Entity E;
 	};
 
 	template<typename Comp>
-	struct FLUFF_API ComponentAddedEvent : public Event<ComponentAddedEvent<Comp>>
+	struct ComponentAddedEvent : public Event<ComponentAddedEvent<Comp>>
 	{
-		ComponentAddedEvent(const Entity Ent, ComponentHandle<Comp> Handle) : E(Ent), Handle(Handle) { }
+		FLUFF_API ComponentAddedEvent(const Entity Ent, ComponentHandle<Comp> Handle) : E(Ent), Handle(Handle) { }
 
 		Entity E;
 		ComponentHandle<Comp> Handle;
 	};
 
 	template<typename Comp>
-	struct FLUFF_API ComponentRemovedEvent : public Event<ComponentRemovedEvent<Comp>>
+	struct ComponentRemovedEvent : public Event<ComponentRemovedEvent<Comp>>
 	{
-		ComponentRemovedEvent(const Entity Ent, ComponentHandle<Comp> Handle) : E(Ent), Handle(Handle) { }
+		FLUFF_API ComponentRemovedEvent(const Entity Ent, ComponentHandle<Comp> Handle) : E(Ent), Handle(Handle) { }
 
 		Entity E;
 		ComponentHandle<Comp> Handle;
 	};
 
-	class FLUFF_API IComponentHelper
+	class IComponentHelper
 	{
 	public:
 		/*
 			Deconstructor
 		*/
-		virtual ~IComponentHelper() { };
+		virtual FLUFF_API ~IComponentHelper() { };
 		/*
 			Remove component helper
 
 			Ent - Entity to remove from
 		*/
-		virtual void RemoveComponent(Entity Ent) = 0;
+		virtual void FLUFF_API RemoveComponent(Entity Ent) = 0;
 		
 		/*
 			Copy component helper
@@ -574,11 +574,11 @@ namespace fluff { namespace ecs {
 			Src - Entity to copy from
 			Dst - Entity to copy to
 		*/
-		virtual void CopyComponentTo(Entity Src, Entity Dst) = 0;
+		virtual void FLUFF_API CopyComponentTo(Entity Src, Entity Dst) = 0;
 	};
 
 	template<typename Comp>
-	class FLUFF_API ComponentHelper : public IComponentHelper
+	class ComponentHelper : public IComponentHelper
 	{
 	public:
 		/*
@@ -626,7 +626,7 @@ namespace fluff { namespace ecs {
 		Dst.CopyComponent<Comp>(*(Src.GetComponent<Comp>().Get()));
 	}
 
-	class FLUFF_API EntityManager : NonCopyable
+	class EntityManager : NonCopyable
 	{
 		std::vector<std::bitset<MAX_COMPONENT_COUNT>> EntityComponentMasks_;
 		std::vector<uint32_t> EntityVersions_;
@@ -641,15 +641,15 @@ namespace fluff { namespace ecs {
 
 			EM - Event Manager for Entity Manager
 		*/
-		explicit EntityManager(EventManager & EM);
+		explicit FLUFF_API EntityManager(EventManager & EM);
 
 		/*
 			Deconstructor
 		*/
-		virtual ~EntityManager() { Reset(); };
+		virtual FLUFF_API ~EntityManager() { Reset(); };
 
 		template<class Type, bool All = false>
-		class FLUFF_API ViewIterator : public std::iterator<std::input_iterator_tag, ID>
+		class ViewIterator : public std::iterator<std::input_iterator_tag, ID>
 		{
 		protected:
 			EntityManager * Manager_;
@@ -749,13 +749,13 @@ namespace fluff { namespace ecs {
 		};
 		
 		template<bool All>
-		class FLUFF_API BaseView
+		class BaseView
 		{
 			friend class EntityManager;
 			EntityManager * Manager_;
 			std::bitset<MAX_COMPONENT_COUNT> Mask_;
 		public:
-			class FLUFF_API Iterator : public ViewIterator<Iterator, All> {
+			class Iterator : public ViewIterator<Iterator, All> {
 				public:
 					/*
 						Creates a new iterator
@@ -815,7 +815,7 @@ namespace fluff { namespace ecs {
 		};
 
 		template<bool All, typename ... Components>
-		class FLUFF_API TypedView : public BaseView<All>
+		class TypedView : public BaseView<All>
 		{
 			friend class EntityManager;
 			explicit TypedView(EntityManager * Manager) : BaseView<All>(Manager) { }
@@ -839,7 +839,7 @@ namespace fluff { namespace ecs {
 		typedef BaseView<true> DebugView;
 
 		template<typename ... Components>
-		class FLUFF_API UnpackingView
+		class UnpackingView
 		{
 		public:
 			struct Unpacker
@@ -936,7 +936,7 @@ namespace fluff { namespace ecs {
 			Id - ID of entity
 			Returns entity associated with ID
 		*/
-		Entity Get(ID Id);
+		Entity FLUFF_API Get(ID Id);
 
 		/*
 			Creates a new ID given the index
@@ -944,35 +944,35 @@ namespace fluff { namespace ecs {
 			Index - Index of new entity
 			Returns new ID
 		*/
-		ID CreateID(uint32_t Index) const;
+		ID FLUFF_API CreateID(uint32_t Index) const;
 
 		/*
 			Gets size of entity manager
 
 			Returns size
 		*/
-		size_t GetSize() const;
+		size_t FLUFF_API GetSize() const;
 
 		/*
 			Gets the capacity of the entity manager
 
 			Returns capacity
 		*/
-		size_t GetCapacity() const;
+		size_t FLUFF_API GetCapacity() const;
 
 		/*
 			Checks if ID is valid
 
 			Return if valid
 		*/
-		bool IsValid(ID Id) const;
+		bool FLUFF_API IsValid(ID Id) const;
 
 		/*
 			Creates new Entity
 
 			Returns new entity
 		*/
-		Entity Create();
+		Entity FLUFF_API Create();
 
 		/*
 			Creates a copy of a pre-existing entity
@@ -980,12 +980,12 @@ namespace fluff { namespace ecs {
 			Ent - Entity to copy
 			Returns copy of entity
 		*/
-		Entity CreateCopy(Entity Ent);
+		Entity FLUFF_API CreateCopy(Entity Ent);
 
 		/*
 			Destroys the entity with the ID given
 		*/
-		void Destroy(ID Id);
+		void FLUFF_API Destroy(ID Id);
 
 		/*
 			Adds a component to the entity
@@ -1195,7 +1195,7 @@ namespace fluff { namespace ecs {
 		/*
 			Resets the Entity Manager
 		*/
-		void Reset()
+		void FLUFF_API Reset()
 		{
 			for (auto entity : DebugEntities()) entity.Destroy();
 			for (auto *pool : ComponentPools_) {
@@ -1262,7 +1262,7 @@ namespace fluff { namespace ecs {
 			Id - ID of entity
 			Returns component mask
 		*/
-		std::bitset<MAX_COMPONENT_COUNT> ComponentMask(ID Id)
+		std::bitset<MAX_COMPONENT_COUNT> FLUFF_API ComponentMask(ID Id)
 		{
 			FLUFF_ASSERT(Id != Entity::INVALID)
 			return EntityComponentMasks_.at(Id.Index());
@@ -1352,7 +1352,7 @@ namespace fluff { namespace ecs {
 		}
 
 	private:
-		void AccomodateEntity(uint32_t Index);
+		void FLUFF_API AccomodateEntity(uint32_t Index);
 	};
 
 } }

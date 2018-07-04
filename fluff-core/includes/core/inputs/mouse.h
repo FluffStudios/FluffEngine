@@ -20,7 +20,7 @@
 
 namespace fluff
 {
-	class FLUFF_API Mouse
+	class Mouse
 	{
 	private:
 		static bool keys[MAX_BUTTON_COUNT];
@@ -71,8 +71,8 @@ namespace fluff
 		*/
 		inline static void Update(double ScrollX, double ScrollY)
 		{
-			Mouse::scrollX = ScrollX;
-			Mouse::scrollY = ScrollY;
+			Mouse::scrollX = static_cast<float>(ScrollX);
+			Mouse::scrollY = static_cast<float>(ScrollY);
 		}
 
 		/*

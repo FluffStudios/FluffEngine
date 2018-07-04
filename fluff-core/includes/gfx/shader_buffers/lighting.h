@@ -4,7 +4,7 @@
 
 namespace fluff { namespace gfx {
 
-	struct alignas(64) DirectionalLight
+	struct DirectionalLight
 	{
 		Vec3 Direction;
 		Vec3 Ambient;
@@ -12,16 +12,17 @@ namespace fluff { namespace gfx {
 		Vec3 Specular;
 	};
 
-	struct alignas(64) PointLight
+	struct PointLight
 	{
 		Vec3 Position;
 		Vec3 Ambient;
 		Vec3 Diffuse;
 		Vec3 Specular;
 		Vec3 Attenuation;
+		float buffer[12];
 	};
 
-	struct alignas(64) SpotLight
+	struct SpotLight
 	{
 		Vec3 Position;
 		Vec3 Direction;
@@ -30,6 +31,7 @@ namespace fluff { namespace gfx {
 		Vec3 Specular;
 		Vec3 Attenuation;
 		Float Cutoff;
+		float buffer[7];
 	};
 
 } }

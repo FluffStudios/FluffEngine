@@ -4,7 +4,7 @@
 
 namespace fluff { namespace gfx {
 
-	struct FLUFF_API Model
+	struct Model
 	{
 		VertexBuffer * Buffer;
 		size_t IndexCount;
@@ -14,7 +14,7 @@ namespace fluff { namespace gfx {
 		/*
 			Draws the model to the screen
 		*/
-		void Draw() const;
+		void FLUFF_API Draw() const;
 	};
 
 } }

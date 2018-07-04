@@ -20,10 +20,10 @@ namespace fluff {
 			ar(ComponentLookupTable::IDMap_);
 		}
 	public:
-		ComponentLookupTable() { }
+		FLUFF_API ComponentLookupTable() { }
 
 		template <class Component>
-		static int64_t GetID()
+		inline static int64_t GetID()
 		{
 			auto it = IDMap_.find(typeid(Component).name());
 			if (it == IDMap_.end()) return -1;
@@ -31,14 +31,14 @@ namespace fluff {
 		}
 
 		template <class Component>
-		static void Add()
+		inline static void Add()
 		{
 			if (IDMap_.find(typeid(Component).name()) != IDMap_.end()) return;
 			auto id = Component::GetID();
 			IDMap_.insert(std::make_pair(typeid(Component).name(), (int64_t) id));
 		}
 
-		static uint64_t GetNextSlot()
+		inline static uint64_t GetNextSlot()
 		{
 			return IDMap_.size();
 		}
@@ -49,7 +49,7 @@ namespace fluff {
 		static std::unordered_map<std::string, void*(*)()> map;
 	public:
 		template <class Type>
-		static void Add()
+		inline static void Add()
 		{
 #ifdef _DEBUG
 			if (map.find(typeid(Type).name()) != map.end())

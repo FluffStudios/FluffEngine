@@ -12,7 +12,7 @@
 
 namespace fluff { namespace render {
 
-	enum FLUFF_API AssetType : uint32_t
+	enum AssetType : uint32_t
 	{
 		LIBRARY_MESH,
 		LIBRARY_MATERIAL,
@@ -20,7 +20,7 @@ namespace fluff { namespace render {
 		LIBRARY_TEXTURE
 	};
 
-	struct FLUFF_API AssetLocationLibrary
+	struct AssetLocationLibrary
 	{
 		std::unordered_map<std::string, AssetType> AssetTypes;
 	private:
@@ -33,7 +33,7 @@ namespace fluff { namespace render {
 		}
 	};
 
-	class FLUFF_API ResourceLibrary
+	class ResourceLibrary
 	{
 		std::unordered_map<std::string, void *> Textures_;
 		std::unordered_map<std::string, void *> GPipelines_;
@@ -43,10 +43,10 @@ namespace fluff { namespace render {
 		static ResourceLibrary Instance_;
 	public:
 		static ResourceLibrary & GetInstance();
-		void AddPipeline(std::string Name, void * Pipeline);
-		void AddTexture(std::string Name, void * Texture);
-		void * GetPipeline(std::string Name);
-		void * GetTexture(std::string);
+		void FLUFF_API AddPipeline(std::string Name, void * Pipeline);
+		void FLUFF_API AddTexture(std::string Name, void * Texture);
+		void FLUFF_API * GetPipeline(std::string Name);
+		void FLUFF_API * GetTexture(std::string);
 		AssetLocationLibrary LocationLibrary;
 	};
 

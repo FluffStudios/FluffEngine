@@ -1,6 +1,8 @@
 #pragma once
 
-namespace fluff {	namespace physics {
+#include <common.h>
+
+namespace fluff {namespace physics {
 
 	struct PhysicsMaterialDescriptor
 	{
@@ -13,9 +15,9 @@ namespace fluff {	namespace physics {
 	{
 		void * Material_;
 	public:
-		PhysicsMaterial(void * SDK, PhysicsMaterialDescriptor Desc);
-		~PhysicsMaterial();
-		void * GetPhysxMaterial() const;
+		FLUFF_API PhysicsMaterial(void * SDK, PhysicsMaterialDescriptor Desc);
+		FLUFF_API ~PhysicsMaterial();
+		void FLUFF_API * GetPhysxMaterial() const;
 	};
 
 } }

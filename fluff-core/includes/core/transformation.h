@@ -7,7 +7,7 @@
 namespace fluff
 {
 
-	class FLUFF_API Transformation
+	class Transformation
 	{
 		glm::vec3 Position;
 		glm::quat Rotation;
@@ -18,7 +18,7 @@ namespace fluff
 		/*
 			Creates default transformation
 		*/
-		Transformation()
+		FLUFF_API Transformation()
 		{
 			Scale = glm::vec3(1, 1, 1);
 			CreateTransformationMatrix();
@@ -31,7 +31,7 @@ namespace fluff
 			Rotation - Rotation on each axis in degrees
 			Scale - Scaling factor across each axis
 		*/
-		Transformation(const glm::vec3 Position, const glm::vec3 Rotation, const glm::vec3 Scale) : Transformation()
+		FLUFF_API Transformation(const glm::vec3 Position, const glm::vec3 Rotation, const glm::vec3 Scale) : Transformation()
 		{
 			this->Position = Position;
 			this->Rotation = glm::quat(glm::radians(Rotation));
@@ -45,7 +45,7 @@ namespace fluff
 			Rotation - Rotating quaternion
 			Scale - Scaling factor across each axis
 		*/
-		Transformation(const glm::vec3 Position, const glm::quat Rotation, const glm::vec3 Scale) : Transformation()
+		FLUFF_API Transformation(const glm::vec3 Position, const glm::quat Rotation, const glm::vec3 Scale) : Transformation()
 		{
 			this->Position = Position;
 			this->Rotation = Rotation;
@@ -57,7 +57,7 @@ namespace fluff
 
 			Returns position
 		*/
-		glm::vec3 GetPosition() const
+		glm::vec3 FLUFF_API GetPosition() const
 		{
 			return this->Position;
 		}
@@ -67,7 +67,7 @@ namespace fluff
 
 			Position - new position
 		*/
-		void SetPosition(const glm::vec3 Position)
+		void FLUFF_API SetPosition(const glm::vec3 Position)
 		{
 			this->Position = Position;
 			CreateTransformationMatrix();
@@ -78,7 +78,7 @@ namespace fluff
 
 			Returns rotation
 		*/
-		glm::vec3 GetRotationInDegrees() const
+		glm::vec3 FLUFF_API GetRotationInDegrees() const
 		{
 			return glm::degrees(glm::eulerAngles(this->Rotation));
 		}
@@ -88,7 +88,7 @@ namespace fluff
 
 			Returns rotation
 		*/
-		glm::quat GetRotation() const
+		glm::quat FLUFF_API GetRotation() const
 		{
 			return Rotation;
 		}
@@ -98,7 +98,7 @@ namespace fluff
 
 			RotationInDegrees - new rotation
 		*/
-		void SetRotation(const glm::vec3 RotationInDegrees)
+		void FLUFF_API SetRotation(const glm::vec3 RotationInDegrees)
 		{
 			this->Rotation = glm::quat(glm::radians(RotationInDegrees));
 			CreateTransformationMatrix();
@@ -109,7 +109,7 @@ namespace fluff
 
 			Rotation - new rotation
 		*/
-		void SetRotation(const glm::quat Rotation)
+		void FLUFF_API SetRotation(const glm::quat Rotation)
 		{
 			this->Rotation = Rotation;
 			CreateTransformationMatrix();
@@ -120,7 +120,7 @@ namespace fluff
 
 			Returns scale
 		*/
-		glm::vec3 GetScale() const
+		glm::vec3 FLUFF_API GetScale() const
 		{
 			return this->Scale;
 		}
@@ -130,7 +130,7 @@ namespace fluff
 
 			Returns scale
 		*/
-		void SetScale(const glm::vec3 Scale)
+		void FLUFF_API SetScale(const glm::vec3 Scale)
 		{
 			this->Scale = Scale;
 			CreateTransformationMatrix();
@@ -141,13 +141,13 @@ namespace fluff
 
 			Returns transformation matrix
 		*/
-		glm::mat4 GetTransformationMatrix() const
+		glm::mat4 FLUFF_API GetTransformationMatrix() const
 		{
 			return this->TransformationMatrix;
 		}
 
 	private:
-		glm::mat4 CreateTransformationMatrix()
+		glm::mat4 FLUFF_API CreateTransformationMatrix()
 		{
 			glm::mat4 pos(1.0f);
 			glm::mat4 sca(1.0f);

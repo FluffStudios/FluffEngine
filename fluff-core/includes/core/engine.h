@@ -7,30 +7,30 @@
 
 namespace fluff
 {
-	class FLUFF_API IGameState
+	class IGameState
 	{
 	protected:
 		std::shared_ptr<ECSManager> pManager_;
 		IGameState();
 	public:
 		~IGameState();
-		virtual void Configure() = 0;
-		virtual void Run() = 0;
-		virtual void Shutdown() = 0;
-		virtual bool ShouldShutdown() = 0;
-		std::shared_ptr<ECSManager>& GetManager() { return pManager_; }
+		virtual void FLUFF_API Configure() = 0;
+		virtual void FLUFF_API Run() = 0;
+		virtual void FLUFF_API Shutdown() = 0;
+		virtual bool FLUFF_API ShouldShutdown() = 0;
+		inline std::shared_ptr<ECSManager> & GetManager() { return pManager_; }
 	};
 
-	class FLUFF_API Game
+	class Game
 	{
 		IGameState * ActiveState_;
 	public:
-		void SetGameState(IGameState * GameState);
-		void PlayState() const;
-		void Shutdown();
+		void FLUFF_API SetGameState(IGameState * GameState);
+		void FLUFF_API PlayState() const;
+		void FLUFF_API Shutdown();
 	};
 
-	class FLUFF_API Engine
+	class Engine
 	{
 		static struct LuminosEngine
 		{

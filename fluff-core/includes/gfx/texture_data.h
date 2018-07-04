@@ -10,7 +10,7 @@
 
 namespace fluff { namespace gfx {
 
-	class FLUFF_API TextureData
+	class TextureData
 	{
 		std::vector<unsigned char> Buffer_;
 		std::string Name_;
@@ -24,14 +24,14 @@ namespace fluff { namespace gfx {
 			ar(Name_, CreateInfo_, Buffer_);
 		}
 	public:
-		TextureData();
+		FLUFF_API TextureData();
 
-		TextureData(std::string Name, std::string File, int NumChannels);
-		TextureData(std::string Name, std::vector<unsigned char> Buffer, gfx::TextureCreateInfo Info);
+		FLUFF_API TextureData(std::string Name, std::string File, int NumChannels);
+		FLUFF_API TextureData(std::string Name, std::vector<unsigned char> Buffer, gfx::TextureCreateInfo Info);
 
-		std::vector<unsigned char> GetBuffer() const;
-		std::string GetName() const;
-		gfx::TextureCreateInfo GetCreateInfo() const;
+		std::vector<unsigned char> FLUFF_API GetBuffer() const;
+		std::string FLUFF_API GetName() const;
+		gfx::TextureCreateInfo FLUFF_API GetCreateInfo() const;
 	};
 
 } }

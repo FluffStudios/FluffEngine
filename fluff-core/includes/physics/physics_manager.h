@@ -10,13 +10,13 @@ namespace fluff { namespace physics {
 		struct PhysicsManagerImpl;
 		PhysicsManagerImpl * Impl_;
 	public:
-		PhysicsManager();
-		~PhysicsManager();
-		void * GetErrorCallback();
-		void * GetAllocatorCallback();
-		void * GetCPUDispatcher();
-		void * GetSDK();
-		void * GetCooking();
+		FLUFF_API PhysicsManager();
+		FLUFF_API ~PhysicsManager();
+		void FLUFF_API * GetErrorCallback();
+		void FLUFF_API * GetAllocatorCallback();
+		void FLUFF_API * GetCPUDispatcher();
+		void FLUFF_API * GetSDK();
+		void FLUFF_API * GetCooking();
 	};
 
 } }

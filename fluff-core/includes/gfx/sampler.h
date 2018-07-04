@@ -6,7 +6,7 @@
 namespace fluff { namespace gfx
 {
 
-	class FLUFF_API Sampler
+	class Sampler
 	{
 		unsigned int Sampler_;
 		TextureFilter Filter_;
@@ -16,31 +16,31 @@ namespace fluff { namespace gfx
 
 			Filter - Filter for sampling
 		*/
-		explicit Sampler(TextureFilter Filter);
+		explicit FLUFF_API Sampler(TextureFilter Filter);
 
 		/*
 			Destructor
 		*/
-		~Sampler();
+		FLUFF_API ~Sampler();
 		
 		/*
 			Binds the sampler to a location
 			
 			Location - Location to bind to
 		 */
-		void Bind(unsigned int Location) const;
+		void FLUFF_API Bind(unsigned int Location) const;
 
 		/*
 			Unbinds the sampler to a location
 			
 			Location - Location to unbind
 		 */
-		void Unbind(unsigned int Location) const;
+		void FLUFF_API Unbind(unsigned int Location) const;
 
 		/*
 			Releases resources held by the sampler
 		*/
-		void Release();
+		void FLUFF_API Release();
 	};
 
 } }

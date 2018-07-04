@@ -15,7 +15,7 @@
 
 namespace fluff {
 
-	class FLUFF_API MeshLibrary
+	class MeshLibrary
 	{
 		static std::vector<std::string> FileNames_;
 		static std::unordered_map<std::string, gfx::Mesh *> MeshMap_;

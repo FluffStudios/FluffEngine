@@ -5,7 +5,7 @@
 namespace fluff { namespace utilities
 {
 	
-	class FLUFF_API FileReader
+	class FileReader
 	{
 	public:
 		static std::string ReadTextFile(const char *path);

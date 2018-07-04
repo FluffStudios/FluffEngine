@@ -2,6 +2,7 @@
 
 #include <rendering/scene_renderer.h>
 #include <core/ecs/ecs_manager.h>
+#include <common.h>
 
 namespace fluff { namespace render {
 
@@ -12,7 +13,7 @@ namespace fluff { namespace render {
 		/*
 			Deleted default contstructor
 		*/
-		RenderSystem() = delete;
+		FLUFF_API RenderSystem() = delete;
 
 		/*
 			Creates new Render System
@@ -20,7 +21,7 @@ namespace fluff { namespace render {
 			Cam - Viewpoint of scene
 			ProjectionMatrix - Performs viewspace to screenspace transform
 		*/
-		RenderSystem(std::shared_ptr<ECSManager> & Manager, ecs::Entity Cam, glm::mat4 & ProjectionMatrix);
+		FLUFF_API RenderSystem(std::shared_ptr<ECSManager> & Manager, ecs::Entity Cam, glm::mat4 & ProjectionMatrix);
 
 		/*
 			Updates the scene
@@ -29,9 +30,9 @@ namespace fluff { namespace render {
 			EventManager - EventManager associated with render system
 			Delta - time since last update
 		*/
-		void Update(ecs::EntityManager & EntityManager, ecs::EventManager & EventManager, double Delta) override;
+		void FLUFF_API Update(ecs::EntityManager & EntityManager, ecs::EventManager & EventManager, double Delta) override;
 
-		std::shared_ptr<SceneRenderer> & GetSceneRenderer() { return Scene_; }
+		inline std::shared_ptr<SceneRenderer> & GetSceneRenderer() { return Scene_; }
 	};
 
 } }

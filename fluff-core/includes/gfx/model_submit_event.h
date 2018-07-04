@@ -5,24 +5,24 @@
 
 namespace fluff { namespace gfx {
 
-	struct FLUFF_API ModelSubmittedEvent : public ecs::Event<ModelSubmittedEvent>
+	struct ModelSubmittedEvent : public ecs::Event<ModelSubmittedEvent>
 	{
 		/*
 			Creates a new Model Submitted Event
 		*/
-		explicit ModelSubmittedEvent() { }
+		FLUFF_API ModelSubmittedEvent() { }
 
 		/*
 			Creates a new Model Submitted Event
 
 			Ent		Entity created
 		*/
-		explicit ModelSubmittedEvent(ecs::Entity Ent) : E(Ent) { Ent.Destroy(); }
+		explicit FLUFF_API ModelSubmittedEvent(ecs::Entity Ent) : E(Ent) { Ent.Destroy(); }
 
 		/*
 			Destructor
 		*/
-		virtual ~ModelSubmittedEvent() { };
+		virtual FLUFF_API ~ModelSubmittedEvent() { };
 
 		ecs::Entity E;
 	};

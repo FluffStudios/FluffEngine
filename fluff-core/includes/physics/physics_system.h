@@ -5,6 +5,7 @@
 #include <physics/physics_scene.h>
 
 #include <glm/vec3.hpp>
+#include <common.h>
 
 namespace fluff { namespace physics {
 
@@ -14,15 +15,15 @@ namespace fluff { namespace physics {
 		PhysicsManager * pManager_;
 		std::shared_ptr<ECSManager> & SystemsManager_;
 	public:
-		PhysicsSystem(std::shared_ptr<ECSManager> & Manager);
-		~PhysicsSystem();
-		void Configure(ecs::EntityManager & Entities, ecs::EventManager & Events) override;
-		void Update(ecs::EntityManager & Entities, ecs::EventManager & Events, double DeltaTime) override;
-		void FixedUpdate(ecs::EntityManager & Entities, ecs::EventManager & Events) override;
+		FLUFF_API PhysicsSystem(std::shared_ptr<ECSManager> & Manager);
+		FLUFF_API ~PhysicsSystem();
+		void FLUFF_API Configure(ecs::EntityManager & Entities, ecs::EventManager & Events) override;
+		void FLUFF_API Update(ecs::EntityManager & Entities, ecs::EventManager & Events, double DeltaTime) override;
+		void FLUFF_API FixedUpdate(ecs::EntityManager & Entities, ecs::EventManager & Events) override;
 
-		void * GetSDK() const { return pManager_->GetSDK(); }
-		PhysicsScene * GetScene() const { return Scene_; }
-		PhysicsManager * GetManager() const { return pManager_; }
+		void FLUFF_API * GetSDK() const { return pManager_->GetSDK(); }
+		PhysicsScene FLUFF_API * GetScene() const { return Scene_; }
+		PhysicsManager FLUFF_API * GetManager() const { return pManager_; }
 	};
 
 } }

@@ -6,7 +6,7 @@
 namespace fluff { namespace ecs {
 
 	template <typename Type, typename ... Dependencies>
-	class FLUFF_API Exclusive : public System<Exclusive<Type, Dependencies ...>>, public Receiver<Exclusive<Type, Dependencies ...>>
+	class Exclusive : public System<Exclusive<Type, Dependencies ...>>, public Receiver<Exclusive<Type, Dependencies ...>>
 	{
 	public:
 		/*

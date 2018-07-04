@@ -4,57 +4,60 @@
 
 namespace fluff { namespace gfx {
 
-		struct alignas(sizeof(float32_t)) Float
+		struct Float
 		{
 			float32_t Value;
 		};
 
-		struct alignas(sizeof(int32_t)) Int
+		struct Int
 		{
 			int32_t Value;
 		};
 
-		struct alignas(sizeof(float32_t) * 2) Vec2
+		struct Vec2
 		{
 			float32_t Value[2];
 		};
 
-		struct alignas(sizeof(float32_t) * 4) Vec3
+		struct Vec3
 		{
 			float32_t Value[3];
+			float32_t buffer;
 		};
 
-		struct alignas(sizeof(float32_t) * 4) Vec4
+		struct Vec4
 		{
 			float32_t Value[4];
 		};
 
-		struct alignas(sizeof(int32_t) * 2) IVec2
+		struct IVec2
 		{
 			int32_t Value[2];
 		};
 
-		struct alignas(sizeof(int32_t) * 4) IVec3
+		struct IVec3
 		{
 			int32_t Value[3];
+			int32_t buffer;
 		};
 
-		struct alignas(sizeof(int32_t) * 4) IVec4
+		struct IVec4
 		{
 			int32_t Value[4];
 		};
 
-		struct alignas(sizeof(float32_t) * 2 * 2) Mat2x2
+		struct Mat2x2
 		{
 			float32_t Value[2][2];
 		};
 
-		struct alignas(sizeof(float32_t) * 4 * 4) Mat3x3
+		struct Mat3x3
 		{
 			float32_t Value[3][3];
+			float buffer[7]; // align to mat4x4
 		};
 
-		struct alignas(sizeof(float32_t) * 4 * 4) Mat4x4
+		struct Mat4x4
 		{
 			float32_t Value[4][4];
 		};

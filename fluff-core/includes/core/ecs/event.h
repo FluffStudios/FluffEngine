@@ -6,7 +6,7 @@
 namespace fluff { namespace ecs {
 
 	template <typename T>
-	class FLUFF_API Event : public IEvent
+	class Event : public IEvent
 	{
 	public:
 		/*

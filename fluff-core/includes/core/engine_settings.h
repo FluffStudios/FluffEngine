@@ -4,9 +4,9 @@
 #include <string>
 #include <cereal/external/rapidjson/document.h>
 
-namespace fluff
-{
-	struct FLUFF_API WindowSettings
+namespace fluff {
+
+	struct WindowSettings
 	{
 		uint32_t Width = 1920;
 		uint32_t Height = 1080;
@@ -15,11 +15,11 @@ namespace fluff
 		bool VSync = false;
 		bool Fullscreen = true;
 
-		rapidjson::Value Save(rapidjson::MemoryPoolAllocator<> & Allocator) const;
-		void Load(const rapidjson::Value & Object, rapidjson::MemoryPoolAllocator<> & Allocator);
+		rapidjson::Value FLUFF_API Save(rapidjson::MemoryPoolAllocator<> & Allocator) const;
+		void FLUFF_API Load(const rapidjson::Value & Object, rapidjson::MemoryPoolAllocator<> & Allocator);
 	};
 
-	enum FLUFF_API Quality : uint32_t
+	enum Quality : uint32_t
 	{
 		LOW = 0,
 		MEDIUM = 1,
@@ -27,13 +27,13 @@ namespace fluff
 		ULTRA = 3
 	};
 
-	enum FLUFF_API AA : uint32_t
+	enum AA : uint32_t
 	{
 		NONE,
 		MSAA
 	};
 
-	struct FLUFF_API GFXSettings
+	struct GFXSettings
 	{
 		uint32_t Samples = 1;
 		Quality TextureQuality = MEDIUM;
@@ -42,18 +42,18 @@ namespace fluff
 		AA AntiAliasing = NONE;
 		float32_t MaximumRenderDistance;
 
-		rapidjson::Value Save(rapidjson::MemoryPoolAllocator<> & Allocator) const;
-		void Load(const rapidjson::Value & Object, rapidjson::MemoryPoolAllocator<> & Allocator);
+		rapidjson::Value FLUFF_API Save(rapidjson::MemoryPoolAllocator<> & Allocator) const;
+		void FLUFF_API Load(const rapidjson::Value & Object, rapidjson::MemoryPoolAllocator<> & Allocator);
 	};
 
-	struct FLUFF_API EngineSettings
+	struct EngineSettings
 	{
 		static EngineSettings CurrentEngineSettings;
 
 		WindowSettings S_Window;
 		GFXSettings S_Graphics;
 
-		void ToFile(std::string FileName) const;
-		void ReadFile(std::string FileName);
+		void FLUFF_API ToFile(std::string FileName) const;
+		void FLUFF_API ReadFile(std::string FileName);
 	};
 }

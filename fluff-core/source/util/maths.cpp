@@ -16,7 +16,7 @@ namespace fluff
 			for (auto y = 0; y < Rows; y++)
 			{
 				float random = (float) rand() / (float) RAND_MAX;
-				random += 0.0001;
+				random += 0.0001f;
 				data.push_back(random);
 			}
 		}
@@ -30,7 +30,7 @@ namespace fluff
 		{
 			for (auto x = 0; x < Columns; x++)
 			{
-				srand(Seed + abs(49632 * (int) (x + X * Columns)) + abs(325176 * (int)(y + Z * Rows)));
+				srand(static_cast<uint32_t>(Seed + abs(49632 * (int)(x + X * Columns)) + abs(325176 * (int)(y + Z * Rows))));
 				float random = (float) rand() / (float) RAND_MAX;
 				random > 0 ? random : 0.001f;
 				res[y * Columns + x] = random;
@@ -62,7 +62,7 @@ namespace fluff
 	{
 		std::vector<std::complex<float>> res;
 
-		for (int i = 0; i < Height; i++)
+		for (uint32_t i = 0; i < Height; i++)
 		{
 			std::valarray<std::complex<float>> Data(InputData.data() + i * Width, InputData.size() / Height);
 			FFTHelper(Data);
@@ -73,7 +73,7 @@ namespace fluff
 		}
 
 		std::vector<std::complex<float>> tmp(Width * Height);
-		for (int i = 0; i < Width * Height; i++)
+		for (uint32_t i = 0; i < Width * Height; i++)
 		{
 			size_t column = i % Width;
 			size_t row = (i - column) / Height;
@@ -82,7 +82,7 @@ namespace fluff
 		}
 		res.clear();
 		res.reserve(Width * Height);
-		for (int i = 0; i < Height; i++)
+		for (uint32_t i = 0; i < Height; i++)
 		{
 			std::valarray<std::complex<float>> Data(tmp.data() + i * Width, tmp.size() / Height);
 			FFTHelper(Data);
@@ -91,7 +91,7 @@ namespace fluff
 				res.push_back(i);
 			}
 		}
-		for (int i = 0; i < Width * Height; i++)
+		for (uint32_t i = 0; i < Width * Height; i++)
 		{
 			size_t column = i % Width;
 			size_t row = (i - column) / Height;
@@ -104,9 +104,9 @@ namespace fluff
 	std::vector<std::complex<float>> Transform(std::vector<std::complex<float>> FFTData, uint32_t Width, uint32_t Height, float32_t TransformationFilter)
 	{
 		std::vector<std::complex<float>> B(Width * Height);
-		for (auto z = 0; z < Height; z++)
+		for (uint32_t z = 0; z < Height; z++)
 		{
-			for (auto x = 0; x < Width; x++)
+			for (uint32_t x = 0; x < Width; x++)
 			{
 				uint32_t i, j;
 				if ((Width / 2 < x && x < Width) && (0 <= z && z < Height / 2))
@@ -144,7 +144,7 @@ namespace fluff
 		Data = Data.apply(std::conj);
 		FFTHelper(Data);
 		Data = Data.apply(std::conj);
-		Data /= Data.size();
+		Data /= static_cast<float>(Data.size());
 	}
 
 	std::vector<std::complex<float>> IFFT(std::vector<std::complex<float>> InputData, uint32_t Width, uint32_t Height)
@@ -152,7 +152,7 @@ namespace fluff
 		std::vector<std::complex<float>> res(Width * Height);
 		std::vector<std::complex<float>> tmp;
 
-		for (int i = 0; i < Width * Height; i++)
+		for (uint32_t i = 0; i < Width * Height; i++)
 		{
 			size_t column = i % Width;
 			size_t row = (i - column) / Height;
@@ -160,7 +160,7 @@ namespace fluff
 			res[newPos] = InputData[i];
 		}
 
-		for (auto i = 0; i < Height; i++)
+		for (uint32_t i = 0; i < Height; i++)
 		{
 			std::valarray<std::complex<float>> Data(res.data() + (i * Width), res.size() / Height);
 			IFFTHelper(Data);
@@ -170,7 +170,7 @@ namespace fluff
 			}
 		}
 
-		for (int i = 0; i < Width * Height; i++)
+		for (uint32_t i = 0; i < Width * Height; i++)
 		{
 			size_t column = i % Width;
 			size_t row = (i - column) / Height;
@@ -180,7 +180,7 @@ namespace fluff
 
 		tmp.clear();
 
-		for (auto i = 0; i < Height; i++)
+		for (uint32_t i = 0; i < Height; i++)
 		{
 			std::valarray<std::complex<float>> Data(res.data() + (i * Width), res.size() / Height);
 			IFFTHelper(Data);

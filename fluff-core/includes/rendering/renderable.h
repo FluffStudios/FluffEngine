@@ -6,7 +6,7 @@
 namespace fluff { namespace render {
 
 	using namespace gfx;
-	class FLUFF_API Renderable
+	class Renderable
 	{
 	protected:
 		Material * Material_;
@@ -15,7 +15,7 @@ namespace fluff { namespace render {
 		/*
 			Default renderable constructor
 		*/
-		Renderable() : Renderable(nullptr, nullptr) { }
+		FLUFF_API Renderable() : Renderable(nullptr, nullptr) { }
 
 		/*
 			Creates a new renderable object in the world
@@ -23,7 +23,7 @@ namespace fluff { namespace render {
 			MaterialHandle - pointer to material
 			ModelHandle - pointer to model
 		 */
-		Renderable(Material* MaterialHandle, Model* ModelHandle)
+		FLUFF_API Renderable(Material* MaterialHandle, Model* ModelHandle)
 		{
 			Material_ = MaterialHandle;
 			Model_ = ModelHandle;

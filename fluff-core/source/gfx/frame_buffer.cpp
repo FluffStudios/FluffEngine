@@ -158,17 +158,17 @@ namespace fluff { namespace gfx {
 		glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA16F, Width_, Height_);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + this->AttachedTextures_.size() + this->AttachedBuffers_.size(), GL_TEXTURE_2D, id, 0);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, static_cast<GLenum>(GL_COLOR_ATTACHMENT0 + this->AttachedTextures_.size() + this->AttachedBuffers_.size()), GL_TEXTURE_2D, id, 0);
 		size_t loc = this->AttachedTextures_.size() + this->AttachedBuffers_.size();
 		Texture tex = {
 			nullptr,
-			GL_COLOR_ATTACHMENT0 + this->AttachedTextures_.size() + this->AttachedBuffers_.size(),
+			static_cast<GLenum>(GL_COLOR_ATTACHMENT0 + this->AttachedTextures_.size() + this->AttachedBuffers_.size()),
 			GL_TEXTURE_2D
 		};
 		tex.ID = new uint32_t;
 		*(tex.ID) = id;
 		this->AttachedTextures_.push_back(std::move(tex));
-		return loc;
+		return static_cast<int32_t>(loc);
 	}
 
 	int32_t FrameBuffer::AddDepthTexture()
@@ -196,17 +196,17 @@ namespace fluff { namespace gfx {
 		glGenRenderbuffers(1, &id);
 		glBindRenderbuffer(GL_RENDERBUFFER, id);
 		glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA8, Width_, Height_);
-		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + this->AttachedTextures_.size() + this->AttachedBuffers_.size(), GL_RENDERBUFFER, id);
+		glFramebufferRenderbuffer(GL_FRAMEBUFFER, static_cast<GLenum>(GL_COLOR_ATTACHMENT0 + this->AttachedTextures_.size() + this->AttachedBuffers_.size()), GL_RENDERBUFFER, id);
 		size_t loc = this->AttachedTextures_.size() + this->AttachedBuffers_.size();
 		Buffer buf = {
 			nullptr,
-			GL_COLOR_ATTACHMENT0 + this->AttachedTextures_.size() + this->AttachedBuffers_.size(),
+			static_cast<GLenum>(GL_COLOR_ATTACHMENT0 + this->AttachedTextures_.size() + this->AttachedBuffers_.size()),
 			GL_TEXTURE_2D
 		};
 		buf.ID = new uint32_t;
 		*(buf.ID) = id;
 		this->AttachedBuffers_.push_back(buf);
-		return loc;
+		return static_cast<int32_t>(loc);
 	}
 
 	int32_t FrameBuffer::AddDepthBuffer()
@@ -228,7 +228,7 @@ namespace fluff { namespace gfx {
 	void FrameBuffer::SetDrawBuffers(uint32_t * IDs, uint32_t Count) const
 	{
 		uint32_t Bufs[32];
-		for (auto i = 0; i < Count; i++) Bufs[i] = GL_COLOR_ATTACHMENT0 + IDs[i];
+		for (size_t i = 0; i < Count; i++) Bufs[i] = GL_COLOR_ATTACHMENT0 + IDs[i];
 		glDrawBuffers(Count, Bufs);
 	}
 
