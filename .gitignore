@@ -45,7 +45,6 @@ local.properties
 
 # Build results
 
-x64/
 [Bb]in/
 [Oo]bj/
 
@@ -217,4 +216,3 @@ pip-log.txt
 
 Build/
 !Engine/Dependencies
-!Engine/Dependencies/*/Release/x64
