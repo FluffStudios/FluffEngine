@@ -51,10 +51,8 @@ file(GLOB_RECURSE CORE_SRCS
 
 include_directories(${FluffEngine_SOURCE_DIR}/Engine/Source/Core/Public)
 
-INCLUDE(${FluffEngine_CMAKE_DIR}/FindIMGUI.cmake)
-
 # Define the executable
-add_library(Core ${CORE_HDRS} ${CORE_SRCS} ${IMGUI_SRCS})
+add_library(Core ${CORE_HDRS} ${CORE_SRCS})
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT Core)
 
 #######################################
@@ -96,7 +94,6 @@ include_directories(
     ${GLM_INCLUDE_DIRS}
     ${PHYSX_INCLUDE_DIRS}
 	${STB_INCLUDE_DIRS}
-	${IMGUI_INCLUDE_DIRS}
 )
 
 # Define the link libraries
