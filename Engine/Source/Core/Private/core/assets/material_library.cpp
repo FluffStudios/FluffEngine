@@ -9,6 +9,7 @@ namespace fluff {
 	{
 		render::Material * pipeline = new render::Material;
 		ReadFromFile(FileName, *pipeline);
+
 		MaterialMap_.insert(std::make_pair(pipeline->Name, pipeline));
 	}
 
@@ -18,6 +19,7 @@ namespace fluff {
 		FileNames_.push_back(FileName);
 		ReadFromFile(FileName, *pipeline);
 		MaterialMap_.insert(std::make_pair(pipeline->Name, pipeline));
+
 		return pipeline;
 	}
 

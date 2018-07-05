@@ -2,6 +2,9 @@ cmake_minimum_required(VERSION 3.6)
 
 project(FluffEngine)
 
+# We need a CMAKE_DIR with some code to find external dependencies
+SET(FluffEngine_CMAKE_DIR "${FluffEngine_SOURCE_DIR}/CMake")
+
 # add the -c and -Wall flags
 if(MSVC)
 	add_definitions(
@@ -25,7 +28,7 @@ if ( NOT CMAKE_BUILD_TYPE OR CMAKE_BUILD_TYPE STREQUAL "")
 			"Choose the type of build, options are: None (CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) \"Debug\" \"Release\" \"RelWithDebInfo\" \"MinSizeRel\"."
 		FORCE
 	)
-endif ( CMAKE_BUILD_TYPE STREQUAL "" )
+endif ( NOT CMAKE_BUILD_TYPE OR CMAKE_BUILD_TYPE STREQUAL "")
 
 add_definitions( -D_CRT_SECURE_NO_WARNINGS )
 add_definitions( -DGLEW_STATIC )
@@ -48,12 +51,11 @@ file(GLOB_RECURSE CORE_SRCS
 
 include_directories(${FluffEngine_SOURCE_DIR}/Engine/Source/Core/Public)
 
-# Define the executable
-add_library(Core ${CORE_HDRS} ${CORE_SRCS})
-set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT Core)
+INCLUDE(${FluffEngine_CMAKE_DIR}/FindIMGUI.cmake)
 
-# We need a CMAKE_DIR with some code to find external dependencies
-SET(FluffEngine_CMAKE_DIR "${FluffEngine_SOURCE_DIR}/CMake")
+# Define the executable
+add_library(Core ${CORE_HDRS} ${CORE_SRCS} ${IMGUI_SRCS})
+set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT Core)
 
 #######################################
 # LOOK for the packages that we need! #
@@ -93,7 +95,8 @@ include_directories(
     ${CEREAL_INCLUDE_DIRS}
     ${GLM_INCLUDE_DIRS}
     ${PHYSX_INCLUDE_DIRS}
-    ${STB_INCLUDE_DIRS}
+	${STB_INCLUDE_DIRS}
+	${IMGUI_INCLUDE_DIRS}
 )
 
 # Define the link libraries
