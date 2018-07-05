@@ -83,10 +83,10 @@ namespace fluff { namespace gfx {
 
 	Mesh::Mesh(utilities::SerializationMesh * SerialMesh, size_t Count)
 	{
-		auto VertexCount = 0L;
-		IndexCount = 0L;
+		size_t VertexCount = 0;
+		IndexCount = 0;
 
-		for (auto i = 0; i < Count; i++)
+		for (size_t i = 0; i < Count; i++)
 		{
 			VertexCount += SerialMesh[i].VertexCount;
 			IndexCount += SerialMesh[i].IndexCount;
@@ -110,15 +110,15 @@ namespace fluff { namespace gfx {
 			}
 		}
 
-		auto offset = 0L;
-		auto index_offset = 0L;
+		uint32_t offset = 0;
+		uint32_t index_offset = 0;
 		for (auto i = 0; i < Count; i++)
 		{
 			for (auto j = 0; j < SerialMesh[i].IndexCount; j++)
 			{
 				Indices_[offset++] = SerialMesh[i].Indices[j] + index_offset;
 			}
-			index_offset += SerialMesh[i].VertexCount;
+			index_offset += static_cast<uint32_t>(SerialMesh[i].VertexCount);
 		}
 
 		for (auto i = 0; i < Count; i++)

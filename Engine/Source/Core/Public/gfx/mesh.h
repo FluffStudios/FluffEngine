@@ -369,7 +369,7 @@ namespace fluff { namespace gfx {
 		*/
 		uint32_t GetIndexCount() const
 		{
-			return IndexCount;
+			return static_cast<uint32_t>(IndexCount);
 		}
 
 		/*
@@ -379,7 +379,7 @@ namespace fluff { namespace gfx {
 		*/
 		uint32_t GetVertexCount() const
 		{
-			return VertexCount;
+			return static_cast<uint32_t>(VertexCount);
 		}
 
 		/*

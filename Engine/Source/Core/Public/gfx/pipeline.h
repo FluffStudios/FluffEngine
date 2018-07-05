@@ -123,7 +123,7 @@ namespace fluff { namespace gfx
 		{
 			if (OutputVars && NumFeedback)
 			{
-				for (auto i = 0; i < NumFeedback; i++)
+				for (uint32_t i = 0; i < NumFeedback; i++)
 				{
 					if (OutputVars[i]) delete [] OutputVars[i];
 				}
@@ -153,7 +153,7 @@ namespace fluff { namespace gfx
 
 			ar(NumFeedback, outs, BufferMode);
 			if (NumFeedback) OutputVars = new char *[NumFeedback];
-			for (auto i = 0; i < NumFeedback; i++)
+			for (uint32_t i = 0; i < NumFeedback; i++)
 			{
 				OutputVars[i] = new char[outs[i].length() + 1];
 				memcpy(OutputVars[i], outs[i].data(), outs[i].length());

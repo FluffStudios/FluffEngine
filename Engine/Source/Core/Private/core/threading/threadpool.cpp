@@ -30,7 +30,7 @@ namespace fluff { namespace threading {
 	std::shared_ptr<ThreadPool> ThreadPool::CreateInstance(const uint32_t NumThreads, uint32_t & ID)
 	{
 		Instances_.push_back(std::make_shared<ThreadPool>(NumThreads));
-		ID = Instances_.size() - 1;
+		ID = static_cast<uint32_t>(Instances_.size()) - 1;
 		return Instances_[ID];
 	}
 

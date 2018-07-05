@@ -42,18 +42,18 @@ namespace fluff { namespace render
 
 		for (int x = VertexCountPerSide - 1; x >= 0; x--)
 		{
-			for (auto z = 0; z < VertexCountPerSide; z++)
+			for (size_t z = 0; z < VertexCountPerSide; z++)
 			{
 				auto height = Noise.GetValue(x + TransformHandle->GetPosition().x, z + TransformHandle->GetPosition().z) * Amplitude;
 				HeightMap_[(VertexCountPerSide - x - 1) * (VertexCountPerSide) + z] = height;
 				
-				positions[3 * vertex_pointer + 0] = -((int32_t)VertexCountPerSide - x - 1);
+				positions[3 * vertex_pointer + 0] = static_cast<float>(-((int32_t)VertexCountPerSide - x - 1));
 				positions[3 * vertex_pointer + 1] = height;
-				positions[3 * vertex_pointer + 2] = z;
+				positions[3 * vertex_pointer + 2] = static_cast<float>(z);
 
-				uvs[3 * vertex_pointer + 0] = (0);
-				uvs[3 * vertex_pointer + 1] = ((z / (VertexCountPerSide - 1)));
-				uvs[3 * vertex_pointer + 2] = ((x / (VertexCountPerSide - 1)));
+				uvs[3 * vertex_pointer + 0] = static_cast<float>(0);
+				uvs[3 * vertex_pointer + 1] = static_cast<float>((z / (VertexCountPerSide - 1)));
+				uvs[3 * vertex_pointer + 2] = static_cast<float>((x / (VertexCountPerSide - 1)));
 				vertex_pointer++;
 			}
 		}
@@ -62,20 +62,19 @@ namespace fluff { namespace render
 		TransformHandle->SetScale(TransformHandle->GetScale() * glm::vec3(-1, 1, 1));
 
 		size_t indexPointer = 0;
-		for (auto gz = 0; gz < VertexCountPerSide - 1; gz++) {
-			for (auto gx = 0; gx < VertexCountPerSide - 1; gx++) {
+		for (size_t gz = 0; gz < VertexCountPerSide - 1; gz++) {
+			for (size_t gx = 0; gx < VertexCountPerSide - 1; gx++) {
 				auto top_left = (gz * VertexCountPerSide) + gx;
 				auto top_right = top_left + 1;
 				auto bottom_left = ((gz + 1) * VertexCountPerSide) + gx;
 				auto bottom_right = bottom_left + 1;
 
-				indices[indexPointer++] = (bottom_right);
-				indices[indexPointer++] = (bottom_left);
-				indices[indexPointer++] = (top_right);
-
-				indices[indexPointer++] = (top_right);
-				indices[indexPointer++] = (bottom_left);
-				indices[indexPointer++] = (top_left);
+				indices[indexPointer++] = static_cast<uint32_t>(bottom_right);
+				indices[indexPointer++] = static_cast<uint32_t>(bottom_left);
+				indices[indexPointer++] = static_cast<uint32_t>(top_right);
+				indices[indexPointer++] = static_cast<uint32_t>(top_right);
+				indices[indexPointer++] = static_cast<uint32_t>(bottom_left);
+				indices[indexPointer++] = static_cast<uint32_t>(top_left);
 			}
 		}
 
@@ -83,7 +82,7 @@ namespace fluff { namespace render
 		const auto at_loc = static_cast<bool*>(Allocator::Alloc(sizeof(bool) * VertexCountPerSide * VertexCountPerSide));
 		memset(at_loc, false, sizeof(bool) * VertexCountPerSide * VertexCountPerSide);
 
-		for (auto i = 0; i < (6 * (VertexCountPerSide - 1) * (VertexCountPerSide - 1)); i += 3)
+		for (uint32_t i = 0; i < (6 * (VertexCountPerSide - 1) * (VertexCountPerSide - 1)); i += 3)
 		{
 			auto i1 = indices[i + 0];
 			auto i2 = indices[i + 1];
@@ -130,7 +129,7 @@ namespace fluff { namespace render
 			}
 		}
 
-		for (auto i = 0; i < (VertexCountPerSide * VertexCountPerSide); i++)
+		for (uint32_t i = 0; i < (VertexCountPerSide * VertexCountPerSide); i++)
 		{
 			face_norms[i] = glm::normalize(face_norms[i]);
 			face_norms[i] *= -1;
@@ -166,37 +165,36 @@ namespace fluff { namespace render
 
 		for (int x = VertexCountPerSide - 1; x >= 0; x--)
 		{
-			for (auto z = 0; z < VertexCountPerSide; z++)
+			for (uint32_t z = 0; z < VertexCountPerSide; z++)
 			{
-				positions[3 * vertex_pointer + 0] = -x;
-				auto height = 0;
+				positions[3 * vertex_pointer + 0] = static_cast<float>(-x);
+				auto height = 0.0f;
 				HeightMap[vertex_pointer] = height;
 
 				positions[3 * vertex_pointer + 1] = height;
-				positions[3 * vertex_pointer + 2] = z;
+				positions[3 * vertex_pointer + 2] = static_cast<float>(z);
 
-				uvs[3 * vertex_pointer + 0] = (0);
-				uvs[3 * vertex_pointer + 1] = ((z / (VertexCountPerSide - 1)));
-				uvs[3 * vertex_pointer + 2] = ((x / (VertexCountPerSide - 1)));
+				uvs[3 * vertex_pointer + 0] = static_cast<float>(0);
+				uvs[3 * vertex_pointer + 1] = static_cast<float>((z / (VertexCountPerSide - 1)));
+				uvs[3 * vertex_pointer + 2] = static_cast<float>((x / (VertexCountPerSide - 1)));
 				vertex_pointer++;
 			}
 		}
 
 		size_t indexPointer = 0;
-		for (auto gz = 0; gz < VertexCountPerSide - 1; gz++) {
-			for (auto gx = 0; gx < VertexCountPerSide - 1; gx++) {
+		for (size_t gz = 0; gz < VertexCountPerSide - 1; gz++) {
+			for (size_t gx = 0; gx < VertexCountPerSide - 1; gx++) {
 				auto top_left = (gz * VertexCountPerSide) + gx;
 				auto top_right = top_left + 1;
 				auto bottom_left = ((gz + 1) * VertexCountPerSide) + gx;
 				auto bottom_right = bottom_left + 1;
 
-				indices[indexPointer++] = (top_right);
-				indices[indexPointer++] = (bottom_left);
-				indices[indexPointer++] = (bottom_right);
-
-				indices[indexPointer++] = (top_left);
-				indices[indexPointer++] = (bottom_left);
-				indices[indexPointer++] = (top_right);
+				indices[indexPointer++] = static_cast<uint32_t>(top_right);
+				indices[indexPointer++] = static_cast<uint32_t>(bottom_left);
+				indices[indexPointer++] = static_cast<uint32_t>(bottom_right);
+				indices[indexPointer++] = static_cast<uint32_t>(top_left);
+				indices[indexPointer++] = static_cast<uint32_t>(bottom_left);
+				indices[indexPointer++] = static_cast<uint32_t>(top_right);
 			}
 		}
 
@@ -204,7 +202,7 @@ namespace fluff { namespace render
 		const auto at_loc = static_cast<bool*>(Allocator::Alloc(sizeof(bool) * VertexCountPerSide * VertexCountPerSide));
 		memset(at_loc, false, sizeof(bool) * VertexCountPerSide * VertexCountPerSide);
 
-		for (auto i = 0; i < (6 * (VertexCountPerSide - 1) * (VertexCountPerSide - 1)); i += 3)
+		for (size_t i = 0; i < (6 * (VertexCountPerSide - 1) * (VertexCountPerSide - 1)); i += 3)
 		{
 			auto i1 = indices[i + 0];
 			auto i2 = indices[i + 1];
@@ -251,7 +249,7 @@ namespace fluff { namespace render
 			}
 		}
 
-		for (auto i = 0; i < (VertexCountPerSide * VertexCountPerSide); i++)
+		for (size_t i = 0; i < (VertexCountPerSide * VertexCountPerSide); i++)
 		{
 			face_norms[i] = glm::normalize(face_norms[i]);
 			normals[3 * i] = face_norms[i].z;
@@ -283,36 +281,36 @@ namespace fluff { namespace render
 		std::vector<float32_t> uvs(3 * VertexCountPerSide * VertexCountPerSide); // preallocate the uvs
 		std::vector<uint32_t>  indices(6 * (VertexCountPerSide - 1) * (VertexCountPerSide - 1));
 
-		for (auto x = 0; x < VertexCountPerSide; x++)
+		for (size_t x = 0; x < VertexCountPerSide; x++)
 		{
-			for (auto z = 0; z < VertexCountPerSide; z++)
+			for (size_t z = 0; z < VertexCountPerSide; z++)
 			{
 				positions[3 * (z + x * VertexCountPerSide)] = (z / (float)(VertexCountPerSide - 1));
 				auto height = HeightMap[x * VertexCountPerSide + z] * Amplitude;
 				positions[3 * (z + x * VertexCountPerSide) + 1] = (height);
 				positions[3 * (z + x * VertexCountPerSide) + 2] = (x / (float)(VertexCountPerSide - 1));
 
-				uvs[3 * (z + x * VertexCountPerSide) + 0] = (0);
-				uvs[3 * (z + x * VertexCountPerSide) + 1] = ((z / (VertexCountPerSide - 1)));
-				uvs[3 * (z + x * VertexCountPerSide) + 2] = ((x / (VertexCountPerSide - 1)));
+				uvs[3 * (z + x * VertexCountPerSide) + 0] = static_cast<float>(0);
+				uvs[3 * (z + x * VertexCountPerSide) + 1] = static_cast<float>((z / (VertexCountPerSide - 1)));
+				uvs[3 * (z + x * VertexCountPerSide) + 2] = static_cast<float>((x / (VertexCountPerSide - 1)));
 			}
 		}
 
 		size_t indexPointer = 0;
 
-		for (auto gz = 0; gz < VertexCountPerSide - 1; gz++) {
-			for (auto gx = 0; gx < VertexCountPerSide - 1; gx++) {
+		for (size_t gz = 0; gz < VertexCountPerSide - 1; gz++) {
+			for (size_t gx = 0; gx < VertexCountPerSide - 1; gx++) {
 				auto top_left = (gz * VertexCountPerSide) + gx;
 				auto top_right = top_left + 1;
 				auto bottom_left = ((gz + 1) * VertexCountPerSide) + gx;
 				auto bottom_right = bottom_left + 1;
 
-				indices[indexPointer++] = (top_left);
-				indices[indexPointer++] = (bottom_left);
-				indices[indexPointer++] = (top_right);
-				indices[indexPointer++] = (top_right);
-				indices[indexPointer++] = (bottom_left);
-				indices[indexPointer++] = (bottom_right);
+				indices[indexPointer++] = static_cast<uint32_t>(top_left);
+				indices[indexPointer++] = static_cast<uint32_t>(bottom_left);
+				indices[indexPointer++] = static_cast<uint32_t>(top_right);
+				indices[indexPointer++] = static_cast<uint32_t>(top_right);
+				indices[indexPointer++] = static_cast<uint32_t>(bottom_left);
+				indices[indexPointer++] = static_cast<uint32_t>(bottom_right);
 			}
 		}
 
@@ -385,18 +383,18 @@ namespace fluff { namespace render
 		unsigned int * indices = static_cast<unsigned int*>(Allocator::Alloc(sizeof(unsigned int) * 6 * (VertexCountPerSide - 1) * (VertexCountPerSide - 1)));
 
 		size_t vertex_pointer = 0;
-		for (auto x = 0; x < VertexCountPerSide; x++)
+		for (size_t x = 0; x < VertexCountPerSide; x++)
 		{
-			for (auto z = 0; z < VertexCountPerSide; z++)
+			for (size_t z = 0; z < VertexCountPerSide; z++)
 			{
 				positions[3 * vertex_pointer + 0] = (static_cast<float>(x) / (VertexCountPerSide - 1)) * Size;
 				const auto height = Noise.GetValue(x + (TransformHandle->GetPosition().x * (VertexCountPerSide - 1)), z + (TransformHandle->GetPosition().z * (VertexCountPerSide - 1))) * Amplitude;
 				positions[3 * vertex_pointer + 1] = height;
 				positions[3 * vertex_pointer + 2] = (static_cast<float>(z) / (VertexCountPerSide - 1)) * Size;
 
-				uvs[3 * vertex_pointer + 0] = (0);
-				uvs[3 * vertex_pointer + 1] = ((z / (VertexCountPerSide - 1)));
-				uvs[3 * vertex_pointer + 2] = ((x / (VertexCountPerSide - 1)));
+				uvs[3 * vertex_pointer + 0] = static_cast<float>(0);
+				uvs[3 * vertex_pointer + 1] = static_cast<float>((z / (VertexCountPerSide - 1)));
+				uvs[3 * vertex_pointer + 2] = static_cast<float>((x / (VertexCountPerSide - 1)));
 				vertex_pointer++;
 			}
 		}
@@ -405,20 +403,19 @@ namespace fluff { namespace render
 		TransformHandle->SetScale(glm::vec3(1, 1, 1));
 
 		size_t indexPointer = 0;
-		for (auto gz = 0; gz < VertexCountPerSide - 1; gz++) {
-			for (auto gx = 0; gx < VertexCountPerSide - 1; gx++) {
+		for (size_t gz = 0; gz < VertexCountPerSide - 1; gz++) {
+			for (size_t gx = 0; gx < VertexCountPerSide - 1; gx++) {
 				auto top_left = (gz * VertexCountPerSide) + gx;
 				auto top_right = top_left + 1;
 				auto bottom_left = ((gz + 1) * VertexCountPerSide) + gx;
 				auto bottom_right = bottom_left + 1;
 
-				indices[indexPointer++] = (top_right);
-				indices[indexPointer++] = (bottom_left);
-				indices[indexPointer++] = (top_left);
-
-				indices[indexPointer++] = (bottom_right);
-				indices[indexPointer++] = (bottom_left);
-				indices[indexPointer++] = (top_right);
+				indices[indexPointer++] = static_cast<uint32_t>(top_right);
+				indices[indexPointer++] = static_cast<uint32_t>(bottom_left);
+				indices[indexPointer++] = static_cast<uint32_t>(top_left);
+				indices[indexPointer++] = static_cast<uint32_t>(bottom_right);
+				indices[indexPointer++] = static_cast<uint32_t>(bottom_left);
+				indices[indexPointer++] = static_cast<uint32_t>(top_right);
 			}
 		}
 
@@ -426,7 +423,7 @@ namespace fluff { namespace render
 		const auto at_loc = static_cast<bool*>(Allocator::Alloc(sizeof(bool) * VertexCountPerSide * VertexCountPerSide));
 		memset(at_loc, false, sizeof(bool) * VertexCountPerSide * VertexCountPerSide);
 
-		for (auto i = 0; i < (6 * (VertexCountPerSide - 1) * (VertexCountPerSide - 1)); i += 3)
+		for (size_t i = 0; i < (6 * (VertexCountPerSide - 1) * (VertexCountPerSide - 1)); i += 3)
 		{
 			auto i1 = indices[i + 0];
 			auto i2 = indices[i + 1];
@@ -473,7 +470,7 @@ namespace fluff { namespace render
 			}
 		}
 
-		for (auto i = 0; i < (VertexCountPerSide * VertexCountPerSide); i++)
+		for (size_t i = 0; i < (VertexCountPerSide * VertexCountPerSide); i++)
 		{
 			face_norms[i] = glm::normalize(face_norms[i]);
 			normals[3 * i] = face_norms[i].z;
@@ -490,7 +487,7 @@ namespace fluff { namespace render
 
 		t->HeightMap_ = new float[VertexCountPerSide * VertexCountPerSide];
 		t->VertexCountPerSide_ = VertexCountPerSide;
-		for (auto i = 0; i < 3 * VertexCountPerSide * VertexCountPerSide; i += 3) t->HeightMap_[(i - 1) / 3] = positions[i];
+		for (size_t i = 0; i < 3 * VertexCountPerSide * VertexCountPerSide; i += 3) t->HeightMap_[(i - 1) / 3] = positions[i];
 
 		Allocator::Free(positions);
 		Allocator::Free(uvs);
@@ -513,26 +510,31 @@ namespace fluff { namespace render
 		std::vector<float> normals(VertexCountPerSide * VertexCountPerSide * 3);
 		std::vector<unsigned int> indices(6 * (VertexCountPerSide - 1) * (VertexCountPerSide - 1));
 
-		for (auto z = 0; z < VertexCountPerSide; z++)
+		for (size_t z = 0; z < VertexCountPerSide; z++)
 		{
-			for (auto x = 0; x < VertexCountPerSide; x++)
+			for (size_t x = 0; x < VertexCountPerSide; x++)
 			{
 				positions[3 * (z + x * VertexCountPerSide)] = (z / static_cast<float>(VertexCountPerSide - 1)) * Size;
 
-				auto height = 0.0;
-				const uint32_t L = x / Samples + TransformHandle->GetPosition().x * (VertexCountPerSide - 1);
-				const uint32_t R = x / Samples  + 1 + TransformHandle->GetPosition().x * (VertexCountPerSide - 1);
-				const uint32_t T = z / Samples + 1 + TransformHandle->GetPosition().x * (VertexCountPerSide - 1);
-				const uint32_t B = z / Samples + TransformHandle->GetPosition().x * (VertexCountPerSide - 1);
+				auto height = 0.0f;
+				const uint32_t L = static_cast<uint32_t>(x / Samples + TransformHandle->GetPosition().x * (VertexCountPerSide - 1));
+				const uint32_t R = static_cast<uint32_t>(x / Samples  + 1 + TransformHandle->GetPosition().x * (VertexCountPerSide - 1));
+				const uint32_t T = static_cast<uint32_t>(z / Samples + 1 + TransformHandle->GetPosition().x * (VertexCountPerSide - 1));
+				const uint32_t B = static_cast<uint32_t>(z / Samples + TransformHandle->GetPosition().x * (VertexCountPerSide - 1));
 
-				height = Smooth(Noise.GetValue(B, L), Noise.GetValue(B, R), Noise.GetValue(T, L), Noise.GetValue(T, R), static_cast<float>(x) / Samples - static_cast<float>(x), static_cast<float>(z) / Samples - static_cast<float>(z));
+				height = Smooth(
+					Noise.GetValue(static_cast<FN_DECIMAL>(B), static_cast<FN_DECIMAL>(L)),
+					Noise.GetValue(static_cast<FN_DECIMAL>(B), static_cast<FN_DECIMAL>(R)),
+					Noise.GetValue(static_cast<FN_DECIMAL>(T), static_cast<FN_DECIMAL>(L)),
+					Noise.GetValue(static_cast<FN_DECIMAL>(T), static_cast<FN_DECIMAL>(R)), 
+					static_cast<float>(x) / Samples - static_cast<float>(x), static_cast<float>(z) / Samples - static_cast<float>(z));
 
 				positions[3 * (z + x * VertexCountPerSide) + 1] = (height * Amplitude);
 				positions[3 * (z + x * VertexCountPerSide) + 2] = (x / static_cast<float>(VertexCountPerSide - 1)) * Size;
 
-				uvs[3 * (z + x * VertexCountPerSide) + 0] = (0);
-				uvs[3 * (z + x * VertexCountPerSide) + 1] = ((z / (VertexCountPerSide - 1)));
-				uvs[3 * (z + x * VertexCountPerSide) + 2] = ((x / (VertexCountPerSide - 1)));
+				uvs[3 * (z + x * VertexCountPerSide) + 0] = static_cast<float>(0);
+				uvs[3 * (z + x * VertexCountPerSide) + 1] = static_cast<float>((z / (VertexCountPerSide - 1)));
+				uvs[3 * (z + x * VertexCountPerSide) + 2] = static_cast<float>((x / (VertexCountPerSide - 1)));
 			}
 		}
 

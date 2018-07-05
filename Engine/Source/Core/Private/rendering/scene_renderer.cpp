@@ -504,8 +504,8 @@ namespace fluff { namespace render {
 			break;
 		}
 
-		LightCount.Value[1] = point_lights.size();
-		LightCount.Value[2] = spot_lights.size();
+		LightCount.Value[1] = static_cast<int32_t>(point_lights.size());
+		LightCount.Value[2] = static_cast<int32_t>(spot_lights.size());
 
 		return return_values;
 	}

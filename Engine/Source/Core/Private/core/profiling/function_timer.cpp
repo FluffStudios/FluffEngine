@@ -16,7 +16,7 @@ namespace fluff { namespace profile {
 	{
 		if (Finished_) return -1;
 		auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::high_resolution_clock::now() - StartTime_).count();
-		return elapsed;
+		return static_cast<double>(elapsed);
 	}
 
 	double FunctionTimer::TimeAtFinish() const
@@ -27,7 +27,7 @@ namespace fluff { namespace profile {
 
 	void FunctionTimer::Finish()
 	{
-		ElapsedTime_ = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::high_resolution_clock::now() - StartTime_).count();
+		ElapsedTime_ = static_cast<double>(std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::high_resolution_clock::now() - StartTime_).count());
 		Finished_ = true;
 	}
 

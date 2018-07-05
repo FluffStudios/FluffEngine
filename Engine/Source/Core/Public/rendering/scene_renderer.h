@@ -17,10 +17,12 @@ namespace fluff { namespace render {
 	class SceneRenderer : public ecs::System<SceneRenderer>, public ecs::Receiver<SceneRenderer>
 	{
 	private:
-		struct alignas(256) ViewProj
+		struct ViewProj
 		{
 			glm::mat4 ProjectionMatrix;
 			glm::mat4 ViewMatrix;
+		private:
+			glm::mat4 buffer[2];
 		};
 
 		enum STATE_CHANGE

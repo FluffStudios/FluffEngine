@@ -206,23 +206,23 @@ namespace fluff { namespace gfx
 
 		Value vertex_shader;
 		char * str = Descriptor.VertexShaderFile == nullptr ? "nullptr" : Descriptor.VertexShaderFile;
-		vertex_shader.SetString(str, strlen(str), Doc.GetAllocator());
+		vertex_shader.SetString(str, static_cast<SizeType>(strlen(str)), Doc.GetAllocator());
 
 		Value tess_eval_shader;
 		str = Descriptor.TesselationEvaluationShaderFile == nullptr ? "nullptr" : Descriptor.TesselationEvaluationShaderFile;
-		tess_eval_shader.SetString(str, strlen(str), Doc.GetAllocator());
+		tess_eval_shader.SetString(str, static_cast<SizeType>(strlen(str)), Doc.GetAllocator());
 
 		Value tess_control_shader;
 		str = Descriptor.TesselationControlShaderFile == nullptr ? "nullptr" : Descriptor.TesselationControlShaderFile;
-		tess_control_shader.SetString(str, strlen(str), Doc.GetAllocator());
+		tess_control_shader.SetString(str, static_cast<SizeType>(strlen(str)), Doc.GetAllocator());
 
 		Value geo_shader;
 		str = Descriptor.GeometryShaderFile == nullptr ? "nullptr" : Descriptor.GeometryShaderFile;
-		geo_shader.SetString(str, strlen(str), Doc.GetAllocator());
+		geo_shader.SetString(str, static_cast<SizeType>(strlen(str)), Doc.GetAllocator());
 
 		Value frag_shader;
 		str = Descriptor.FragmentShaderFile == nullptr ? "nullptr" : Descriptor.FragmentShaderFile;
-		frag_shader.SetString(str, strlen(str), Doc.GetAllocator());
+		frag_shader.SetString(str, static_cast<SizeType>(strlen(str)), Doc.GetAllocator());
 
 		// Transform Feedback
 
@@ -235,10 +235,10 @@ namespace fluff { namespace gfx
 		Value output_var;
 		output_var.SetArray();
 
-		for (auto i = 0; i < num_transform_feedback.GetUint(); i++)
+		for (size_t i = 0; i < num_transform_feedback.GetUint(); i++)
 		{
 			Value tmp;
-			tmp.SetString(Descriptor.VertexFeedback.OutputVars[i], strlen(Descriptor.VertexFeedback.OutputVars[i]), Doc.GetAllocator());
+			tmp.SetString(Descriptor.VertexFeedback.OutputVars[i], static_cast<SizeType>(strlen(Descriptor.VertexFeedback.OutputVars[i])), Doc.GetAllocator());
 			output_var.PushBack(tmp, Doc.GetAllocator());
 		}
 
@@ -266,7 +266,7 @@ namespace fluff { namespace gfx
 		Value render_target;
 		render_target.SetArray();
 
-		for (auto i = 0; i < 8; i++)
+		for (size_t i = 0; i < 8; i++)
 		{
 			Value render_target_desc;
 			render_target_desc.SetObject();
@@ -517,7 +517,7 @@ namespace fluff { namespace gfx
 			new char*[transform_feedback["num_outputs"].GetUint()],
 			static_cast<TransformBufferMode>(transform_feedback["buffer_mode"].GetUint())
 		};
-		for (auto i = 0; i < tfd.NumFeedback; ++i)
+		for (uint32_t i = 0; i < tfd.NumFeedback; ++i)
 		{
 			auto itr = (transform_feedback["num_outputs"].Begin() + i);
 			tfd.OutputVars[i] = (char*) itr->GetString();
@@ -584,9 +584,9 @@ namespace fluff { namespace gfx
 			static_cast<DepthWriteMask>(depth_write_mask),
 			static_cast<ComparisonFunction>(depth_comp_func),
 			stencil_enable,
-			stencil_read_mask,
-			stencil_write_mask,
-			stencil_reference,
+			static_cast<uint8_t>(stencil_read_mask),
+			static_cast<uint8_t>(stencil_write_mask),
+			static_cast<uint8_t>(stencil_reference),
 			stencil_mask,
 			{
 				static_cast<StencilOp>(ffail),
@@ -643,8 +643,8 @@ namespace fluff { namespace gfx
 			tfd,
 			bdesc,
 			sample_mask,
-			render_target_count,
-			render_sample_count,
+			static_cast<uint8_t>(render_target_count),
+			static_cast<uint8_t>(render_sample_count),
 			render_width,
 			render_height,
 			dpd,

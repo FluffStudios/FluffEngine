@@ -28,7 +28,7 @@ namespace fluff
 		win_id.SetUint(WindowID);
 
 		Value name;
-		name.SetString(Name.c_str(), Name.length(), Allocator);
+		name.SetString(Name.c_str(), static_cast<SizeType>(Name.length()), Allocator);
 
 		Value vsync;
 		vsync.SetBool(VSync);

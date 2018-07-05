@@ -71,8 +71,8 @@ namespace fluff
 		*/
 		inline static void Update(double ScrollX, double ScrollY)
 		{
-			Mouse::scrollX = ScrollX;
-			Mouse::scrollY = ScrollY;
+			Mouse::scrollX = static_cast<float>(ScrollX);
+			Mouse::scrollY = static_cast<float>(ScrollY);
 		}
 
 		/*

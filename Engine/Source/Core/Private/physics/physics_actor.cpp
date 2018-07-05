@@ -200,7 +200,7 @@ namespace fluff { namespace physics {
 			PxReal minHeight = PX_MAX_F32;
 			PxReal maxHeight = -PX_MAX_F32;
 
-			for (auto s = 0; s < hf->NumRows * hf->NumCols; s++)
+			for (uint32_t s = 0; s < hf->NumRows * hf->NumCols; s++)
 			{
 				minHeight = physx::PxMin(minHeight, hf->HeightMap[s]);
 				maxHeight = physx::PxMax(maxHeight, hf->HeightMap[s]);
@@ -212,7 +212,7 @@ namespace fluff { namespace physics {
 			PxReal heightScale = physx::PxMax(dHeight / quantization, PX_MIN_HEIGHTFIELD_Y_SCALE);
 
 			physx::PxHeightFieldSample * samples = new physx::PxHeightFieldSample[hf->NumRows * hf->NumCols];
-			for (auto i = 0; i < hf->NumRows * hf->NumCols; i++)
+			for (uint32_t i = 0; i < hf->NumRows * hf->NumCols; i++)
 			{
 				PxI16 height = PxI16(quantization * ((hf->HeightMap[i] - minHeight) / dHeight));
 				physx::PxHeightFieldSample& smp = (physx::PxHeightFieldSample&) samples[i];
