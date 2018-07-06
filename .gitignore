@@ -217,3 +217,4 @@ pip-log.txt
 Build/
 !Engine/Dependencies/**
 Engine/Dependencies/**.TMP
+dependency_temp/
