@@ -12,6 +12,9 @@ import glob
 import datetime
 import time
 
+DEPENDENCIES_PATH = 'Engine/Dependencies'
+DEPENDENCY_BINARY_DIR = 'Engine/Dependencies/bin'
+
 def display_progress_bar(count, total, status=''):
     bar_len = 60
     filled_len = int(round(bar_len * count / float(total)))
@@ -120,21 +123,51 @@ class RepositorySource(object):
                 os.rmdir(cmakefile_dir)
                 print(f'{self.name}: Moved directory containing CMakeLists.txt to top-level root directory of dependency')
 
-            os.remove(file_name)
+            os.remove(file_name)        
 
-            # Generate project and build
-            print(f'{self.name}: Generating CMake project)')
-            build_dir = os.path.join(destination_path, f'cmake-build')
-            if os.path.isdir(build_dir):
-                shutil.rmtree(build_dir)
+            source_dependency_path = os.path.join(DEPENDENCIES_PATH, self.name)
+            if os.path.isdir(source_dependency_path):
+                shutil.rmtree(source_dependency_path)
 
-            os.mkdir(build_dir)
+            while not os.path.isdir(source_dependency_path):
+                os.mkdir(source_dependency_path)
+
+            # locate includes
+            print(f'{self.name}: Locating include directory')
+
+            include_dir = str()
 
             real_destination_path = os.path.realpath(destination_path)
-            subprocess.run(['cmake', real_destination_path], shell=False, cwd=build_dir)
-            print(f'{self.name}: Finished generating CMake project)')
+            destination_dir_contents = os.listdir(real_destination_path)
+            for item in destination_dir_contents:
+                real_item_path = os.path.join(real_destination_path, item)
+                if os.path.isdir(real_item_path):
+                    if item == 'include':
+                        include_dir = real_item_path
+                        print(f'{self.name}: Located include directory ({include_dir})')
+                        break
 
-            def cmake_build(config, include_pdb=False):         
+            shutil.copytree(include_dir, os.path.join(source_dependency_path, 'include'))
+            print(f'{self.name}: Copied include directory')
+
+            def cmake_build(config, arch, include_pdb=False): 
+                # Generate project and build
+                print(f'{self.name}: Generating CMake project')
+                build_dir = os.path.join(destination_path, f'cmake-build-{arch}')
+                if os.path.isdir(build_dir):
+                    shutil.rmtree(build_dir)
+
+                os.mkdir(build_dir)
+
+                cmake_command = ['cmake', real_destination_path]
+                if os.name == 'nt':
+                    # cmake_command = ['cmake', '-G', f'\"Visual Studio 15 2017{ " " + arch if arch == "Win64" else ""}\"', f'\"{real_destination_path}\"']
+                    os.system(f'cd {build_dir} && cmake -G \"Visual Studio 15 2017{ " " + arch if arch == "Win64" else ""}\" \"{real_destination_path}\"')
+                else:
+                    subprocess.run(cmake_command, shell=False, cwd=build_dir)
+                
+                print(f'{self.name}: Finished generating CMake project')
+
                 print(f'{self.name}: Building ({config})')
                 subprocess.run(['cmake', '--build', '.', '--config', config], shell=False, cwd=build_dir)
                 print(f'{self.name}: Completed building ({config})')
@@ -155,18 +188,39 @@ class RepositorySource(object):
                         if self.name in file:
                             return file
 
-                target_dll = find_target_file(harvest_files('dll'))
+                generic_arch = arch
+                if arch == 'Win64': 
+                    generic_arch = 'x64'
+                 
                 target_lib = find_target_file(harvest_files('lib'))                       
-                
-                if include_pdb:
-                    target_pdb = find_target_file(harvest_files('pdb'))
-                
-                
+                if target_lib != None:
+                    lib_dir = os.path.join(source_dependency_path, f'lib/{config}/{generic_arch}')
+                    if os.path.isdir(lib_dir):
+                        shutil.rmtree(lib_dir)
 
-            # cmake_build('Debug', True)
-            cmake_build('Release')
+                    while not os.path.isdir(lib_dir):
+                        os.makedirs(lib_dir)
+
+                    shutil.copy(target_lib, lib_dir)
+
+                target_dll = find_target_file(harvest_files('dll'))
+                if target_dll != None:
+                    bin_dir = os.path.join(DEPENDENCY_BINARY_DIR, f'{config}/{generic_arch}')
+                    if not os.path.isdir(bin_dir):
+                        os.makedirs(bin_dir)
+
+                    shutil.copy(target_dll, bin_dir)
+
+                    if include_pdb:
+                        target_pdb = find_target_file(harvest_files('pdb'))
+                        shutil.copy(target_pdb, bin_dir)
+
+            # cmake_build('Debug', 'Win32', True)
+            cmake_build('Release', 'Win32')
+        
+            # cmake_build('Debug', 'Win64', True)
+            cmake_build('Release', 'Win64')
                         
-
 # define our sources
 repository_sources = [
     RepositorySource('assimp', 'https://github.com/assimp/assimp/archive/v4.1.0.zip', url_type=SourceType.Archive)
@@ -186,7 +240,12 @@ while os.path.isdir(DEPENDENCY_TEMP_DIR):
 time.sleep(1)
 os.mkdir(DEPENDENCY_TEMP_DIR)
 
+while os.path.isdir(DEPENDENCY_BINARY_DIR):
+    shutil.rmtree(DEPENDENCY_BINARY_DIR, ignore_errors=True)
+
+os.mkdir(DEPENDENCY_BINARY_DIR)
+
 for source in repository_sources:
     source.get(DEPENDENCY_TEMP_DIR)
 
-# clean_temp_dir()
+clean_temp_dir()
