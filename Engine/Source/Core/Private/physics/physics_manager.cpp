@@ -1,7 +1,7 @@
 #include <physics/physics.h>
 #include <Physx/foundation/PxFoundationVersion.h>
 
-#include <core/debug_message.h>
+#include <core/debug/debug_message.h>
 #include <Physx/PxPhysicsVersion.h>
 #include <Physx/common/PxTolerancesScale.h>
 #include <Physx/extensions/PxDefaultCpuDispatcher.h>

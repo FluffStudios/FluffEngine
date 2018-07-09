@@ -13,7 +13,7 @@
 
 namespace fluff { namespace physics {
 
-	class PhysicsComponent : public ecs::Component<PhysicsComponent>
+	class PhysicsComponent final : public ecs::Component<PhysicsComponent>
 	{
 		PhysicsActor * pActor_;
 		PhysicsMaterial * pMaterial_;

@@ -10,7 +10,7 @@
 #include <ctime>
 #include <chrono>
 #include <sstream>
-#include <core/debug_message.h>
+#include <core/debug/debug_message.h>
 #include <glew.h>
 
 namespace fluff { namespace render {
@@ -37,7 +37,7 @@ namespace fluff { namespace render {
 		char t[26];
 		if (ctime_s(t, sizeof(t), &time))
 		{
-			DebugMessage(Manager_, WARNING, "Could not retrieve time.");
+			debug::DebugMessage(Manager_, debug::DebugErrorType::ILLEGAL_DATA, debug::DebugSeverity::WARN, static_cast<size_t>(__LINE__), std::string(__FILE__), "Cannot get date.");
 			return;
 		}
 		std::string time_str(t);
@@ -53,12 +53,12 @@ namespace fluff { namespace render {
 			glReadPixels(0, 0, Msg.Width, Msg.Height, GL_RGB, GL_UNSIGNED_BYTE, img);
 			stbi_flip_vertically_on_write(true);
 			auto res = stbi_write_bmp(stream.str().c_str(), Msg.Width, Msg.Height, 3, img);
-			if (!res) DebugMessage(Manager_, WARNING, "Screenshot could not be created.");
+			if (!res) debug::DebugMessage(Manager_, debug::DebugErrorType::ILLEGAL_STATE, debug::DebugSeverity::WARN, static_cast<size_t>(__LINE__), std::string(__FILE__), "Screenshot cannot be created.");
 			free(img);
 		}
 		else
 		{
-			DebugMessage(Manager_, WARNING, "Could not allocate buffer for screenshot.");
+			debug::DebugMessage(Manager_, debug::DebugErrorType::ILLEGAL_STATE, debug::DebugSeverity::WARN, static_cast<size_t>(__LINE__), std::string(__FILE__), "Could not allocate buffer for screenshot.");
 		}
 	}
 

@@ -4,6 +4,8 @@
 #include <physics/physics_manager.h>
 #include <physics/physics_scene.h>
 
+#include <mutex>
+
 #include <glm/vec3.hpp>
 
 namespace fluff { namespace physics {
@@ -19,6 +21,7 @@ namespace fluff { namespace physics {
 		void Configure(ecs::EntityManager & Entities, ecs::EventManager & Events) override;
 		void Update(ecs::EntityManager & Entities, ecs::EventManager & Events, double DeltaTime) override;
 		void FixedUpdate(ecs::EntityManager & Entities, ecs::EventManager & Events) override;
+		inline bool UseMainThread() override { return true; }
 
 		void * GetSDK() const { return pManager_->GetSDK(); }
 		PhysicsScene * GetScene() const { return Scene_; }

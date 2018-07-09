@@ -11,7 +11,7 @@ namespace fluff
 		std::ifstream stream(path);
 		std::stringstream buffer;
 		buffer << stream.rdbuf();
-		return std::string(buffer.str());
+		return std::string(buffer.str().c_str());
 
 	}
 }

@@ -118,7 +118,7 @@ namespace fluff
 		char output_buffer[65536];
 		FileWriteStream os(fp, output_buffer, sizeof(output_buffer));
 		PrettyWriter<FileWriteStream> writer(os);
-		doc.Accept(writer);;
+		doc.Accept(writer);
 		fclose(fp);
 	}
 

@@ -19,5 +19,10 @@ namespace fluff
 		{
 			Manager->GetEventManager()->EmitEvent<DebugEvent>(Severity, Message);
 		}
+
+		static void SendMsg(std::shared_ptr<ECSManager> & Manager, SEVERITY Severity, const char * Message)
+		{
+			Manager->GetEventManager()->EmitEvent<DebugEvent>(Severity, Message);
+		}
 	};
 }

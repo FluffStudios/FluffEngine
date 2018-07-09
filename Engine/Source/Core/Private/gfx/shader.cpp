@@ -3,7 +3,7 @@
 #include <iostream>
 #include <common.h>
 #include <file/shader_utility.h>
-#include <core/debug_message.h>
+#include <core/debug/debug_message.h>
 
 #include <core/window.h>
 #include <glew.h>
@@ -113,7 +113,7 @@ namespace fluff {
 				glGetShaderiv(shader_stage, GL_INFO_LOG_LENGTH, &len);
 				const auto info_log = static_cast<char*>(malloc(len));
 				glGetShaderInfoLog(shader_stage, len, &len, info_log);
-				DebugMessage(Manager_, FATAL, info_log);
+				debug::DebugMessage(Manager_, debug::DebugErrorType::ILLEGAL_STATE, debug::DebugSeverity::FATAL, static_cast<size_t>(__LINE__), std::string(__FILE__), std::string(info_log));
 				free(info_log);
 			}
 			glAttachShader(Id_, shader_stage);
@@ -131,7 +131,7 @@ namespace fluff {
 				glGetProgramiv(Id_, GL_INFO_LOG_LENGTH, &len);
 				const auto info_log = static_cast<char*>(malloc(len));
 				glGetProgramInfoLog(Id_, len, &len, info_log);
-				DebugMessage(Manager_, FATAL, info_log);
+				debug::DebugMessage(Manager_, debug::DebugErrorType::ILLEGAL_STATE, debug::DebugSeverity::FATAL, static_cast<size_t>(__LINE__), std::string(__FILE__), std::string(info_log));
 				free(info_log);
 			}
 		}
@@ -147,7 +147,7 @@ namespace fluff {
 				glGetProgramiv(Id_, GL_INFO_LOG_LENGTH, &len);
 				const auto info_log = static_cast<char*>(malloc(len));
 				glGetProgramInfoLog(Id_, len, &len, info_log);
-				DebugMessage(Manager_, FATAL, info_log);
+				debug::DebugMessage(Manager_, debug::DebugErrorType::ILLEGAL_STATE, debug::DebugSeverity::FATAL, static_cast<size_t>(__LINE__), std::string(__FILE__), std::string(info_log));
 				free(info_log);
 			}
 		}

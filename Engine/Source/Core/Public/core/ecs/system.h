@@ -2,6 +2,7 @@
 
 #include <core/ecs/isystem.h>
 #include <unordered_map>
+#include <core/threading/thread_pool.h>
 
 namespace fluff { namespace ecs {
 
@@ -34,6 +35,7 @@ namespace fluff { namespace ecs {
 		double LastUpdateTime_;
 		double FixedRefreshTime_ = 1.0 / 30.0;
 		double RefreshTime_ = 1.0 / 144.0;
+		std::shared_ptr<threading::ThreadPool> Pool_;
 	public:
 		/*
 			Creates system meanager
@@ -111,6 +113,8 @@ namespace fluff { namespace ecs {
 		{
 			this->RefreshTime_ = 1.0 / Hertz;
 		}
+
+		std::shared_ptr<threading::ThreadPool> FLUFF_API & GetThreadPool();
 	};
 
 	template <typename Type>

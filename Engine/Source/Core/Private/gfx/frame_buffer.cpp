@@ -1,5 +1,5 @@
 #include <gfx/frame_buffer.h>
-#include <core/debug_message.h>
+#include <core/debug/debug_message.h>
 #include <common.h>
 #include <glew.h>
 
@@ -15,7 +15,7 @@ namespace fluff { namespace gfx {
 		glGenFramebuffers(1, &ID_);
 		if (!ID_)
 		{
-			DebugMessage message(Manager, FATAL, "Could not create FrameBuffer");
+			debug::DebugMessage(Manager_, debug::DebugErrorType::ILLEGAL_STATE, debug::DebugSeverity::FATAL, static_cast<size_t>(__LINE__), std::string(__FILE__), "Could not create frame buffer.");
 		}
 	}
 

@@ -223,7 +223,7 @@ namespace fluff { namespace physics {
 			desc.samples.stride = sizeof(physx::PxU32);
 
 			physx::PxHeightField * field = ((physx::PxCooking*) hf->pManager->GetCooking())->createHeightField(desc, ((physx::PxPhysics *)hf->pManager->GetSDK())->getPhysicsInsertionCallback());
-			geometry = new physx::PxHeightFieldGeometry(field, physx::PxMeshGeometryFlags(), dHeight != 0.0f ? heightScale : 1.0f, hf->RowScale, hf->ColumnScale);
+			geometry = new physx::PxHeightFieldGeometry(field, physx::PxMeshGeometryFlag::eDOUBLE_SIDED, dHeight != 0.0f ? heightScale : 1.0f, hf->RowScale, hf->ColumnScale);
 			Impl_->Pose_.p.y += minHeight;
 			Impl_->Min_ = minHeight;
 			delete [] samples;

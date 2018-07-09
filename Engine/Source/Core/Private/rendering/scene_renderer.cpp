@@ -1,6 +1,6 @@
 #include <rendering/scene_renderer.h>
 #include <core/window.h>
-#include <core/debug_message.h>
+#include <core/debug/debug_message.h>
 #include <gfx/context.h>
 #include <rendering/resource_library.h>
 #include <rendering/lighting_manager.h>
@@ -74,7 +74,7 @@ namespace fluff { namespace render {
 
 		if (!DeferredPass_->IsValid())
 		{
-			DebugMessage msg(Manager_, FATAL, "Deferred pass framebuffer failed to be created!");
+			debug::DebugMessage(Manager_, debug::DebugErrorType::ILLEGAL_STATE, debug::DebugSeverity::FATAL, static_cast<size_t>(__LINE__), std::string(__FILE__), "Deferred pass framebuffer could not be created.");
 		}
 
 		PBuffer_->Bind();

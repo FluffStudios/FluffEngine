@@ -181,6 +181,8 @@ namespace fluff { namespace render
 			}
 		}
 
+		memset(HeightMap, 0, sizeof(float) * VertexCountPerSide * VertexCountPerSide);
+
 		size_t indexPointer = 0;
 		for (size_t gz = 0; gz < VertexCountPerSide - 1; gz++) {
 			for (size_t gx = 0; gx < VertexCountPerSide - 1; gx++) {
@@ -189,12 +191,13 @@ namespace fluff { namespace render
 				auto bottom_left = ((gz + 1) * VertexCountPerSide) + gx;
 				auto bottom_right = bottom_left + 1;
 
-				indices[indexPointer++] = static_cast<uint32_t>(top_right);
-				indices[indexPointer++] = static_cast<uint32_t>(bottom_left);
 				indices[indexPointer++] = static_cast<uint32_t>(bottom_right);
-				indices[indexPointer++] = static_cast<uint32_t>(top_left);
 				indices[indexPointer++] = static_cast<uint32_t>(bottom_left);
 				indices[indexPointer++] = static_cast<uint32_t>(top_right);
+
+				indices[indexPointer++] = static_cast<uint32_t>(top_right);
+				indices[indexPointer++] = static_cast<uint32_t>(bottom_left);
+				indices[indexPointer++] = static_cast<uint32_t>(top_left);
 			}
 		}
 

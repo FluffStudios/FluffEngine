@@ -1,5 +1,5 @@
 #include <physics/physics_system.h>
-#include <core/debug_message.h>
+#include <core/debug/debug_message.h>
 #include <Physx/extensions/PxDefaultSimulationFilterShader.h>
 #include <physics/physics_component.h>
 #include <core/transformation_component.h>
@@ -35,35 +35,36 @@ namespace fluff { namespace physics {
 
 		if (!Scene_)
 		{
-			DebugMessage(SystemsManager_, FATAL, "Could not create scene!");
+			debug::DebugMessage(SystemsManager_, debug::DebugErrorType::ILLEGAL_STATE, debug::DebugSeverity::FATAL, static_cast<size_t>(__LINE__), std::string(__FILE__), "Could not create scene.");
 		}
-		((physx::PxScene *) Scene_->GetScene())->simulate(1.0f / 30.0f);
+		((physx::PxScene *) Scene_->GetScene())->simulate(1.0f / 60.0f);
 	}
 
 	void PhysicsSystem::Update(ecs::EntityManager & Entities, ecs::EventManager & Events, double DeltaTime)
 	{
-		for (auto & ent : Entities.GetEntitiesWithComponents<PhysicsComponent, TransformationComponent>())
-		{
-			auto physics_handle = ent.GetComponent<PhysicsComponent>();
-
-			ent.GetComponent<TransformationComponent>()->SetPosition(ent.GetComponent<TransformationComponent>()->GetPosition() + (float) DeltaTime * physics_handle->GetActor()->GetLinearVelocity());
-			ent.GetComponent<TransformationComponent>()->SetRotation(ent.GetComponent<TransformationComponent>()->GetRotation() + (float) DeltaTime * physics_handle->GetActor()->GetAngularVelocity());
-		}
+//		for (auto & ent : Entities.GetEntitiesWithComponents<PhysicsComponent, TransformationComponent>())
+//		{
+//			auto physics_handle = ent.GetComponent<PhysicsComponent>();
+//
+//			ent.GetComponent<TransformationComponent>()->SetPosition(ent.GetComponent<TransformationComponent>()->GetPosition() + (float)DeltaTime * physics_handle->GetActor()->GetLinearVelocity());
+//			ent.GetComponent<TransformationComponent>()->SetRotation(ent.GetComponent<TransformationComponent>()->GetRotation() + (float)DeltaTime * physics_handle->GetActor()->GetAngularVelocity());
+//		}
 	}
 
 	void PhysicsSystem::FixedUpdate(ecs::EntityManager & Entities, ecs::EventManager & Events)
 	{
-		((physx::PxScene *) Scene_->GetScene())->fetchResults(true);
-
-		for (auto & ent : Entities.GetEntitiesWithComponents<PhysicsComponent, TransformationComponent>())
+		if (((physx::PxScene *) Scene_->GetScene())->fetchResults(false))
 		{
-			auto physics_handle = ent.GetComponent<PhysicsComponent>();
+			for (auto & ent : Entities.GetEntitiesWithComponents<PhysicsComponent, TransformationComponent>())
+			{
+				auto physics_handle = ent.GetComponent<PhysicsComponent>();
 
-			ent.GetComponent<TransformationComponent>()->SetPosition(physics_handle->GetActor()->GetPosition());
-			ent.GetComponent<TransformationComponent>()->SetRotation(physics_handle->GetActor()->GetRotation());
+				ent.GetComponent<TransformationComponent>()->SetPosition(physics_handle->GetActor()->GetPosition());
+				ent.GetComponent<TransformationComponent>()->SetRotation(physics_handle->GetActor()->GetRotation());
+			}
+
+			((physx::PxScene *) Scene_->GetScene())->simulate(1.0f / 30.0f);
 		}
-
-		((physx::PxScene *) Scene_->GetScene())->simulate(1.0f / 30.0f);
 	}
 
 } }

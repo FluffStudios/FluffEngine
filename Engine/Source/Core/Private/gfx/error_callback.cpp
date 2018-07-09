@@ -73,8 +73,8 @@ namespace fluff { namespace gfx {
 
 		FLUFF_ERROR_FUNC(stream.str().c_str())
 #ifdef BREAK_ON_GL_ERROR
-			if (Severity == GL_DEBUG_SEVERITY_HIGH)
-				FLUFF_ASSERT(false)
+		if (Severity == GL_DEBUG_SEVERITY_HIGH)
+			FLUFF_ASSERT(false)
 #endif
 	}
 

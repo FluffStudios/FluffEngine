@@ -44,6 +44,8 @@ namespace fluff { namespace ecs {
 		*/
 		virtual void FixedUpdate(EntityManager & Entities, EventManager & Events) { }
 
+		virtual bool UseMainThread() { return true; }
+
 		static size_t FamilyIDCounter;
 		
 		/*
