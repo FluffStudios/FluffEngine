@@ -1,6 +1,7 @@
 #include <ds_state.h>
 #include <movement_system.h>
 #include <glm/glm.hpp>
+#include "core/debug_system.h"
 
 #define V_COUNT 16
 
