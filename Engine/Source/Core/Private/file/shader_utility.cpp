@@ -66,7 +66,8 @@ namespace fluff { namespace utilities
 		}
 		else
 		{
-			FLUFF_ERROR_FUNC("Could not open file.");
+            std::string error_msg = "Could not open file: " + FileName;
+			FLUFF_ERROR_FUNC(error_msg.c_str());
 		}
 
 		input.close();

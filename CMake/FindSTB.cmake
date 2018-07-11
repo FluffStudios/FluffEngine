@@ -1,7 +1,7 @@
 SET(_PF86 "PROGRAMFILES(X86)")
 SET( STB_SEARCH_PATHS
 	${STB_ROOT_DIR}					# STB!
-	./Engine/Dependencies/stb
+	${FluffEngine_SOURCE_DIR}/Engine/Dependencies/stb
 	$ENV{PROGRAMFILES}/STB				# WINDOWS
 	"$ENV{_PF86}/STB"		# WINDOWS
 	~/Library/Frameworks				# MAC

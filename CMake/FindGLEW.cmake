@@ -1,7 +1,7 @@
 SET(_PF86 "PROGRAMFILES(X86)")
 SET( GLEW_SEARCH_PATHS
 	${GLEW_ROOT_DIR}					# GLEW!
-	./Engine/Dependencies/glew
+	${FluffEngine_SOURCE_DIR}/Engine/Dependencies/glew
 	$ENV{PROGRAMFILES}/GLEW				# WINDOWS
 	"$ENV{_PF86}/GLEW"		# WINDOWS
 	~/Library/Frameworks				# MAC

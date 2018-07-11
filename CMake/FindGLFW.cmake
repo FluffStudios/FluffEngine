@@ -1,7 +1,7 @@
 SET(_PF86 "PROGRAMFILES(X86)")
 SET( GLFW_SEARCH_PATHS
 	${GLFW_ROOT_DIR}					# GLFW!
-	./Engine/Dependencies/glfw
+	${CMAKE_SOURCE_DIR}/Engine/Dependencies/glfw
 	$ENV{PROGRAMFILES}/GLFW				# WINDOWS
 	"$ENV{_PF86}/GLFW"		# WINDOWS
 	~/Library/Frameworks				# MAC

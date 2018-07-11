@@ -37,7 +37,7 @@ namespace fluff
 
 			Value - new value
 		*/
-		void SetValue(const T& Value)
+		void SetValue(const T& Value) override
 		{
 			if (Value != Value_)
 			{
@@ -52,7 +52,7 @@ namespace fluff
 
 			Value - new value
 		*/
-		void SetValue(T&& Value)
+		void SetValue(T&& Value) override
 		{
 			if (Value != Value_)
 			{
@@ -79,7 +79,7 @@ namespace fluff
 
 			Returns property value
 		*/
-		T GetValue() const
+		T GetValue() const override
 		{
 			return Value_;
 		}

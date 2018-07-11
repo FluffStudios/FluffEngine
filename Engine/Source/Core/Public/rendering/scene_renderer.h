@@ -84,7 +84,7 @@ namespace fluff { namespace render {
 
 			Events - Event manager to subscribe with
 		*/
-		void Configure(ecs::EventManager & Events);
+		void Configure(ecs::EventManager & Events) override;
 		
 		/*
 			Reaction to a model submitted event

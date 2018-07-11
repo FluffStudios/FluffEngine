@@ -59,8 +59,9 @@ namespace fluff { namespace ecs {
 	}
 
 	EntityManager::EntityManager(EventManager & EM) 
-		: EventManager_(EM) 
-	{ }
+		: EventManager_(EM), IndexCounter_(0)
+	{
+	}
 
 	Entity EntityManager::Get(ID Id)
 	{

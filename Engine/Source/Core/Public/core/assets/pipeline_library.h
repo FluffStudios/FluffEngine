@@ -35,7 +35,7 @@ namespace fluff {
 		void load(Archive & ar)
 		{
 			ar(FileNames_);
-			for (auto i : FileNames_) LoadNoAdd(i);
+			for (const auto i : FileNames_) LoadNoAdd(i);
 		}
 	public:
 		static gfx::GraphicsPipeline * Load(std::string Name);

@@ -31,7 +31,7 @@ namespace fluff {
 		void load(Archive & ar) const
 		{
 			ar(FileNames_);
-			for (auto it : FileNames_) LoadNoAdd(it);
+			for (const auto it : FileNames_) LoadNoAdd(it);
 		}
 	public:
 		static gfx::Mesh * Load(std::string FileName);

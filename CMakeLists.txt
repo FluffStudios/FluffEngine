@@ -2,136 +2,16 @@ cmake_minimum_required(VERSION 3.6)
 
 project(FluffEngine)
 
+option(BUILD_ENGINE "Generate engine project" ON)
+option(BUILD_SANDBOX "Generate sandbox project" ON)
+
 # We need a CMAKE_DIR with some code to find external dependencies
 SET(FluffEngine_CMAKE_DIR "${FluffEngine_SOURCE_DIR}/CMake")
 
-# add the -c and -Wall flags
-if(MSVC)
-	add_definitions(
-		-c
-		-W4
-	)
-else()
-	add_definitions(
-		-c
-		-Wall
-	)
+if(BUILD_ENGINE)
+    add_subdirectory(${CMAKE_SOURCE_DIR}/Engine)
 endif()
 
-if ( NOT CMAKE_BUILD_TYPE OR CMAKE_BUILD_TYPE STREQUAL "")
-	# CMake defaults to leaving CMAKE_BUILD_TYPE empty. This screws up
-	# differentiation between debug and release builds.
-	set(
-		CMAKE_BUILD_TYPE
-			"Debug"
-		CACHE STRING
-			"Choose the type of build, options are: None (CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) \"Debug\" \"Release\" \"RelWithDebInfo\" \"MinSizeRel\"."
-		FORCE
-	)
-endif ( NOT CMAKE_BUILD_TYPE OR CMAKE_BUILD_TYPE STREQUAL "")
-
-add_definitions( -D_CRT_SECURE_NO_WARNINGS )
-add_definitions( -DGLEW_STATIC )
-
-if ( CMAKE_BUILD_TYPE STREQUAL "Release" )
-add_definitions( -O2 )
-add_definitions( -NDEBUG )
-endif ( CMAKE_BUILD_TYPE STREQUAL "Release" )
-
-# Lets LOAD up our headers for the core project
-file(GLOB_RECURSE CORE_HDRS
-	${FluffEngine_SOURCE_DIR}/Engine/Source/Core/Public/*.h
-)
-
-# Lets LOAD up our sources for the core project
-file(GLOB_RECURSE CORE_SRCS
-	${FluffEngine_SOURCE_DIR}/Engine/Source/Core/Private/*.cpp
-	${FluffEngine_SOURCE_DIR}/Engine/Source/Core/Private/*.c
-)
-
-include_directories(${FluffEngine_SOURCE_DIR}/Engine/Source/Core/Public)
-
-# Define the executable
-add_library(Core ${CORE_HDRS} ${CORE_SRCS})
-set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT Core)
-
-#######################################
-# LOOK for the packages that we need! #
-#######################################
-
-# OpenGL
-find_package(OpenGL REQUIRED)
-
-# GLEW
-INCLUDE(${FluffEngine_CMAKE_DIR}/FindGLEW.cmake)
-
-# GLFW
-INCLUDE(${FluffEngine_CMAKE_DIR}/FindGLFW.cmake)
-
-# Assimp
-INCLUDE(${FluffEngine_CMAKE_DIR}/FindAssimp.cmake)
-
-# Cereal
-INCLUDE(${FluffEngine_CMAKE_DIR}/FindCereal.cmake)
-
-# GLM
-INCLUDE(${FluffEngine_CMAKE_DIR}/FindGLM.cmake)
-
-# Physx
-INCLUDE(${FluffEngine_CMAKE_DIR}/FindPhysx.cmake)
-
-# STB
-INCLUDE(${FluffEngine_CMAKE_DIR}/FindSTB.cmake)
-
-# Define the include DIRs
-include_directories(
-	${FluffEngine_SOURCE_DIR}/Engine/Source
-	${OPENGL_INCLUDE_DIRS}
-    ${GLEW_INCLUDE_DIRS}
-    ${GLFW_INCLUDE_DIRS}
-    ${ASSIMP_INCLUDE_DIRS}
-    ${CEREAL_INCLUDE_DIRS}
-    ${GLM_INCLUDE_DIRS}
-    ${PHYSX_INCLUDE_DIRS}
-	${STB_INCLUDE_DIRS}
-)
-
-# Define the link libraries
-target_link_libraries( Core
-	${OPENGL_LIBRARIES}
-    ${GLEW_LIBRARIES}
-    ${GLFW_LIBRARIES}
-    ${ASSIMP_LIBRARIES}
-    ${GLM_LIBRARIES}
-    ${PHYSX_LIBRARIES}
-)
-
-if(WIN32)
-	string(REPLACE "/" "\\" source_path_windows "${FluffEngine_SOURCE_DIR}/Engine/Content")
-	string(REPLACE "/" "\\" build_path_windows "${FluffEngine_BINARY_DIR}/Engine/Content")
-	execute_process(COMMAND cmd.exe /c mklink /J "${build_path_windows}" "${source_path_windows}" RESULT_VARIABLE exitcode)
-else()
-	execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink ${FluffEngine_SOURCE_DIR}/Engine/Content ${FluffEngine_BINARY_DIR}/Engine/Content RESULT_VARIABLE exitcode)
-endif()
-
-if(NOT ${exitcode} EQUAL 0)
-	MESSAGE("SYMLINKING FAILED: ${exitcode}")
-	MESSAGE("FALLING BACK TO COPYING")
-endif()
-
-#Copy file if the build resource folder contains an older version. This is ignored when the symlink was succesful because the files are already the newest version.
-file(GLOB_RECURSE RES RELATIVE ${FluffEngine_SOURCE_DIR}/Engine/Content/ ${FluffEngine_SOURCE_DIR}/Engine/Content/*.*)
-foreach(file IN LISTS RES)
-	configure_file(${FluffEngine_SOURCE_DIR}/Engine/Content/${file} ${FluffEngine_BINARY_DIR}/Engine/Content/${file} COPYONLY)
-endforeach()
-
-#Create virtual folders to make it look nicer in VS
-if(MSVC_IDE)
-	foreach(source IN LISTS CORE_SRCS CORE_HDRS)
-		get_filename_component(source_path "${source}" PATH)
-		string(REPLACE "${FluffEngine_SOURCE_DIR}" "" relative_source_path "${source_path}")
-		string(REPLACE "/" "\\" source_path_msvc "${relative_source_path}")
-		string(REPLACE "Engine\\" "" actual_source_path_msvc "${source_path_msvc}")
-		source_group("${actual_source_path_msvc}" FILES "${source}")
-	endforeach()
+if(BUILD_SANDBOX)
+    add_subdirectory(${CMAKE_SOURCE_DIR}/Sandbox)
 endif()

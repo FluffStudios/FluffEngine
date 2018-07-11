@@ -1,17 +1,10 @@
 #pragma once
 
 #include <rendering/material.h>
-#include <core/assets/util.h>
 #include <string>
 #include <vector>
 
 #include <cereal/access.hpp>
-#include <cereal/types/string.hpp>
-#include <cereal/types/unordered_map.hpp>
-#include <cereal/types/vector.hpp>
-
-#include <common.h>
-#include <core/ecs/ecs_manager.h>
 
 namespace fluff {
 
@@ -34,7 +27,7 @@ namespace fluff {
 		void load(Archive & ar) const
 		{
 			ar(FileNames_);
-			for (auto it : FileNames_) LoadNoAdd(it);
+			for (const auto it : FileNames_) LoadNoAdd(it);
 		}
 	public:
 		static render::Material * Load(std::string FileName);

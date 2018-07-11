@@ -5,7 +5,7 @@
 
 namespace fluff
 {
-	class PoolAllocator
+	class PoolAllocator final
 	{
 		struct Block
 		{
@@ -26,7 +26,7 @@ namespace fluff
 		void Free(void * Ptr);
 		void Dispose();
 	private:
-		static bool Sort(const Block Left, const Block Right);
+		static bool Sort(Block Left, Block Right);
 	};
 
 	class Allocator

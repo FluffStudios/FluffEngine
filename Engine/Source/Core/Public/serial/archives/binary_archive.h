@@ -13,10 +13,11 @@ namespace fluff { namespace serial {
 		{
 			Buffer_ = new BinaryBuffer;
 		}
-		virtual Buffer * SendToBuffer() const { return Buffer_; }
-		virtual void SendToFile(const char * FileName) {}
-		virtual void ReadFromBuffer(Buffer * pBuffer) {}
-		virtual void ReadFromFile(const char * FileName) {}
+
+	    Buffer * SendToBuffer() const override { return Buffer_; }
+	    void SendToFile(const char * FileName) override {}
+	    void ReadFromBuffer(Buffer * pBuffer) override {}
+	    void ReadFromFile(const char * FileName) override {}
 	};
 
 } }

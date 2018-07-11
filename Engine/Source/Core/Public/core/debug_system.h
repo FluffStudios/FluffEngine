@@ -20,7 +20,7 @@ namespace fluff
 
 			Events - Event manager associated with debug system
 		*/
-		void Configure(ecs::EventManager & Events);
+		void Configure(ecs::EventManager & Events) override;
 
 		/*
 			Ticks through the debug messages
