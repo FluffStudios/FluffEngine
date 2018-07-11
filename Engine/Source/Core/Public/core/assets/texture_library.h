@@ -31,7 +31,7 @@ namespace fluff {
 		void load(Archive & ar) const
 		{
 			ar(FileNames_);
-			for (auto i : FileNames_)
+			for (const auto i : FileNames_)
 			{
 				LoadNoAdd(i);
 			}

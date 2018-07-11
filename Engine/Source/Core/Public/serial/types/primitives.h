@@ -39,22 +39,22 @@ namespace fluff { namespace serial {
 			free(Name_);
 		}
 
-		char * const GetName() const
+		char * const GetName() const override
 		{
 			return Name_;
 		}
 
-		size_t GetNameLength() const
+		size_t GetNameLength() const override
 		{
 			return NameLength_;
 		}
 
-		void * GetDataPtr()
+		void * GetDataPtr() override
 		{
 			return const_cast<Type*>(&Value_);
 		}
 
-		virtual const size_t GetTypeSize() const = 0;
+	    const size_t GetTypeSize() const override = 0;
 	};
 
 	class FLUFF_API CharPrimitive : public Primitive<char>
@@ -63,7 +63,7 @@ namespace fluff { namespace serial {
 	public:
 		CharPrimitive(const char * Name, char Value);
 		const size_t GetTypeSize() const override;
-		virtual const char GetTypeHandle() const;
+	    const char GetTypeHandle() const override;
 	};
 
 	class FLUFF_API UCharPrimitive : public Primitive<unsigned char>
@@ -72,7 +72,7 @@ namespace fluff { namespace serial {
 	public:
 		UCharPrimitive(const char * Name, unsigned char Value);
 		const size_t GetTypeSize() const override;
-		virtual const char GetTypeHandle() const;
+	    const char GetTypeHandle() const override;
 	};
 
 	class FLUFF_API ShortPrimitive : public Primitive<short>
@@ -81,7 +81,7 @@ namespace fluff { namespace serial {
 	public:
 		ShortPrimitive(const char * Name, short Value);
 		const size_t GetTypeSize() const override;
-		virtual const char GetTypeHandle() const;
+	    const char GetTypeHandle() const override;
 	};
 
 	class FLUFF_API UShortPrimitive : public Primitive<unsigned short>
@@ -90,7 +90,7 @@ namespace fluff { namespace serial {
 	public:
 		UShortPrimitive(const char * Name, unsigned short Value);
 		const size_t GetTypeSize() const override;
-		virtual const char GetTypeHandle() const;
+	    const char GetTypeHandle() const override;
 	};
 
 	class FLUFF_API IntPrimitive : public Primitive<int>
@@ -99,7 +99,7 @@ namespace fluff { namespace serial {
 	public:
 		IntPrimitive(const char * Name, int Value);
 		const size_t GetTypeSize() const override;
-		virtual const char GetTypeHandle() const;
+	    const char GetTypeHandle() const override;
 	};
 
 	class FLUFF_API UIntPrimitive : public Primitive<unsigned int>
@@ -108,7 +108,7 @@ namespace fluff { namespace serial {
 	public:
 		UIntPrimitive(const char * Name, unsigned int Value);
 		const size_t GetTypeSize() const override;
-		virtual const char GetTypeHandle() const;
+	    const char GetTypeHandle() const override;
 	};
 
 	class FLUFF_API LongPrimitive : public Primitive<long long>
@@ -117,7 +117,7 @@ namespace fluff { namespace serial {
 	public:
 		LongPrimitive(const char * Name, long long Value);
 		const size_t GetTypeSize() const override;
-		virtual const char GetTypeHandle() const;
+	    const char GetTypeHandle() const override;
 	};
 
 	class FLUFF_API ULongPrimitive : public Primitive<unsigned long long>
@@ -126,7 +126,7 @@ namespace fluff { namespace serial {
 	public:
 		ULongPrimitive(const char * Name, unsigned long long Value);
 		const size_t GetTypeSize() const override;
-		virtual const char GetTypeHandle() const;
+	    const char GetTypeHandle() const override;
 	};
 
 	class FLUFF_API FloatPrimitive : public Primitive<float>
@@ -135,7 +135,7 @@ namespace fluff { namespace serial {
 	public:
 		FloatPrimitive(const char * Name, float Value);
 		const size_t GetTypeSize() const override;
-		virtual const char GetTypeHandle() const;
+	    const char GetTypeHandle() const override;
 	};
 
 	class FLUFF_API DoublePrimitive : public Primitive<double>
@@ -144,7 +144,7 @@ namespace fluff { namespace serial {
 	public:
 		DoublePrimitive(const char * Name, double Value);
 		const size_t GetTypeSize() const override;
-		virtual const char GetTypeHandle() const;
+	    const char GetTypeHandle() const override;
 	};
 
 	void FLUFF_API Write(IArchive * Archive, IPrimitive * Prim);

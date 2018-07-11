@@ -1,7 +1,7 @@
 SET(_PF86 "PROGRAMFILES(X86)")
 SET( PHYSX_SEARCH_PATHS
 	${PHYSX_ROOT_DIR}					# PHYSX!
-	./Engine/Dependencies/physx
+	${FluffEngine_SOURCE_DIR}/Engine/Dependencies/physx
 	$ENV{PROGRAMFILES}/Physx				# WINDOWS
 	"$ENV{_PF86}/Physx"		# WINDOWS
 	~/Library/Frameworks				# MAC

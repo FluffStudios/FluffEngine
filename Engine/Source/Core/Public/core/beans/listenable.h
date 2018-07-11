@@ -6,6 +6,8 @@ namespace fluff {
 	class Listenable
 	{
 	public:
+        virtual ~Listenable() = default;
+
 		/*
 			Gets the value of the listenable object
 

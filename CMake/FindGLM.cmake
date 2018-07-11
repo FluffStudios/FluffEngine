@@ -1,7 +1,7 @@
 SET(_PF86 "PROGRAMFILES(X86)")
 SET( GLM_SEARCH_PATHS
 	${GLM_ROOT_DIR}					# GLM!
-	./Engine/Dependencies/glm
+	${FluffEngine_SOURCE_DIR}/Engine/Dependencies/glm
 	$ENV{PROGRAMFILES}/GLM				# WINDOWS
 	"$ENV{_PF86}/GLM"		# WINDOWS
 	~/Library/Frameworks				# MAC

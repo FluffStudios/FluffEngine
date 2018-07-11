@@ -1,0 +1,650 @@
+{
+    "basic_pipeline": {
+        "vertex": "basic_forward_out.vs",
+        "tess_eval": "nullptr",
+        "tess_ctrl": "nullptr",
+        "geometry": "nullptr",
+        "fragment": "basic_forward_out.fs",
+        "transform_feedback": {
+            "num_outputs": 0,
+            "output_names": [],
+            "buffer_mode": 35981
+        },
+        "blend_state": {
+            "alpha_to_coverage": false,
+            "independent_blend_target": true,
+            "should_blend": true,
+            "render_target_desc": [
+                {
+                    "src_color": 770,
+                    "dst_color": 771,
+                    "src_alpha": 770,
+                    "dst_alpha": 771
+                },
+                {
+                    "src_color": 1,
+                    "dst_color": 0,
+                    "src_alpha": 1,
+                    "dst_alpha": 0
+                },
+                {
+                    "src_color": 1,
+                    "dst_color": 0,
+                    "src_alpha": 1,
+                    "dst_alpha": 0
+                },
+                {
+                    "src_color": 1,
+                    "dst_color": 0,
+                    "src_alpha": 1,
+                    "dst_alpha": 0
+                },
+                {
+                    "src_color": 1,
+                    "dst_color": 0,
+                    "src_alpha": 1,
+                    "dst_alpha": 0
+                },
+                {
+                    "src_color": 1,
+                    "dst_color": 0,
+                    "src_alpha": 1,
+                    "dst_alpha": 0
+                },
+                {
+                    "src_color": 1,
+                    "dst_color": 0,
+                    "src_alpha": 1,
+                    "dst_alpha": 0
+                },
+                {
+                    "src_color": 1,
+                    "dst_color": 0,
+                    "src_alpha": 1,
+                    "dst_alpha": 0
+                }
+            ]
+        },
+        "sample_mask": 0,
+        "render_target_count": 1,
+        "render_sample_count": 1,
+        "render_width": 1920,
+        "render_height": 1080,
+        "depth_stencil": {
+            "depth_enable": true,
+            "depth_write_mask": 4294967295,
+            "depth_comparison_function": 516,
+            "stencil_enable": false,
+            "stencil_read_mask": 255,
+            "stencil_write_mask": 255,
+            "stencil_reference": 0,
+            "stencil_mask": 1,
+            "front_face": {
+                "fail": 7680,
+                "depth_fail": 7680,
+                "depth_pass": 7680,
+                "function": 519
+            },
+            "back_face": {
+                "fail": 7680,
+                "depth_fail": 7680,
+                "depth_pass": 7680,
+                "function": 519
+            }
+        },
+        "primitive_topo": 4,
+        "rasterizer": {
+            "fill_mode": 6914,
+            "cull_mode": 1029,
+            "face_order": 2305,
+            "polygon_offset_mode": 32823,
+            "depth_bias": 0,
+            "depth_clamp": 0.0,
+            "slope_scaled_depth_bias": 0.0,
+            "depth_clip_enable": true,
+            "multisample_enable": false,
+            "antialias_line_enable": false,
+            "force_samples_count": 0
+        }
+    },
+    "text_pipeline": {
+        "vertex": "resources/text.vert",
+        "tess_eval": "nullptr",
+        "tess_ctrl": "nullptr",
+        "geometry": "nullptr",
+        "fragment": "resources/text.frag",
+        "transform_feedback": {
+            "num_outputs": 0,
+            "output_names": [],
+            "buffer_mode": 35981
+        },
+        "blend_state": {
+            "alpha_to_coverage": false,
+            "independent_blend_target": true,
+            "should_blend": true,
+            "render_target_desc": [
+                {
+                    "src_color": 770,
+                    "dst_color": 771,
+                    "src_alpha": 770,
+                    "dst_alpha": 771
+                },
+                {
+                    "src_color": 1,
+                    "dst_color": 0,
+                    "src_alpha": 1,
+                    "dst_alpha": 0
+                },
+                {
+                    "src_color": 1,
+                    "dst_color": 0,
+                    "src_alpha": 1,
+                    "dst_alpha": 0
+                },
+                {
+                    "src_color": 1,
+                    "dst_color": 0,
+                    "src_alpha": 1,
+                    "dst_alpha": 0
+                },
+                {
+                    "src_color": 1,
+                    "dst_color": 0,
+                    "src_alpha": 1,
+                    "dst_alpha": 0
+                },
+                {
+                    "src_color": 1,
+                    "dst_color": 0,
+                    "src_alpha": 1,
+                    "dst_alpha": 0
+                },
+                {
+                    "src_color": 1,
+                    "dst_color": 0,
+                    "src_alpha": 1,
+                    "dst_alpha": 0
+                },
+                {
+                    "src_color": 1,
+                    "dst_color": 0,
+                    "src_alpha": 1,
+                    "dst_alpha": 0
+                }
+            ]
+        },
+        "sample_mask": 0,
+        "render_target_count": 1,
+        "render_sample_count": 1,
+        "render_width": 1920,
+        "render_height": 1080,
+        "depth_stencil": {
+            "depth_enable": true,
+            "depth_write_mask": 4294967295,
+            "depth_comparison_function": 516,
+            "stencil_enable": false,
+            "stencil_read_mask": 255,
+            "stencil_write_mask": 255,
+            "stencil_reference": 0,
+            "stencil_mask": 1,
+            "front_face": {
+                "fail": 7680,
+                "depth_fail": 7680,
+                "depth_pass": 7680,
+                "function": 519
+            },
+            "back_face": {
+                "fail": 7680,
+                "depth_fail": 7680,
+                "depth_pass": 7680,
+                "function": 519
+            }
+        },
+        "primitive_topo": 4,
+        "rasterizer": {
+            "fill_mode": 6914,
+            "cull_mode": 1029,
+            "face_order": 2305,
+            "polygon_offset_mode": 32823,
+            "depth_bias": 0,
+            "depth_clamp": 0.0,
+            "slope_scaled_depth_bias": 0.0,
+            "depth_clip_enable": true,
+            "multisample_enable": false,
+            "antialias_line_enable": false,
+            "force_samples_count": 0
+        }
+    },
+    "terrain_pipeline": {
+        "vertex": "terrain_deferred.vs",
+        "tess_eval": "nullptr",
+        "tess_ctrl": "nullptr",
+        "geometry": "nullptr",
+        "fragment": "terrain_deferred.fs",
+        "transform_feedback": {
+            "num_outputs": 0,
+            "output_names": [],
+            "buffer_mode": 35981
+        },
+        "blend_state": {
+            "alpha_to_coverage": false,
+            "independent_blend_target": true,
+            "should_blend": false,
+            "render_target_desc": [
+                {
+                    "src_color": 1,
+                    "dst_color": 1,
+                    "src_alpha": 1,
+                    "dst_alpha": 0
+                },
+                {
+                    "src_color": 1,
+                    "dst_color": 0,
+                    "src_alpha": 1,
+                    "dst_alpha": 0
+                },
+                {
+                    "src_color": 1,
+                    "dst_color": 0,
+                    "src_alpha": 1,
+                    "dst_alpha": 0
+                },
+                {
+                    "src_color": 1,
+                    "dst_color": 0,
+                    "src_alpha": 1,
+                    "dst_alpha": 0
+                },
+                {
+                    "src_color": 1,
+                    "dst_color": 0,
+                    "src_alpha": 1,
+                    "dst_alpha": 0
+                },
+                {
+                    "src_color": 1,
+                    "dst_color": 0,
+                    "src_alpha": 1,
+                    "dst_alpha": 0
+                },
+                {
+                    "src_color": 1,
+                    "dst_color": 0,
+                    "src_alpha": 1,
+                    "dst_alpha": 0
+                },
+                {
+                    "src_color": 1,
+                    "dst_color": 0,
+                    "src_alpha": 1,
+                    "dst_alpha": 0
+                }
+            ]
+        },
+        "sample_mask": 0,
+        "render_target_count": 1,
+        "render_sample_count": 1,
+        "render_width": 1920,
+        "render_height": 1080,
+        "depth_stencil": {
+            "depth_enable": true,
+            "depth_write_mask": 4294967295,
+            "depth_comparison_function": 516,
+            "stencil_enable": false,
+            "stencil_read_mask": 255,
+            "stencil_write_mask": 255,
+            "stencil_reference": 0,
+            "stencil_mask": 1,
+            "front_face": {
+                "fail": 7680,
+                "depth_fail": 7680,
+                "depth_pass": 7680,
+                "function": 519
+            },
+            "back_face": {
+                "fail": 7680,
+                "depth_fail": 7680,
+                "depth_pass": 7680,
+                "function": 519
+            }
+        },
+        "primitive_topo": 4,
+        "rasterizer": {
+            "fill_mode": 6914,
+            "cull_mode": 1029,
+            "face_order": 2305,
+            "polygon_offset_mode": 32823,
+            "depth_bias": 0,
+            "depth_clamp": 0.0,
+            "slope_scaled_depth_bias": 0.0,
+            "depth_clip_enable": true,
+            "multisample_enable": false,
+            "antialias_line_enable": false,
+            "force_samples_count": 0
+        }
+    },
+    "def": {
+        "vertex": "basic_deferred.vs",
+        "tess_eval": "nullptr",
+        "tess_ctrl": "nullptr",
+        "geometry": "nullptr",
+        "fragment": "basic_deferred.fs",
+        "transform_feedback": {
+            "num_outputs": 0,
+            "output_names": [],
+            "buffer_mode": 35981
+        },
+        "blend_state": {
+            "alpha_to_coverage": false,
+            "independent_blend_target": true,
+            "should_blend": true,
+            "render_target_desc": [
+                {
+                    "src_color": 1,
+                    "dst_color": 0,
+                    "src_alpha": 1,
+                    "dst_alpha": 0
+                },
+                {
+                    "src_color": 1,
+                    "dst_color": 0,
+                    "src_alpha": 1,
+                    "dst_alpha": 0
+                },
+                {
+                    "src_color": 1,
+                    "dst_color": 0,
+                    "src_alpha": 1,
+                    "dst_alpha": 0
+                },
+                {
+                    "src_color": 1,
+                    "dst_color": 0,
+                    "src_alpha": 1,
+                    "dst_alpha": 0
+                },
+                {
+                    "src_color": 1,
+                    "dst_color": 0,
+                    "src_alpha": 1,
+                    "dst_alpha": 0
+                },
+                {
+                    "src_color": 1,
+                    "dst_color": 0,
+                    "src_alpha": 1,
+                    "dst_alpha": 0
+                },
+                {
+                    "src_color": 1,
+                    "dst_color": 0,
+                    "src_alpha": 1,
+                    "dst_alpha": 0
+                },
+                {
+                    "src_color": 1,
+                    "dst_color": 0,
+                    "src_alpha": 1,
+                    "dst_alpha": 0
+                }
+            ]
+        },
+        "sample_mask": 0,
+        "render_target_count": 1,
+        "render_sample_count": 1,
+        "render_width": 1920,
+        "render_height": 1080,
+        "depth_stencil": {
+            "depth_enable": true,
+            "depth_write_mask": 4294967295,
+            "depth_comparison_function": 516,
+            "stencil_enable": false,
+            "stencil_read_mask": 255,
+            "stencil_write_mask": 255,
+            "stencil_reference": 0,
+            "stencil_mask": 1,
+            "front_face": {
+                "fail": 7680,
+                "depth_fail": 7680,
+                "depth_pass": 7680,
+                "function": 519
+            },
+            "back_face": {
+                "fail": 7680,
+                "depth_fail": 7680,
+                "depth_pass": 7680,
+                "function": 519
+            }
+        },
+        "primitive_topo": 4,
+        "rasterizer": {
+            "fill_mode": 6914,
+            "cull_mode": 1029,
+            "face_order": 2305,
+            "polygon_offset_mode": 32823,
+            "depth_bias": 0,
+            "depth_clamp": 0.0,
+            "slope_scaled_depth_bias": 0.0,
+            "depth_clip_enable": true,
+            "multisample_enable": false,
+            "antialias_line_enable": false,
+            "force_samples_count": 0
+        }
+    },
+    "def_transparent": {
+        "vertex": "basic_deferred.vs",
+        "tess_eval": "nullptr",
+        "tess_ctrl": "nullptr",
+        "geometry": "nullptr",
+        "fragment": "basic_deferred.fs",
+        "transform_feedback": {
+            "num_outputs": 0,
+            "output_names": [],
+            "buffer_mode": 35981
+        },
+        "blend_state": {
+            "alpha_to_coverage": false,
+            "independent_blend_target": true,
+            "should_blend": true,
+            "render_target_desc": [
+                {
+                    "src_color": 768,
+                    "dst_color": 769,
+                    "src_alpha": 770,
+                    "dst_alpha": 771
+                },
+                {
+                    "src_color": 1,
+                    "dst_color": 0,
+                    "src_alpha": 1,
+                    "dst_alpha": 0
+                },
+                {
+                    "src_color": 1,
+                    "dst_color": 0,
+                    "src_alpha": 1,
+                    "dst_alpha": 0
+                },
+                {
+                    "src_color": 1,
+                    "dst_color": 0,
+                    "src_alpha": 1,
+                    "dst_alpha": 0
+                },
+                {
+                    "src_color": 1,
+                    "dst_color": 0,
+                    "src_alpha": 1,
+                    "dst_alpha": 0
+                },
+                {
+                    "src_color": 1,
+                    "dst_color": 0,
+                    "src_alpha": 1,
+                    "dst_alpha": 0
+                },
+                {
+                    "src_color": 1,
+                    "dst_color": 0,
+                    "src_alpha": 1,
+                    "dst_alpha": 0
+                },
+                {
+                    "src_color": 1,
+                    "dst_color": 0,
+                    "src_alpha": 1,
+                    "dst_alpha": 0
+                }
+            ]
+        },
+        "sample_mask": 0,
+        "render_target_count": 1,
+        "render_sample_count": 1,
+        "render_width": 1920,
+        "render_height": 1080,
+        "depth_stencil": {
+            "depth_enable": true,
+            "depth_write_mask": 4294967295,
+            "depth_comparison_function": 516,
+            "stencil_enable": false,
+            "stencil_read_mask": 255,
+            "stencil_write_mask": 255,
+            "stencil_reference": 0,
+            "stencil_mask": 1,
+            "front_face": {
+                "fail": 7680,
+                "depth_fail": 7680,
+                "depth_pass": 7680,
+                "function": 519
+            },
+            "back_face": {
+                "fail": 7680,
+                "depth_fail": 7680,
+                "depth_pass": 7680,
+                "function": 519
+            }
+        },
+        "primitive_topo": 4,
+        "rasterizer": {
+            "fill_mode": 6914,
+            "cull_mode": 1029,
+            "face_order": 2305,
+            "polygon_offset_mode": 32823,
+            "depth_bias": 0,
+            "depth_clamp": 0.0,
+            "slope_scaled_depth_bias": 0.0,
+            "depth_clip_enable": true,
+            "multisample_enable": false,
+            "antialias_line_enable": false,
+            "force_samples_count": 0
+        }
+    },
+    "deferred_pipeline": {
+        "vertex": "deferred.vs",
+        "tess_eval": "nullptr",
+        "tess_ctrl": "nullptr",
+        "geometry": "nullptr",
+        "fragment": "deferred.fs",
+        "transform_feedback": {
+            "num_outputs": 0,
+            "output_names": [],
+            "buffer_mode": 35981
+        },
+        "blend_state": {
+            "alpha_to_coverage": false,
+            "independent_blend_target": true,
+            "should_blend": false,
+            "render_target_desc": [
+                {
+                    "src_color": 1,
+                    "dst_color": 0,
+                    "src_alpha": 1,
+                    "dst_alpha": 0
+                },
+                {
+                    "src_color": 1,
+                    "dst_color": 0,
+                    "src_alpha": 1,
+                    "dst_alpha": 0
+                },
+                {
+                    "src_color": 1,
+                    "dst_color": 0,
+                    "src_alpha": 1,
+                    "dst_alpha": 0
+                },
+                {
+                    "src_color": 1,
+                    "dst_color": 0,
+                    "src_alpha": 1,
+                    "dst_alpha": 0
+                },
+                {
+                    "src_color": 1,
+                    "dst_color": 0,
+                    "src_alpha": 1,
+                    "dst_alpha": 0
+                },
+                {
+                    "src_color": 1,
+                    "dst_color": 0,
+                    "src_alpha": 1,
+                    "dst_alpha": 0
+                },
+                {
+                    "src_color": 1,
+                    "dst_color": 0,
+                    "src_alpha": 1,
+                    "dst_alpha": 0
+                },
+                {
+                    "src_color": 1,
+                    "dst_color": 0,
+                    "src_alpha": 1,
+                    "dst_alpha": 0
+                }
+            ]
+        },
+        "sample_mask": 0,
+        "render_target_count": 1,
+        "render_sample_count": 1,
+        "render_width": 1920,
+        "render_height": 1080,
+        "depth_stencil": {
+            "depth_enable": true,
+            "depth_write_mask": 4294967295,
+            "depth_comparison_function": 516,
+            "stencil_enable": false,
+            "stencil_read_mask": 255,
+            "stencil_write_mask": 255,
+            "stencil_reference": 0,
+            "stencil_mask": 1,
+            "front_face": {
+                "fail": 7680,
+                "depth_fail": 7680,
+                "depth_pass": 7680,
+                "function": 519
+            },
+            "back_face": {
+                "fail": 7680,
+                "depth_fail": 7680,
+                "depth_pass": 7680,
+                "function": 519
+            }
+        },
+        "primitive_topo": 4,
+        "rasterizer": {
+            "fill_mode": 6914,
+            "cull_mode": 1029,
+            "face_order": 2305,
+            "polygon_offset_mode": 32823,
+            "depth_bias": 0,
+            "depth_clamp": 0.0,
+            "slope_scaled_depth_bias": 0.0,
+            "depth_clip_enable": true,
+            "multisample_enable": false,
+            "antialias_line_enable": false,
+            "force_samples_count": 0
+        }
+    }
+}

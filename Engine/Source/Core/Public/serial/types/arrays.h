@@ -50,7 +50,7 @@ namespace fluff { namespace serial {
 			return &Data_;
 		}
 
-		virtual const size_t GetTypeSize() const = 0;
+	    const size_t GetTypeSize() const override = 0;
 	};
 
 	class FLUFF_API CharArray : public Array<char>
@@ -59,7 +59,7 @@ namespace fluff { namespace serial {
 	public:
 		CharArray(const char * Name, char * Value, size_t Count);
 		const size_t GetTypeSize() const override;
-		virtual const char GetTypeHandle() const;
+	    const char GetTypeHandle() const override;
 	};
 
 	class FLUFF_API UCharArray : public Array<unsigned char>
@@ -68,7 +68,7 @@ namespace fluff { namespace serial {
 	public:
 		UCharArray(const char * Name, unsigned char * Value, size_t Count);
 		const size_t GetTypeSize() const override;
-		virtual const char GetTypeHandle() const;
+	    const char GetTypeHandle() const override;
 	};
 
 	class FLUFF_API ShortArray : public Array<short>
@@ -77,7 +77,7 @@ namespace fluff { namespace serial {
 	public:
 		ShortArray(const char * Name, short * Value, size_t Count);
 		const size_t GetTypeSize() const override;
-		virtual const char GetTypeHandle() const;
+	    const char GetTypeHandle() const override;
 	};
 
 	class FLUFF_API UShortArray : public Array<unsigned short>
@@ -86,7 +86,7 @@ namespace fluff { namespace serial {
 	public:
 		UShortArray(const char * Name, unsigned short * Value, size_t Count);
 		const size_t GetTypeSize() const override;
-		virtual const char GetTypeHandle() const;
+	    const char GetTypeHandle() const override;
 	};
 
 	class FLUFF_API IntArray : public Array<int>
@@ -95,7 +95,7 @@ namespace fluff { namespace serial {
 	public:
 		IntArray(const char * Name, int * Value, size_t Count);
 		const size_t GetTypeSize() const override;
-		virtual const char GetTypeHandle() const;
+	    const char GetTypeHandle() const override;
 	};
 
 	class FLUFF_API UIntArray : public Array<unsigned int>
@@ -104,7 +104,7 @@ namespace fluff { namespace serial {
 	public:
 		UIntArray(const char * Name, unsigned int * Value, size_t Count);
 		const size_t GetTypeSize() const override;
-		virtual const char GetTypeHandle() const;
+	    const char GetTypeHandle() const override;
 	};
 
 	class FLUFF_API LongArray : public Array<long long>
@@ -113,7 +113,7 @@ namespace fluff { namespace serial {
 	public:
 		LongArray(const char * Name, long long * Value, size_t Count);
 		const size_t GetTypeSize() const override;
-		virtual const char GetTypeHandle() const;
+	    const char GetTypeHandle() const override;
 	};
 
 	class FLUFF_API ULongArray : public Array<unsigned long long>
@@ -122,7 +122,7 @@ namespace fluff { namespace serial {
 	public:
 		ULongArray(const char * Name, unsigned long long * Value, size_t Count);
 		const size_t GetTypeSize() const override;
-		virtual const char GetTypeHandle() const;
+	    const char GetTypeHandle() const override;
 	};
 
 	class FLUFF_API FloatArray : public Array<float>
@@ -131,7 +131,7 @@ namespace fluff { namespace serial {
 	public:
 		FloatArray(const char * Name, float * Value, size_t Count);
 		const size_t GetTypeSize() const override;
-		virtual const char GetTypeHandle() const;
+	    const char GetTypeHandle() const override;
 	};
 
 	class FLUFF_API DoubleArray : public Array<double>
@@ -140,7 +140,7 @@ namespace fluff { namespace serial {
 	public:
 		DoubleArray(const char * Name, double * Value, size_t Count);
 		const size_t GetTypeSize() const override;
-		virtual const char GetTypeHandle() const;
+	    const char GetTypeHandle() const override;
 	};
 
 	void FLUFF_API Write(IArchive * Archive, IArray * Ar);

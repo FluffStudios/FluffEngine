@@ -1,7 +1,7 @@
 SET(_PF86 "PROGRAMFILES(X86)")
 SET( ASSIMP_SEARCH_PATHS
 	${ASSIMP_ROOT_DIR}					# ASSIMP!
-	./Engine/Dependencies/assimp
+	${FluffEngine_SOURCE_DIR}/Engine/Dependencies/assimp
 	$ENV{PROGRAMFILES}/Assimp				# WINDOWS
 	"$ENV{_PF86}/Assimp"		# WINDOWS
 	~/Library/Frameworks				# MAC

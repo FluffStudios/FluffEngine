@@ -2,7 +2,6 @@
 
 #include <physics/physics_geometry.h>
 #include <physics/physics_material.h>
-#include <glm/vec3.hpp>
 #include <glm/gtc/quaternion.hpp>
 #include <memory>
 
@@ -47,8 +46,8 @@ namespace fluff { namespace physics {
 		PhysicsStaticActor(void * pSDK, glm::vec3 Position, glm::quat Rotation, GeometryType Geometry, GeometryDesc * GeomDesc, PhysicsMaterialDescriptor Material);
 		glm::vec3 GetPosition() const override;
 		glm::vec3 GetRotation() const override;
-		glm::vec3 GetLinearVelocity() const { return glm::vec3(0.0f); }
-		glm::vec3 GetAngularVelocity() const { return glm::vec3(0.0f); }
+		glm::vec3 GetLinearVelocity() const override { return glm::vec3(0.0f); }
+		glm::vec3 GetAngularVelocity() const override { return glm::vec3(0.0f); }
 		void * GetPointer() const override;
 	};
 

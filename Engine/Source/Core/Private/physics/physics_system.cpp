@@ -46,8 +46,11 @@ namespace fluff { namespace physics {
 //		{
 //			auto physics_handle = ent.GetComponent<PhysicsComponent>();
 //
-//			ent.GetComponent<TransformationComponent>()->SetPosition(ent.GetComponent<TransformationComponent>()->GetPosition() + (float)DeltaTime * physics_handle->GetActor()->GetLinearVelocity());
-//			ent.GetComponent<TransformationComponent>()->SetRotation(ent.GetComponent<TransformationComponent>()->GetRotation() + (float)DeltaTime * physics_handle->GetActor()->GetAngularVelocity());
+//			ent.GetComponent<TransformationComponent>()->SetPosition(ent.GetComponent<TransformationComponent>()->GetPosition() + 
+//	    float)DeltaTime * physics_handle->GetActor()->GetLinearVelocity());
+
+//			ent.GetComponent<TransformationComponent>()->SetRotation(ent.GetComponent<TransformationComponent>()->GetRotation() + 
+//	    (float)DeltaTime * physics_handle->GetActor()->GetAngularVelocity());
 //		}
 	}
 

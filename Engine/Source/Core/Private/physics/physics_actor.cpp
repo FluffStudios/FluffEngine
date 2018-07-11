@@ -1,12 +1,10 @@
 #include <physics/physics_actor.h>
 
-#include <Physx/extensions/PxRigidActorExt.h>
 #include <Physx/extensions/PxRigidBodyExt.h>
 #include <Physx/extensions/PxSimpleFactory.h>
 #include <Physx/PxPhysics.h>
 #include <Physx/PxRigidActor.h>
 #include <Physx/PxRigidStatic.h>
-#include <Physx/PxPhysics.h>
 #include <Physx/PxRigidDynamic.h>
 #include <Physx/PxScene.h>
 #include <Physx/geometry/PxHeightFieldDesc.h>
@@ -15,8 +13,6 @@
 #include <Physx/geometry/PxHeightFieldFlag.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
-#include <glm/gtx/transform.hpp>
-#include <glm/gtc/matrix_transform.hpp>
 #include <Physx/cooking/PxCooking.h>
 
 float _clamp(float x) {

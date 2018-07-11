@@ -21,7 +21,7 @@ namespace fluff { namespace render {
 			Configures Screenshot System to listen for
 			screenshot events
 		*/
-		void Configure(ecs::EventManager & Events);
+		void Configure(ecs::EventManager & Events) override;
 
 		/*
 			Ticks through events

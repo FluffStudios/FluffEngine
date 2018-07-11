@@ -1,7 +1,7 @@
 SET(_PF86 "PROGRAMFILES(X86)")
 SET( CEREAL_SEARCH_PATHS
 	${CEREAL_ROOT_DIR}					# CEREAL!
-	./Engine/Dependencies/cereal
+	${FluffEngine_SOURCE_DIR}/Engine/Dependencies/cereal
 	$ENV{PROGRAMFILES}/Cereal				# WINDOWS
 	"$ENV{_PF86}/Cereal"		# WINDOWS
 	~/Library/Frameworks				# MAC
