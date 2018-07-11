@@ -5,6 +5,8 @@
 #include <core/ecs/itask.h>
 #include <core/ecs/task.h>
 
+#include <core/debug/debug_log_writer.h>
+
 #include <unordered_map>
 #include <vector>
 
@@ -16,10 +18,10 @@ namespace fluff { namespace ecs {
 		std::unordered_map<std::shared_ptr<ITask>, std::vector<Entity>> Tasks_;
 		std::shared_ptr<threading::ThreadPool> & Pool_;
 	public:
-		TaskSystem(std::shared_ptr<threading::ThreadPool> & ThreadPool);
-		void Configure(EntityManager & Entities, EventManager & Events) override;
-		void Update(EntityManager & Entities, EventManager & Events, double DeltaTime) override;
-		void FixedUpdate(EntityManager & Entities, EventManager & Events) override;
+		FLUFF_API TaskSystem(std::shared_ptr<threading::ThreadPool> & ThreadPool);
+		void FLUFF_API Configure(EntityManager & Entities, EventManager & Events) override;
+		void FLUFF_API Update(EntityManager & Entities, EventManager & Events, double DeltaTime) override;
+		void FLUFF_API FixedUpdate(EntityManager & Entities, EventManager & Events) override;
 		
 		template <typename TaskType, typename ... Arguments>
 		std::shared_ptr<ITask> Add(Arguments && ... Args);
@@ -27,7 +29,7 @@ namespace fluff { namespace ecs {
 		template <typename TaskType>
 		std::shared_ptr<ITask> & GetTask();
 		
-		void AddEntity(std::shared_ptr<ITask> Task, Entity Ent);
+		void FLUFF_API AddEntity(std::shared_ptr<ITask> Task, Entity Ent);
 
 		template <typename TaskType>
 		void AddEntity(Entity Ent);
@@ -48,6 +50,7 @@ namespace fluff { namespace ecs {
 	{
 		auto it = TaskTypes_.find(Task<TaskType>::GetFamilyID());
 		if (it == TaskTypes_.end()) {
+			FLUFF_LOG(debug::DebugErrorType::INVALID_PARAMETER, debug::DebugSeverity::ERROR, "Invalid Task Type");
 			return std::shared_ptr<ITask>(nullptr);
 		}
 		return it->second;

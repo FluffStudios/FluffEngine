@@ -41,7 +41,7 @@ namespace fluff {	namespace physics {
 		Impl_->Foundation_ = PxCreateFoundation(PX_FOUNDATION_VERSION, Impl_->DefaultAllocatorCallback_, Impl_->DefaultErrorCallback_);
 		if (Impl_->Foundation_ == nullptr)
 		{
-			std::cout << "PxCreateFoundation failed!" << std::endl;
+			FLUFF_LOG(debug::DebugErrorType::ILLEGAL_STATE, debug::DebugSeverity::FATAL, "Could not create PhysX Foundation.");
 		}
 #ifdef _DEBUG
 		Impl_->PVD_ = physx::PxCreatePvd(*(Impl_->Foundation_));
@@ -52,14 +52,14 @@ namespace fluff {	namespace physics {
 		Impl_->Physics_ = PxCreatePhysics(PX_PHYSICS_VERSION, *(Impl_->Foundation_), physx::PxTolerancesScale(), false, Impl_->PVD_);
 		if (!Impl_->Physics_)
 		{
-			std::cout << "Could not create physics!" << std::endl;
+			FLUFF_LOG(debug::DebugErrorType::ILLEGAL_STATE, debug::DebugSeverity::FATAL, "Could not create PhysX SDK.");
 		}
 
 		
 		Impl_->Cooking_ = PxCreateCooking(PX_PHYSICS_VERSION, *(Impl_->Foundation_), physx::PxCookingParams(physx::PxTolerancesScale()));
 		if (Impl_->Cooking_ == nullptr)
 		{
-			std::cout << "PxCreateCooking failed!" << std::endl;
+			FLUFF_LOG(debug::DebugErrorType::ILLEGAL_STATE, debug::DebugSeverity::FATAL, "Could not create PhysX Cooking.");
 		}
 	}
 

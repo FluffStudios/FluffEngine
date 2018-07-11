@@ -11,7 +11,7 @@
 
 namespace fluff { namespace ecs {
 
-	typedef Simple::Signal<void(const void *)> EventSignal;
+	typedef fluff::Signal<void(const void *)> EventSignal;
 
 	class FLUFF_API IReceiver
 	{

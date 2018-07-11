@@ -2,6 +2,7 @@
 #include <core/debug/debug_message.h>
 #include <common.h>
 #include <glew.h>
+#include <core/debug/debug_log_writer.h>
 
 namespace fluff { namespace gfx {
 
@@ -15,7 +16,7 @@ namespace fluff { namespace gfx {
 		glGenFramebuffers(1, &ID_);
 		if (!ID_)
 		{
-			debug::DebugMessage(Manager_, debug::DebugErrorType::ILLEGAL_STATE, debug::DebugSeverity::FATAL, static_cast<size_t>(__LINE__), std::string(__FILE__), "Could not create frame buffer.");
+			FLUFF_LOG(debug::DebugErrorType::ILLEGAL_STATE, debug::DebugSeverity::ERROR, "Could not create frame buffer.");
 		}
 	}
 

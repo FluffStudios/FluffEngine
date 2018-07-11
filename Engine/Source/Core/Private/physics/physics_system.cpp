@@ -35,7 +35,7 @@ namespace fluff { namespace physics {
 
 		if (!Scene_)
 		{
-			debug::DebugMessage(SystemsManager_, debug::DebugErrorType::ILLEGAL_STATE, debug::DebugSeverity::FATAL, static_cast<size_t>(__LINE__), std::string(__FILE__), "Could not create scene.");
+			FLUFF_LOG(debug::DebugErrorType::ILLEGAL_STATE, debug::DebugSeverity::FATAL, "Could not create PhysX Scene.");
 		}
 		((physx::PxScene *) Scene_->GetScene())->simulate(1.0f / 60.0f);
 	}

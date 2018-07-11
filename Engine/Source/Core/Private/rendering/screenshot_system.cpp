@@ -53,12 +53,12 @@ namespace fluff { namespace render {
 			glReadPixels(0, 0, Msg.Width, Msg.Height, GL_RGB, GL_UNSIGNED_BYTE, img);
 			stbi_flip_vertically_on_write(true);
 			auto res = stbi_write_bmp(stream.str().c_str(), Msg.Width, Msg.Height, 3, img);
-			if (!res) debug::DebugMessage(Manager_, debug::DebugErrorType::ILLEGAL_STATE, debug::DebugSeverity::WARN, static_cast<size_t>(__LINE__), std::string(__FILE__), "Screenshot cannot be created.");
+			if (!res) FLUFF_LOG(debug::DebugErrorType::ILLEGAL_STATE, debug::DebugSeverity::WARN, "Could not create screenshot.");
 			free(img);
 		}
 		else
 		{
-			debug::DebugMessage(Manager_, debug::DebugErrorType::ILLEGAL_STATE, debug::DebugSeverity::WARN, static_cast<size_t>(__LINE__), std::string(__FILE__), "Could not allocate buffer for screenshot.");
+			FLUFF_LOG(debug::DebugErrorType::ILLEGAL_STATE, debug::DebugSeverity::WARN, "Could not allocate buffer for screenshot.");
 		}
 	}
 

@@ -1,5 +1,6 @@
 #include <gfx/error_callback.h>
 
+#include <core/debug/debug_log_writer.h>
 #include <glew.h>
 
 namespace fluff { namespace gfx {
@@ -23,6 +24,7 @@ namespace fluff { namespace gfx {
 			}
 			std::stringstream stream;
 			stream << error << " | " << File << " (" << Line << ")" << std::endl;
+			FLUFF_LOG(debug::DebugErrorType::ILLEGAL_STATE, debug::DebugSeverity::ERROR, stream.str());
 			FLUFF_ERROR_FUNC(stream.str().c_str())
 		}
 		return errorCode;
@@ -71,6 +73,7 @@ namespace fluff { namespace gfx {
 		} stream << std::endl;
 		stream << std::endl;
 
+		FLUFF_LOG(debug::DebugErrorType::ILLEGAL_STATE, debug::DebugSeverity::ERROR, stream.str());
 		FLUFF_ERROR_FUNC(stream.str().c_str())
 #ifdef BREAK_ON_GL_ERROR
 		if (Severity == GL_DEBUG_SEVERITY_HIGH)
