@@ -19,6 +19,5 @@ public:
 	void Configure() override;
 	void Run() override;
 	void Shutdown() override;
-
-    bool ShouldShutdown() override { return false; }
+	bool ShouldShutdown() override;
 };

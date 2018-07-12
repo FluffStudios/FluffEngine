@@ -75,10 +75,6 @@ namespace fluff { namespace gfx {
 
 		FLUFF_LOG(debug::DebugErrorType::ILLEGAL_STATE, debug::DebugSeverity::ERROR, stream.str());
 		FLUFF_ERROR_FUNC(stream.str().c_str())
-#ifdef BREAK_ON_GL_ERROR
-		if (Severity == GL_DEBUG_SEVERITY_HIGH)
-			FLUFF_ASSERT(false)
-#endif
 	}
 
 } }

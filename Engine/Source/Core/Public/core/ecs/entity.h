@@ -515,10 +515,10 @@ namespace fluff { namespace ecs {
 				FamilyID_ = family;
 				ComponentLookupTable::Add<Component<Type>>();
 			}
-			if (family < MAX_COMPONENT_COUNT) {
+			if (family >= MAX_COMPONENT_COUNT) {
 				FLUFF_LOG(debug::DebugErrorType::ILLEGAL_STATE, debug::DebugSeverity::FATAL, "Illegal family ID.  Family ID is greater than MAX_FAMILY_COUNT");
-				FLUFF_ASSERT(family < MAX_COMPONENT_COUNT)
 			}
+			FLUFF_ASSERT(family < MAX_COMPONENT_COUNT)
 			return family;
 		}
 	private:

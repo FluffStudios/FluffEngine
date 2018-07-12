@@ -1,6 +1,7 @@
 #include <gfx/shader_buffer.h>
 #include <common.h>
 #include <glew.h>
+#include <core/debug/debug_log_writer.h>
 
 namespace fluff { namespace gfx {
 
