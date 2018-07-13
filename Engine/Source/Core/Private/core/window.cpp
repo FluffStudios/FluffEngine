@@ -109,8 +109,12 @@ namespace fluff
 		return glfwWindowShouldClose(Impl_->Handle_) == 0;
 	}
 
-	void Window::CloseWindow()
+	void Window::CloseWindow() const
 	{
+        ImGui_ImplOpenGL3_Shutdown();
+        ImGui_ImplGlfw_Shutdown();
+        ImGui::DestroyContext();
+
 		glfwDestroyWindow(Impl_->Handle_);
 		Impl_->Handle_ = nullptr;
 	}
