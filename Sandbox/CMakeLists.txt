@@ -2,7 +2,6 @@
 if(MSVC)
 	add_definitions(
 		-c
-		-W4
 	)
 else()
 	add_definitions(
@@ -30,6 +29,11 @@ add_executable(Sandbox ${SANDBOX_HDRS} ${SANDBOX_SRCS})
 target_compile_definitions(Sandbox PUBLIC 
 	"$<$<CONFIG:Release>:O2>" 
 	"$<$<CONFIG:Release>:NDEBUG>"
+)
+
+target_compile_options(Sandbox PUBLIC
+	"$<$<CONFIG:Release>:-w>"
+	"$<$<CONFIG:Debug>:-W4>"
 )
 
 # Define the include DIRs
