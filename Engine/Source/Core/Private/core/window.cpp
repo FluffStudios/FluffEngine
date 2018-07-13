@@ -14,6 +14,18 @@
 static void key_callback(GLFWwindow *Window, int Key, int Scancode, int Action, int Mods)
 {
 	fluff::Keyboard::Update(Key, Action == GLFW_PRESS || Action == GLFW_REPEAT);
+
+    ImGuiIO& io = ImGui::GetIO();
+    if (Action == GLFW_PRESS)
+        io.KeysDown[Key] = true;
+    if (Action == GLFW_RELEASE)
+        io.KeysDown[Key] = false;
+
+    (void)Mods; // Modifiers are not reliable across systems
+    io.KeyCtrl = io.KeysDown[GLFW_KEY_LEFT_CONTROL] || io.KeysDown[GLFW_KEY_RIGHT_CONTROL];
+    io.KeyShift = io.KeysDown[GLFW_KEY_LEFT_SHIFT] || io.KeysDown[GLFW_KEY_RIGHT_SHIFT];
+    io.KeyAlt = io.KeysDown[GLFW_KEY_LEFT_ALT] || io.KeysDown[GLFW_KEY_RIGHT_ALT];
+    io.KeySuper = io.KeysDown[GLFW_KEY_LEFT_SUPER] || io.KeysDown[GLFW_KEY_RIGHT_SUPER];
 }
 
  static void char_callback(GLFWwindow *window, unsigned int codepoint)

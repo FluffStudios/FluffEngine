@@ -95,21 +95,6 @@ void ImGui_ImplGlfw_ScrollCallback(GLFWwindow*, double xoffset, double yoffset)
     io.MouseWheel += static_cast<float>(yoffset);
 }
 
-void ImGui_ImplGlfw_KeyCallback(GLFWwindow*, int key, int, int action, int mods)
-{
-    ImGuiIO& io = ImGui::GetIO();
-    if (action == GLFW_PRESS)
-        io.KeysDown[key] = true;
-    if (action == GLFW_RELEASE)
-        io.KeysDown[key] = false;
-
-    (void)mods; // Modifiers are not reliable across systems
-    io.KeyCtrl = io.KeysDown[GLFW_KEY_LEFT_CONTROL] || io.KeysDown[GLFW_KEY_RIGHT_CONTROL];
-    io.KeyShift = io.KeysDown[GLFW_KEY_LEFT_SHIFT] || io.KeysDown[GLFW_KEY_RIGHT_SHIFT];
-    io.KeyAlt = io.KeysDown[GLFW_KEY_LEFT_ALT] || io.KeysDown[GLFW_KEY_RIGHT_ALT];
-    io.KeySuper = io.KeysDown[GLFW_KEY_LEFT_SUPER] || io.KeysDown[GLFW_KEY_RIGHT_SUPER];
-}
-
 void ImGui_ImplGlfw_CharCallback(GLFWwindow*, unsigned int c)
 {
     ImGuiIO& io = ImGui::GetIO();
@@ -121,7 +106,6 @@ void ImGui_ImplGlfw_InstallCallbacks(GLFWwindow* window)
 {
     glfwSetMouseButtonCallback(window, ImGui_ImplGlfw_MouseButtonCallback);
     glfwSetScrollCallback(window, ImGui_ImplGlfw_ScrollCallback);
-    glfwSetKeyCallback(window, ImGui_ImplGlfw_KeyCallback);
     glfwSetCharCallback(window, ImGui_ImplGlfw_CharCallback);
 }
 

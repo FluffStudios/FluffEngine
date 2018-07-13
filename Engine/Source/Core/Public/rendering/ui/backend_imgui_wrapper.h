@@ -13,7 +13,6 @@ void IMGUI_IMPL_API ImGui_ImplGlfw_NewFrame();
 // You can also handle inputs yourself and use those as a reference.
 void IMGUI_IMPL_API ImGui_ImplGlfw_MouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
 void IMGUI_IMPL_API ImGui_ImplGlfw_ScrollCallback(GLFWwindow* window, double xoffset, double yoffset);
-void IMGUI_IMPL_API ImGui_ImplGlfw_KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 void IMGUI_IMPL_API ImGui_ImplGlfw_CharCallback(GLFWwindow* window, unsigned int c);
 
 bool IMGUI_IMPL_API ImGui_ImplOpenGL3_Init(const char* glsl_version = NULL);
