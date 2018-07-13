@@ -14,3 +14,5 @@
 #define LONG      (unsigned char) 0x8
 #define FLOAT     (unsigned char) 0x9
 #define DOUBLE    (unsigned char) 0xA
+
+#define VECTOR    (unsigned char) 0x1

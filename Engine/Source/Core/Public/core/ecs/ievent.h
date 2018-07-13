@@ -4,13 +4,13 @@
 
 namespace fluff { namespace ecs {
 
-	class FLUFF_API IEvent
+	class IEvent
 	{
 	public:
 		/*
 			Destructor
 		*/
-		virtual ~IEvent();
+		virtual FLUFF_API ~IEvent();
 	protected:
 		static size_t Count_;
 	};

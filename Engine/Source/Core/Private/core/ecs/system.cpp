@@ -78,7 +78,7 @@ namespace fluff { namespace ecs
 		Init_ = true;
 	}
 
-	std::shared_ptr<threading::ThreadPool>FLUFF_API & SystemManager::GetThreadPool()
+	std::shared_ptr<threading::ThreadPool> & SystemManager::GetThreadPool()
 	{
 		return Pool_;
 	}

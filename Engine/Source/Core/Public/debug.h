@@ -1,15 +1,15 @@
 #pragma once
 #define DEBUG
 #include <iostream>
-
 #define FLUFF_API
 
 inline void FluffErrorMsg(const char * File, unsigned int Line, const char * Description)
 {
 #if defined(_DEBUG) || defined(DEBUG)
-	printf("Error in line %s on line %d\n", File, Line);
-	printf("Error Description: %s", Description);
-	printf("\n\n");
+	char buffer[2048];
+	sprintf(buffer, "Error in line %s on line %d\n", File, Line);
+	sprintf(buffer, "Error Description: %s", Description);
+	sprintf(buffer, "\n\n");
 #endif
 }
 

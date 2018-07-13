@@ -105,6 +105,10 @@ namespace fluff { namespace gfx
 		GraphicsPipeline * pipeline = new GraphicsPipeline;
 
 		// assert the vertex and fragment files exit
+		if (Descriptor.VertexShaderFile && Descriptor.FragmentShaderFile)
+		{
+			FLUFF_LOG(debug::DebugErrorType::ILLEGAL_STATE, debug::DebugSeverity::FATAL, "Could not load Vertex and/or Fragment Shader Files.");
+		}
 		FLUFF_ASSERT(Descriptor.VertexShaderFile)
 		FLUFF_ASSERT(Descriptor.FragmentShaderFile)
 
@@ -122,6 +126,11 @@ namespace fluff { namespace gfx
 		else
 		{
 			pipeline->ShaderHandle_ =new Shader(Manager, Descriptor.VertexShaderFile, Descriptor.FragmentShaderFile);
+		}
+
+		if (pipeline->ShaderHandle_ && Descriptor.RenderHeight && Descriptor.RenderWidth)
+		{
+			FLUFF_LOG(debug::DebugErrorType::ILLEGAL_STATE, debug::DebugSeverity::ERROR, "Could not create shader and/or render target.");
 		}
 
 		FLUFF_ASSERT(pipeline->ShaderHandle_ != nullptr)

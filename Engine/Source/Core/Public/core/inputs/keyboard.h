@@ -1,6 +1,7 @@
 #pragma once
 
 #include <debug.h>
+#include <core/debug/debug_log_writer.h>
 
 #define MAX_KEY_COUNT		  512
 
@@ -148,7 +149,8 @@ namespace fluff
 #if defined(DEBUG) || defined(_DEBUG)
 			if (KeyID < 0 || KeyID > MAX_KEY_COUNT) 
 			{
-				FLUFF_ERROR_FUNC("Invalid Key ID")
+				FLUFF_LOG(debug::DebugErrorType::INVALID_PARAMETER, debug::DebugSeverity::ERROR, "Invalid Key ID");
+				return false;
 			}
 #endif
 			if (KeyID < MAX_KEY_COUNT)
@@ -170,8 +172,8 @@ namespace fluff
 #if defined(DEBUG) || defined(_DEBUG)
 			if (KeyID < 0 || KeyID > MAX_KEY_COUNT)
 			{
-				FLUFF_ERROR_FUNC("Invalid Key ID")
-		}
+				FLUFF_LOG(debug::DebugErrorType::INVALID_PARAMETER, debug::DebugSeverity::ERROR, "Invalid Key ID");
+			}
 #endif
 			if (KeyID < MAX_KEY_COUNT)
 				keys[KeyID] = Status;

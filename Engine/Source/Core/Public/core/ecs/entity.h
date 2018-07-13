@@ -11,6 +11,7 @@
 
 #include <bitset>
 #include <algorithm>
+#include <core/debug/debug_log_writer.h>
 
 #ifndef MAX_COMPONENT_COUNT
 #define MAX_COMPONENT_COUNT 512
@@ -258,7 +259,7 @@ namespace fluff { namespace ecs {
 		void RemoveComponent()
 		{
 			FLUFF_ASSERT(IsValid())
-				Manager_->RemoveComponent<Comp>(Id_);
+			Manager_->RemoveComponent<Comp>(Id_);
 		}
 
 		/*
@@ -271,7 +272,7 @@ namespace fluff { namespace ecs {
 		ComponentHandle<C> GetComponent()
 		{
 			FLUFF_ASSERT(IsValid())
-				return Manager_->Component<C>(Id_);
+			return Manager_->Component<C>(Id_);
 		}
 
 		/*
@@ -284,7 +285,7 @@ namespace fluff { namespace ecs {
 		const ComponentHandle<C, const EntityManager> GetComponent() const
 		{
 			FLUFF_ASSERT(IsValid())
-				return const_cast<const EntityManager*>(Manager_)->Component<const C>(Id_);
+			return const_cast<const EntityManager*>(Manager_)->Component<const C>(Id_);
 		}
 
 		/*
@@ -297,7 +298,7 @@ namespace fluff { namespace ecs {
 		std::tuple<ComponentHandle<Components>...> GetComponents()
 		{
 			FLUFF_ASSERT(IsValid())
-				return Manager_->GetComponent<Components...>(Id_);
+			return Manager_->GetComponent<Components...>(Id_);
 		}
 
 		/*
@@ -310,7 +311,7 @@ namespace fluff { namespace ecs {
 		std::tuple<ComponentHandle<const Components, const EntityManager>...> GetComponents() const
 		{
 			FLUFF_ASSERT(IsValid())
-				return const_cast<const EntityManager*>(Manager_)->GetComponent<const Components...>(Id_);
+			return const_cast<const EntityManager*>(Manager_)->GetComponent<const Components...>(Id_);
 		}
 
 		/*
@@ -323,7 +324,7 @@ namespace fluff { namespace ecs {
 		bool HasComponent() const
 		{
 			FLUFF_ASSERT(IsValid())
-				return Manager_->HasComponent<Comp>(Id_);
+			return Manager_->HasComponent<Comp>(Id_);
 		}
 
 		/*
@@ -338,7 +339,7 @@ namespace fluff { namespace ecs {
 		void Unpack(ComponentHandle<A> &Arg, ComponentHandle<Arguments> & ... Args)
 		{
 			FLUFF_ASSERT(IsValid())
-				Manager_->Unpack<A, Arguments>(Id_, Arg, Args ...);
+			Manager_->Unpack<A, Arguments>(Id_, Arg, Args ...);
 		}
 
 		/*
@@ -491,6 +492,7 @@ namespace fluff { namespace ecs {
 		static void Fail()
 		{
 #if defined(_HAS_EXCEPTIONS) || defined(_EXCEPTIONS)
+			FLUFF_LOG(debug::DebugErrorType::ILLEGAL_DATA, debug::DebugSeverity::FATAL, "Bad allocation!");
 			throw std::bad_alloc();
 #else
 			std::abort();
@@ -512,6 +514,9 @@ namespace fluff { namespace ecs {
 				family = ComponentLookupTable::GetNextSlot();
 				FamilyID_ = family;
 				ComponentLookupTable::Add<Component<Type>>();
+			}
+			if (family >= MAX_COMPONENT_COUNT) {
+				FLUFF_LOG(debug::DebugErrorType::ILLEGAL_STATE, debug::DebugSeverity::FATAL, "Illegal family ID.  Family ID is greater than MAX_FAMILY_COUNT");
 			}
 			FLUFF_ASSERT(family < MAX_COMPONENT_COUNT)
 			return family;

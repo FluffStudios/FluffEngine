@@ -8,9 +8,9 @@
 #include <functional>
 #include <common.h>
 
-namespace Simple {
+namespace fluff {
 
-	namespace Lib {
+	namespace ecs {
 
 		/// ProtoSignal is the template implementation for callback list.
 		template <typename, typename>
@@ -245,10 +245,10 @@ namespace Simple {
 	   * Note that the Signal template types is non-copyable.
 	   */
 	template <typename SignalSignature,
-		class Collector = Lib::CollectorDefault<
+		class Collector = ecs::CollectorDefault<
 		typename std::function<SignalSignature>::result_type>>
-		struct Signal /*final*/ : Lib::ProtoSignal<SignalSignature, Collector> {
-		typedef Lib::ProtoSignal<SignalSignature, Collector> ProtoSignal;
+		struct Signal /*final*/ : ecs::ProtoSignal<SignalSignature, Collector> {
+		typedef ecs::ProtoSignal<SignalSignature, Collector> ProtoSignal;
 		typedef typename ProtoSignal::CbFunction CbFunction;
 		/// Signal constructor, supports a default callback as argument.
 		Signal(const CbFunction &method = CbFunction()) : ProtoSignal(method) {}

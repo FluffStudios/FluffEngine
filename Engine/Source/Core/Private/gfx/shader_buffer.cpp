@@ -1,6 +1,7 @@
 #include <gfx/shader_buffer.h>
 #include <common.h>
 #include <glew.h>
+#include <core/debug/debug_log_writer.h>
 
 namespace fluff { namespace gfx {
 
@@ -80,7 +81,7 @@ namespace fluff { namespace gfx {
 #if defined(DEBUG) | defined(_DEBUG)
 			if (Descriptor_.Usage != MAP_PERSISTENT)
 			{
-				FLUFF_ERROR_FUNC("Incorrect usage for function.")
+				FLUFF_LOG(debug::DebugErrorType::ILLEGAL_STATE, debug::DebugSeverity::ERROR, "Invalid usage.");
 				FLUFF_ASSERT(false)
 			}
 #endif

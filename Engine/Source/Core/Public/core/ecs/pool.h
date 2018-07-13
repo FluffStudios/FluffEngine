@@ -5,7 +5,7 @@
 
 namespace fluff { namespace ecs {
 
-	class FLUFF_API IPool
+	class IPool
 	{
 	protected:
 		size_t ElementSize_ = 0;
@@ -20,47 +20,47 @@ namespace fluff { namespace ecs {
 			ElementSize - Size of object to be stored
 			ChunkSize - Size of pool chunks
 		*/
-		explicit IPool(size_t ElementSize, size_t ChunkSize = 8192);
+		FLUFF_API IPool(size_t ElementSize, size_t ChunkSize = 8192);
 
 		/*
 			Destructor
 		*/
-		virtual ~IPool();
+		virtual FLUFF_API ~IPool();
 
 		/*
 			Gets the size of the pool
 
 			Returns used size
 		*/
-		inline size_t Size() const { return Size_; }
+		inline size_t FLUFF_API Size() const { return Size_; }
 
 		/*
 			Gets the capacity of the pool
 
 			Returns capacity
 		*/
-		size_t Capacity() const { return Capacity_; }
+		size_t FLUFF_API Capacity() const { return Capacity_; }
 
 		/*
 			Gets the number of chunks in the pool
 
 			Returns chunks
 		*/
-		size_t Chunks() const { return Chunks_.size(); }
+		size_t FLUFF_API Chunks() const { return Chunks_.size(); }
 
 		/*
 			Expands the pool at the given index
 
 			Index - index to expand at
 		*/
-		void Expand(size_t Index);
+		void FLUFF_API Expand(size_t Index);
 
 		/*
 			Reserves more space in the pool
 
 			NewSize - New size of pool
 		*/
-		void Reserve(size_t NewSize);
+		void FLUFF_API Reserve(size_t NewSize);
 
 		/*
 			Gets a pointer to the value stored at the given index
@@ -68,7 +68,7 @@ namespace fluff { namespace ecs {
 			Index - Index to retreive data at
 			Returns data at index
 		*/
-		void * GetAt(size_t Index);
+		void FLUFF_API * GetAt(size_t Index);
 
 		/*
 			Gets a pointer to the value stored at the given index
@@ -76,7 +76,7 @@ namespace fluff { namespace ecs {
 			Index - Index to retreive data at
 			Returns data at index
 		*/
-		const void * GetAt(size_t Index) const;
+		const void FLUFF_API * GetAt(size_t Index) const;
 
 		/*
 			Destroys contents of the pool at an index
@@ -87,7 +87,7 @@ namespace fluff { namespace ecs {
 	};
 	
 	template<typename T, size_t ChunkSize = 8192>
-	class FLUFF_API Pool : public IPool
+	class Pool : public IPool
 	{
 	public:
 		/*

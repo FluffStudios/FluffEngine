@@ -2,6 +2,7 @@
 
 #include <common.h>
 #include <debug.h>
+#include <core/debug/debug_log_writer.h>
 
 #define MAX_BUTTON_COUNT		32
 
@@ -38,8 +39,8 @@ namespace fluff
 #if defined(DEBUG) || defined(_DEBUG)
 			if (KeyID < 0 || KeyID > MAX_BUTTON_COUNT) 
 			{
-				FLUFF_ASSERT(false)
-				FLUFF_ERROR_FUNC("Invalid KeyID!")
+				FLUFF_LOG(debug::DebugErrorType::INVALID_PARAMETER, debug::DebugSeverity::ERROR, "Invalid Key ID");
+				return false;
 			}
 #endif
 			return keys[KeyID];
@@ -56,8 +57,7 @@ namespace fluff
 #if defined(DEBUG) || defined(_DEBUG)
 			if (KeyID < 0 || KeyID > MAX_BUTTON_COUNT)
 			{
-				FLUFF_ASSERT(false)
-				FLUFF_ERROR_FUNC("Invalid KeyID!")
+				FLUFF_LOG(debug::DebugErrorType::INVALID_PARAMETER, debug::DebugSeverity::ERROR, "Invalid Key ID");
 			}
 #endif
 			Mouse::keys[KeyID] = Status;

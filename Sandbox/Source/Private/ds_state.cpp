@@ -1,29 +1,37 @@
 #include <ds_state.h>
 #include <movement_system.h>
-#include <glm/glm.hpp>
-#include "core/debug_system.h"
 
-#define V_COUNT 16
+#define V_COUNT 512
 
 #ifndef UI_MAX_VERTEX_MEM
-#define UI_MAX_VERTEX_MEM (1024 * 512)
+#define UI_MAX_VERTEX_MEM 1024 * 512
 #endif
 
 #ifndef UI_MAX_ELEMENT_MEM
-#define UI_MAX_ELEMENT_MEM (1024 * 128)
+#define UI_MAX_ELEMENT_MEM 1024 * 128
 #endif
+
+class TestTask : public fluff::ecs::Task<TestTask>
+{
+	size_t Updates;
+public:
+	void Update() override
+	{
+		Updates++;
+	}
+};
 
 void DSState::Configure()
 {
-	//std::ifstream lt_in("lookup_table.bin", std::ios::binary);
-	//cereal::BinaryInputArchive archive_in(lt_in);
+	std::ifstream lt_in("lookup_table.bin", std::ios::binary);
+	cereal::BinaryInputArchive archive_in(lt_in);
 
-	//{
-	//	ComponentLookupTable table;
-	//	archive_in(table);
-	//}
+	{
+		ComponentLookupTable table;
+		archive_in(table);
+	}
 
-	//lt_in.close();
+	lt_in.close();
 
 	PipelineLibrary::LoadLibrary("pipelines.asset");
 	PipelineLibrary::Create(pManager_);
@@ -33,26 +41,31 @@ void DSState::Configure()
 
 	auto cam = pManager_->GetEntityManager()->Create();
 	cam.AddComponent<gfx::CameraComponent>();
-	cam.GetComponent<gfx::CameraComponent>()->SetPosition(glm::vec3(0, 50, 0));
-	cam.GetComponent<gfx::CameraComponent>()->SetDirection(glm::vec3(0, 0, 1));
+	cam.GetComponent<gfx::CameraComponent>()->SetPosition(glm::vec3(0, 120, -200));
+	cam.GetComponent<gfx::CameraComponent>()->SetRotation(glm::vec3(-45, 0, 0));
 
 	pManager_->GetSystemManager()->Add<render::RenderSystem>(pManager_, cam, proj);
-	pManager_->GetSystemManager()->Add<DebugSystem>();
+	pManager_->GetSystemManager()->Add<debug::DebugSystem>();
 	pManager_->GetSystemManager()->Add<ecs::Dependency<render::RenderableComponent, TransformationComponent>>();
 	pManager_->GetSystemManager()->Add<MovementSystem>(cam);
 	pManager_->GetSystemManager()->Add<render::ScreenshotSystem>(pManager_);
 	pManager_->GetSystemManager()->Add<physics::PhysicsSystem>(pManager_);
+	pManager_->GetSystemManager()->Add<ecs::TaskSystem>(pManager_->GetSystemManager()->GetThreadPool());
 	pManager_->GetSystemManager()->Configure();
 
-	pManager_->GetSystemManager()->UpdateAll(0);
+	debug::DebugMessage(pManager_, debug::DebugErrorType::ILLEGAL_DATA, debug::DebugSeverity::WARN, __LINE__, __FILE__, "Test!");
+
+	pManager_->GetSystemManager()->GetSystem<ecs::TaskSystem>()->Add<TestTask>();
 
 	Window::GetCurrentWindow()->GetWidth().SetListener([&](uint32_t old_val, uint32_t new_val) {
-		auto mat = glm::perspective(70.0f, static_cast<float>(new_val) / static_cast<float>(Window::GetCurrentWindow()->GetHeight().GetValue()), 0.2f, 5000.0f);
+		if (!new_val) return;
+		auto mat = glm::perspective(70.0f, (float)new_val / (float)Window::GetCurrentWindow()->GetHeight().GetValue(), 0.2f, 5000.0f);
 		pManager_->GetSystemManager()->GetSystem<render::RenderSystem>()->GetSceneRenderer()->SetProjectionMatrix(mat);
 	});
 
 	Window::GetCurrentWindow()->GetHeight().SetListener([&](uint32_t old_val, uint32_t new_val) {
-		auto mat = glm::perspective(70.0f, static_cast<float>(Window::GetCurrentWindow()->GetWidth().GetValue()) / static_cast<float>(new_val), 0.2f, 5000.0f);
+		if (!new_val) return;
+		auto mat = glm::perspective(70.0f, (float)Window::GetCurrentWindow()->GetWidth().GetValue() / (float)new_val, 0.2f, 5000.0f);
 		pManager_->GetSystemManager()->GetSystem<render::RenderSystem>()->GetSceneRenderer()->SetProjectionMatrix(mat);
 	});
 
@@ -60,11 +73,11 @@ void DSState::Configure()
 	{
 		gfx::FILTER_MIN_LINEAR_MIPMAP_LINEAR_MAG_LINEAR,
 		gfx::RGBA8,
-	{
-		true,
-		-0.6f,
-		2.0f
-	},
+		{
+			true,
+			-0.6f,
+			2.0f
+		},
 		0,
 		0,
 		0,
@@ -76,24 +89,22 @@ void DSState::Configure()
 
 	FastNoise noise;
 	noise.SetNoiseType(FastNoise::PerlinFractal);
-	noise.SetSeed(1337);
-	noise.SetFrequency(0.01);
+	noise.SetSeed(9832);
+	noise.SetFrequency(0.01f);
 	noise.SetInterp(FastNoise::Hermite);
-	noise.SetFractalType(FastNoise::FBM);
+	noise.SetFractalType(FastNoise::Billow);
 	noise.SetFractalOctaves(8);
-	noise.SetFractalLacunarity(.5);
-	noise.SetFractalGain(0.1);
+	noise.SetFractalLacunarity(.5f);
+	noise.SetFractalGain(0.01f);
 	noise.SetGradientPerturbAmp(2);
-	noise.SetGradientPerturbFrequency(0.15);
+	noise.SetGradientPerturbFrequency(0.15f);
+
 
 	auto cube_mesh = new gfx::Mesh;
 	ReadFromFile("cube.asset", *cube_mesh);
 	cube_mesh->Name = "cube";
 
 	auto mod3 = gfx::Context::LoadMesh(cube_mesh);
-
-	int bpp;
-	unsigned char * data;
 
 	std::vector<unsigned char*> data_array;
 
@@ -113,50 +124,58 @@ void DSState::Configure()
 	ReadFromFile("material_2.asset", *mat2);
 	ReadFromFile("material_4.asset", *mat4);
 
-	cam.GetComponent<gfx::CameraComponent>()->SetPosition(glm::vec3(0, 0, 0));
-	cam.GetComponent<gfx::CameraComponent>()->SetDirection(glm::vec3(0, 0, 1));
-
 	glm::vec3 scale(1, 1, 1);
+
 	gfx::Context::Flush(pManager_);
 
-    for (auto x = -6; x < 5; x++)
-    {
-        for (auto z = -6; z < 5; z++)
-        {
-            Transformation trans(glm::vec3(x * V_COUNT - 1, 0, z * V_COUNT - 1), glm::vec3(0, 0, 0), glm::vec3(2, 1, 2));
+	std::vector<std::future<void>> tasks;
 
-            auto * ter = new render::Terrain(V_COUNT + 2, mat4, &trans, noise, 48, 1);
+	tasks.push_back(pManager_->GetSystemManager()->GetThreadPool()->PushTask([&](size_t) {
+		for (auto x = -6; x < 5; x++)
+		{
+			for (auto z = -6; z < 5; z++)
+			{
+				Transformation trans(glm::vec3(x * V_COUNT - 1, 0, z * V_COUNT - 1), glm::vec3(0, 0, 0), glm::vec3(0.5f, 1, 0.5f));
 
-            trans.SetPosition(trans.GetPosition() * 2.0f);
+				auto * ter = new render::Terrain(V_COUNT + 2, mat4, &trans, noise, 48, 1);
 
-            physics::HeightFieldDesc hfd;
-            hfd.ColumnScale = 2;
-            hfd.RowScale = 2;
-            hfd.NumCols = V_COUNT + 3;
-            hfd.NumRows = V_COUNT + 3;
-            hfd.pManager = pManager_->GetSystemManager()->GetSystem<physics::PhysicsSystem>()->GetManager();
-            hfd.HeightScale = 64;
+				trans.SetPosition(trans.GetPosition() / 2.0f);
 
-            hfd.HeightMap = static_cast<float*>(calloc(sizeof(float) * hfd.NumCols * hfd.NumRows, 1));
-            memcpy(hfd.HeightMap, ter->GetHeightMap(), sizeof(float) * (V_COUNT + 3) * (V_COUNT + 3));
+				physics::HeightFieldDesc hfd;
+				hfd.ColumnScale = 0.5f;
+				hfd.RowScale = 0.5f;
+				hfd.NumCols = V_COUNT + 3;
+				hfd.NumRows = V_COUNT + 3;
+				hfd.pManager = pManager_->GetSystemManager()->GetSystem<physics::PhysicsSystem>()->GetManager();
+				hfd.HeightScale = 64;
 
-            auto e = pManager_->GetEntityManager()->Create();
+				hfd.HeightMap = static_cast<float*>(calloc(sizeof(float) * hfd.NumCols * hfd.NumRows, 1));
+				memcpy(hfd.HeightMap, ter->GetHeightMap(), sizeof(float) * (V_COUNT + 3) * (V_COUNT + 3));
 
-            physics::PhysicsMaterialDescriptor mat_desc;
-            mat_desc.DynamicFriction = 0.5f;
-            mat_desc.StaticFriction = 0.5f;
-            mat_desc.Restitution = 0.5f;
+				auto e = pManager_->GetEntityManager()->Create();
 
-            pManager_->GetEntityManager()->AddComponent<render::RenderableComponent>(e.GetID(), *ter);
-            e.GetComponent<TransformationComponent>()->SetPosition(trans.GetPosition());
-            e.GetComponent<TransformationComponent>()->SetScale(trans.GetScale());
+				physics::PhysicsMaterialDescriptor mat_desc;
+				mat_desc.DynamicFriction = 0.5f;
+				mat_desc.StaticFriction = 0.5f;
+				mat_desc.Restitution = 0.5f;
 
-            e.AddComponent<physics::PhysicsComponent>(physics::STATIC, physics::HEIGHTFIELD, &hfd, 
-                e.GetComponent<TransformationComponent>().Get(), mat_desc, pManager_->GetSystemManager()->GetSystem<physics::PhysicsSystem>().get(), 1.0f);
+				pManager_->GetEntityManager()->AddComponent<render::RenderableComponent>(e.GetID(), *ter);
+				e.GetComponent<TransformationComponent>()->SetPosition(trans.GetPosition());
+				e.GetComponent<TransformationComponent>()->SetScale(trans.GetScale());
 
-            delete ter;
-        }
-    }
+				e.AddComponent<physics::PhysicsComponent>(physics::STATIC, physics::HEIGHTFIELD, &hfd, e.GetComponent<TransformationComponent>().Get(), mat_desc, pManager_->GetSystemManager()->GetSystem<physics::PhysicsSystem>().get(), 1.0f);
+
+				pManager_->GetSystemManager()->GetSystem<ecs::TaskSystem>()->AddEntity<TestTask>(e);
+
+				delete ter;
+			}
+		}
+	}));
+
+	for (auto & task : tasks)
+	{
+		task.get();
+	}
 
 	gfx::Context::Flush(pManager_);
 
@@ -169,58 +188,38 @@ void DSState::Configure()
 	render::Renderable renderable(mat, mod3);
 	render::Renderable renderable2(mat, mod3);
 	render::Renderable renderable3(mat2, mod3);
-
-	auto e = pManager_->GetEntityManager()->Create();
-	e.AddComponent<render::RenderableComponent>(renderable);
-	auto comp = e.GetComponent<TransformationComponent>().Get();
-	comp->SetPosition(glm::vec3(1, 42, 3));
-	comp->SetRotation(glm::vec3(0, 0, 0));
-
-	auto e2 = pManager_->GetEntityManager()->Create();
-	e2.AddComponent<render::RenderableComponent>(renderable2);
-	e2.GetComponent<TransformationComponent>()->SetPosition(glm::vec3(0, 65, 0));
 	
-	for (auto i = 0; i < 3; i++)
+	for (auto i = -5; i < 5; i++)
 	{
-		auto e3 = pManager_->GetEntityManager()->Create();
-		e3.AddComponent<render::RenderableComponent>(renderable3);
-		e3.GetComponent<TransformationComponent>()->SetPosition(glm::vec3(i * 5 + 5, 65, 10));
+		for (auto j = -5; j < 5; j++)
+		{
+			auto ent = pManager_->GetEntityManager()->Create();
+			ent.AddComponent<render::RenderableComponent>(renderable2);
+			ent.GetComponent<TransformationComponent>()->SetPosition(glm::vec3(i * 15 + 1, 65, j * 15 + 1));
+			ent.GetComponent<TransformationComponent>()->SetScale(glm::vec3(1, 1, 1));
 
-		auto new_rot = e3.GetComponent<TransformationComponent>()->GetRotation();
+			auto new_rot = ent.GetComponent<TransformationComponent>()->GetRotation();
 
-		e3.GetComponent<render::RenderableComponent>()->renderables[0].GetMaterial()->SetTransparent(true);
+			ent.GetComponent<render::RenderableComponent>()->renderables[0].GetMaterial()->SetTransparent(false);
 
-		auto physics_system = pManager_->GetSystemManager()->GetSystem<physics::PhysicsSystem>();
+			auto physics_system = pManager_->GetSystemManager()->GetSystem<physics::PhysicsSystem>();
 
-		physics::BoxDesc desc;
-		desc.HalfWidth = 1.0f;
-		desc.HalfHeight = 1.0f;
-		desc.HalfDepth = 1.0f;
+			physics::BoxDesc desc;
+			desc.HalfWidth = 1.0f;
+			desc.HalfHeight = 1.0f;
+			desc.HalfDepth = 1.0f;
 
-		physics::PlaneDesc p_desc;
 
-		physics::BoxDesc * desc2 = new physics::BoxDesc;
-		desc2->HalfDepth = 1;
-		desc2->HalfHeight = 1;
-		desc2->HalfWidth = 1;
+			physics::PhysicsMaterialDescriptor mat_desc;
+			mat_desc.DynamicFriction = 0.5f;
+			mat_desc.StaticFriction = 0.5f;
+			mat_desc.Restitution = 0.5f;
 
-		physics::PhysicsMaterialDescriptor mat_desc;
-		mat_desc.DynamicFriction = 0.5f;
-		mat_desc.StaticFriction = 0.5f;
-		mat_desc.Restitution = 0.5f;
-
-		physics::PhysicsMaterialDescriptor mat_desc2;
-		mat_desc2.DynamicFriction = 0.5f;
-		mat_desc2.StaticFriction = 0.5f;
-		mat_desc2.Restitution = 1.0f;
-
-		e3.AddComponent<physics::PhysicsComponent>(physics::DYNAMIC, physics::BOX, &desc, e3.GetComponent<TransformationComponent>().Get(), mat_desc, physics_system.get(), 1.0f);
-
-		delete desc2;
+			ent.AddComponent<physics::PhysicsComponent>(physics::DYNAMIC, physics::BOX, &desc, ent.GetComponent<TransformationComponent>().Get(), mat_desc, physics_system.get(), 1.0f);
+		}
 	}
 
 	pManager_->GetEventManager()->EmitEvent<gfx::ModelSubmittedEvent>();
-	pManager_->GetSystemManager()->UpdateAll(0);
 	gfx::Context::Clear();
 
 	auto directional_light = pManager_->GetEntityManager()->Create();
@@ -248,19 +247,26 @@ void DSState::Configure()
 		render::Vec3{ .2f, .2f, .2f },
 		render::Vec3{ 0.0f, 0.01f, 0.0f }
 	});
+
+	pManager_->GetSystemManager()->UpdateAll(0);
 }
 
 void DSState::Run()
 {
-
+	std::cout << Timer::FPS() << std::endl;
+	if (Keyboard::IsKeyPressed(KEY_0))
+	{
+		render::Screenshot(this->GetManager());
+	}
 }
 
 void DSState::Shutdown()
 {
 	TextureLibrary::Clear();
 	PipelineLibrary::Clear();
+}
 
-	delete mat;
-	delete mat2;
-	delete mat4;
+bool DSState::ShouldShutdown() 
+{
+	return Keyboard::IsKeyPressed(KEY_ESCAPE);
 }
