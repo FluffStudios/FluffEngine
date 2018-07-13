@@ -46,6 +46,7 @@ include_directories(
 )
 
 target_link_libraries( Sandbox Core )
+set_target_properties( Sandbox PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/Content")
 
 if(WIN32)
 	string(REPLACE "/" "\\" source_path_windows "${FluffEngine_SOURCE_DIR}/Sandbox/Content")
@@ -60,7 +61,8 @@ if(NOT ${exitcode} EQUAL 0)
 	MESSAGE("FALLING BACK TO COPYING")
 endif()
 
-#Copy file if the build resource folder contains an older version. This is ignored when the symlink was succesful because the files are already the newest version.
+#Copy file if the build resource folder contains an older version. 
+# This is ignored when the symlink was succesful because the files are already the newest version.
 file(GLOB_RECURSE RES RELATIVE ${FluffEngine_SOURCE_DIR}/Sandbox/Content/ ${FluffEngine_SOURCE_DIR}/Sandbox/Content/*.*)
 foreach(file IN LISTS RES)
 	configure_file(${FluffEngine_SOURCE_DIR}/Sandbox/Content/${file} ${FluffEngine_BINARY_DIR}/Sandbox/Content/${file} COPYONLY)
@@ -72,6 +74,7 @@ if(MSVC_IDE)
 		get_filename_component(source_path "${source}" PATH)
 		string(REPLACE "${FluffEngine_SOURCE_DIR}" "" relative_source_path "${source_path}")
 		string(REPLACE "/" "\\" source_path_msvc "${relative_source_path}")
+		string(REPLACE "Sandbox\\" "" actual_source_path_msvc "${source_path_msvc}")
 		source_group("${actual_source_path_msvc}" FILES "${source}")
 	endforeach()
 endif()
