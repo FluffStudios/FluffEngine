@@ -26,20 +26,7 @@ FIND_PATH( GLFW_INCLUDE_DIRS
 		"The directory where glfw3.h and glfw3native.h resides"
 )
 
-FIND_LIBRARY( GLFW_LIBRARIES
-	NAMES
-		if ( CMAKE_BUILD_TYPE STREQUAL "Debug" )
-		glfw3-debug
-		elseif ( CMAKE_BUILD_TYPE STREQUAL "Release" )
-		glfw3
-		endif ( CMAKE_BUILD_TYPE STREQUAL "Debug" )
-	PATHS
-		${GLFW_SEARCH_PATHS}
-	PATH_SUFFIXES
-		lib/${CMAKE_BUILD_TYPE}/x64
-	DOC
-		"The GLFW library"
-)
+set(GLFW_LIBRARIES "${FluffEngine_DEPEND_DIR}/glfw/lib/${_config}/x64/$<$<CONFIG:Debug>:glfw3-debug.lib>$<$<CONFIG:Release>:glfw3.lib>")
 
 # Check if we found it!
 IF ( GLFW_INCLUDE_DIRS AND GLFW_LIBRARIES )

@@ -25,16 +25,7 @@ FIND_PATH( GLM_INCLUDE_DIRS
 		"The directory where glm.hpp resides"
 )
 
-FIND_LIBRARY( GLM_LIBRARIES
-	NAMES
-		glm_static
-	PATHS
-		${GLM_SEARCH_PATHS}
-	PATH_SUFFIXES
-		lib/${CMAKE_BUILD_TYPE}/x64
-	DOC
-		"The GLM library"
-)
+set(GLM_LIBRARIES "${FluffEngine_DEPEND_DIR}/glm/lib/${_config}/x64/glm_static.lib")
 
 # Check if we found it!
 IF ( GLM_INCLUDE_DIRS AND GLM_LIBRARIES )

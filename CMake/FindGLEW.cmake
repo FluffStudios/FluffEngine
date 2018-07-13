@@ -25,16 +25,7 @@ FIND_PATH( GLEW_INCLUDE_DIRS
 		"The directory where glew.h resides"
 )
 
-FIND_LIBRARY( GLEW_LIBRARIES
-	NAMES
-		glew32s
-	PATHS
-		${GLEW_SEARCH_PATHS}
-	PATH_SUFFIXES
-		lib/${CMAKE_BUILD_TYPE}/x64
-	DOC
-		"The GLEW library"
-)
+set(GLEW_LIBRARIES "${FluffEngine_DEPEND_DIR}/glew/lib/${_config}/x64/glew32s.lib")
 
 # Check if we found it!
 IF ( GLEW_INCLUDE_DIRS AND GLEW_LIBRARIES )

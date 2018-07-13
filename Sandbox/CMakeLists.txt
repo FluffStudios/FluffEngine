@@ -11,25 +11,8 @@ else()
 	)
 endif()
 
-if ( NOT CMAKE_BUILD_TYPE OR CMAKE_BUILD_TYPE STREQUAL "")
-	# CMake defaults to leaving CMAKE_BUILD_TYPE empty. This screws up
-	# differentiation between debug and release builds.
-	set(
-		CMAKE_BUILD_TYPE
-			"Debug"
-		CACHE STRING
-			"Choose the type of build, options are: None (CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) \"Debug\" \"Release\" \"RelWithDebInfo\" \"MinSizeRel\"."
-		FORCE
-	)
-endif ( NOT CMAKE_BUILD_TYPE OR CMAKE_BUILD_TYPE STREQUAL "")
-
 add_definitions( -D_CRT_SECURE_NO_WARNINGS )
 add_definitions( -DGLEW_STATIC )
-
-if ( CMAKE_BUILD_TYPE STREQUAL "Release" )
-add_definitions( -O2 )
-add_definitions( -NDEBUG )
-endif ( CMAKE_BUILD_TYPE STREQUAL "Release" )
 
 file(GLOB_RECURSE SANDBOX_HDRS
 	${FluffEngine_SOURCE_DIR}/Sandbox/Source/Public/*.h
@@ -44,6 +27,10 @@ include_directories(${FluffEngine_SOURCE_DIR}/Sandbox/Source/Public)
 
 # Define the executable
 add_executable(Sandbox ${SANDBOX_HDRS} ${SANDBOX_SRCS})
+target_compile_definitions(Sandbox PUBLIC 
+	"$<$<CONFIG:Release>:O2>" 
+	"$<$<CONFIG:Release>:NDEBUG>"
+)
 
 # Define the include DIRs
 include_directories(
@@ -58,15 +45,7 @@ include_directories(
 	${STB_INCLUDE_DIRS}
 )
 
-target_link_libraries( Sandbox
-    Core
-	# ${OPENGL_LIBRARIES}
-    # ${GLEW_LIBRARIES}
-    # ${GLFW_LIBRARIES}
-    # ${ASSIMP_LIBRARIES}
-    # ${GLM_LIBRARIES}
-    # ${PHYSX_LIBRARIES}
-)
+target_link_libraries( Sandbox Core )
 
 if(WIN32)
 	string(REPLACE "/" "\\" source_path_windows "${FluffEngine_SOURCE_DIR}/Sandbox/Content")

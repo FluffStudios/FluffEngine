@@ -11,25 +11,8 @@ else()
 	)
 endif()
 
-if ( NOT CMAKE_BUILD_TYPE OR CMAKE_BUILD_TYPE STREQUAL "")
-	# CMake defaults to leaving CMAKE_BUILD_TYPE empty. This screws up
-	# differentiation between debug and release builds.
-	set(
-		CMAKE_BUILD_TYPE
-			"Debug"
-		CACHE STRING
-			"Choose the type of build, options are: None (CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) \"Debug\" \"Release\" \"RelWithDebInfo\" \"MinSizeRel\"."
-		FORCE
-	)
-endif ( NOT CMAKE_BUILD_TYPE OR CMAKE_BUILD_TYPE STREQUAL "")
-
 add_definitions( -D_CRT_SECURE_NO_WARNINGS )
 add_definitions( -DGLEW_STATIC )
-
-if ( CMAKE_BUILD_TYPE STREQUAL "Release" )
-add_definitions( -O2 )
-add_definitions( -NDEBUG )
-endif ( CMAKE_BUILD_TYPE STREQUAL "Release" )
 
 # Lets LOAD up our headers for the core project
 file(GLOB_RECURSE CORE_HDRS
@@ -46,7 +29,11 @@ include_directories(${FluffEngine_SOURCE_DIR}/Engine/Source/Core/Public)
 
 # Define the executable
 add_library(Core STATIC ${CORE_HDRS} ${CORE_SRCS})
-set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT Core)
+
+target_compile_definitions(Core PUBLIC 
+	"$<$<CONFIG:Release>:O2>" 
+	"$<$<CONFIG:Release>:NDEBUG>"
+)
 
 #######################################
 # LOOK for the packages that we need! #

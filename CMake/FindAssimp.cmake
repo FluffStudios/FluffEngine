@@ -26,16 +26,7 @@ FIND_PATH( ASSIMP_INCLUDE_DIRS
 		"The directory where anim.h and ai_assert.h resides"
 )
 
-FIND_LIBRARY( ASSIMP_LIBRARIES
-	NAMES
-		assimp
-	PATHS
-		${ASSIMP_SEARCH_PATHS}
-	PATH_SUFFIXES
-		lib/${CMAKE_BUILD_TYPE}/x64
-	DOC
-		"The Assimp library"
-)
+set(ASSIMP_LIBRARIES "${FluffEngine_DEPEND_DIR}/assimp/lib/${_config}/x64/assimp.lib")
 
 # Check if we found it!
 IF ( ASSIMP_INCLUDE_DIRS AND ASSIMP_LIBRARIES )

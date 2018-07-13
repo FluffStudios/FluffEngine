@@ -25,16 +25,7 @@ FIND_PATH( PHYSX_INCLUDE_DIRS
 		"The directory where PxPhysics.h resides"
 )
 
-FIND_LIBRARY( PHYSX_LIBRARIES
-	NAMES
-        physx
-	PATHS
-		${PHYSX_SEARCH_PATHS}
-	PATH_SUFFIXES
-		lib/${CMAKE_BUILD_TYPE}/x64
-	DOC
-		"The Physx library"
-)
+set(PHYSX_LIBRARIES "${FluffEngine_DEPEND_DIR}/physx/lib/${_config}/x64/physx.lib")
 
 # Check if we found it!
 IF ( PHYSX_INCLUDE_DIRS AND PHYSX_LIBRARIES )
