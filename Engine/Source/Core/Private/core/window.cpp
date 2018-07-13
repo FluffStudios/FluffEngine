@@ -2,12 +2,14 @@
 #include <core/inputs/cursor.h>
 #include <core/inputs/keyboard.h>
 #include <core/inputs/mouse.h>
-#include <common.h>
 #include <gfx/error_callback.h>
 #include "gfx/context.h"
 #include <core/timer.h>
 #include <glew.h>
 #include <glfw3.h>
+
+#include <imgui/imgui.h>
+#include <rendering/ui/backend_imgui_wrapper.h>
 
 static void key_callback(GLFWwindow *Window, int Key, int Scancode, int Action, int Mods)
 {
@@ -88,8 +90,9 @@ namespace fluff
 
 	bool Window::Update() const
 	{
-		fluff::Mouse::Update(0.0, 0.0);
-		glfwPollEvents();
+		Mouse::Update(0.0, 0.0);
+        glfwPollEvents();
+
 		glfwSwapBuffers(Impl_->Handle_);
 		return glfwWindowShouldClose(Impl_->Handle_) == 0;
 	}
@@ -204,6 +207,18 @@ namespace fluff
 		glClearDepth(0);
 		glClearColor(0, 0, 0, 1);
 
+        // Initialize IMGUI
+        IMGUI_CHECKVERSION();
+        ImGui::CreateContext();
+
+        ImGuiIO& imGuiIo = ImGui::GetIO(); 
+	    (void)imGuiIo;
+
+        const char* GLSL_VERSION = "#version 130";
+
+        ImGui_ImplGlfw_InitForOpenGL(Impl_->Handle_, true);
+        ImGui_ImplOpenGL3_Init(GLSL_VERSION);
+        ImGui::StyleColorsClassic();
 	}
 
 }
