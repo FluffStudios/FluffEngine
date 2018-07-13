@@ -9,12 +9,12 @@ namespace fluff { namespace ecs {
 
 	}
 
-	void ISystem::Configure(EntityManager & Entities, EventManager & Events)
+	void ISystem::Configure(std::shared_ptr<EntityManager> & Entities, std::shared_ptr<EventManager> & Events)
 	{
 		Configure(Events);
 	}
 
-	void ISystem::Configure(EventManager & Events)
+	void ISystem::Configure(std::shared_ptr<EventManager> & Events)
 	{
 	}
 

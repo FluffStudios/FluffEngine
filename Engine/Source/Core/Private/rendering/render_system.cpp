@@ -6,7 +6,7 @@ namespace fluff { namespace render {
 		Scene_ = Manager->GetSystemManager()->Add<SceneRenderer>(Manager, Cam, ProjectionMatrix);
 	}
 
-	void RenderSystem::Update(ecs::EntityManager & EntityManager, ecs::EventManager & EventManager, double Delta)
+	void RenderSystem::Update(std::shared_ptr<ecs::EntityManager> & Entities, std::shared_ptr<ecs::EventManager> & Events, double Delta)
 	{
 		Scene_->Render();
 	}

@@ -8,12 +8,12 @@ namespace fluff { namespace debug
 
 	}
 
-	void DebugSystem::Configure(ecs::EventManager & Events)
+	void DebugSystem::Configure(std::shared_ptr<ecs::EventManager> & Events)
 	{
-		Events.SubscribeToEvent<DebugEvent>(*this);
+		Events->SubscribeToEvent<DebugEvent>(*this);
 	}
 
-	void DebugSystem::Update(ecs::EntityManager & Entities, ecs::EventManager & Events, double Delta)
+	void DebugSystem::Update(std::shared_ptr<ecs::EntityManager> & Entities, std::shared_ptr<ecs::EventManager> & Events, double Delta)
 	{
 
 	}

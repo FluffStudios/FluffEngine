@@ -54,7 +54,7 @@ namespace fluff { namespace render {
 		gfx::ShaderBuffer * LightingBuffer_;
 		SceneLighting SceneLights_;
 		
-		ecs::Entity Cam;
+		std::shared_ptr<ecs::Entity> Cam;
 
 		Uniform * camera_position;
 		std::shared_ptr<ECSManager> & Manager_;
@@ -84,7 +84,7 @@ namespace fluff { namespace render {
 
 			Events - Event manager to subscribe with
 		*/
-		void Configure(ecs::EventManager & Events) override;
+		void Configure(std::shared_ptr<ecs::EventManager> & Events) override;
 		
 		/*
 			Reaction to a model submitted event

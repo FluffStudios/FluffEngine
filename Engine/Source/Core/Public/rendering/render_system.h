@@ -29,7 +29,7 @@ namespace fluff { namespace render {
 			EventManager - EventManager associated with render system
 			Delta - time since last update
 		*/
-		void Update(ecs::EntityManager & EntityManager, ecs::EventManager & EventManager, double Delta) override;
+		void Update(std::shared_ptr<ecs::EntityManager> & Entities, std::shared_ptr<ecs::EventManager> & Events, double Delta) override;
 
 		inline bool UseMainThread() override { return true; }
 

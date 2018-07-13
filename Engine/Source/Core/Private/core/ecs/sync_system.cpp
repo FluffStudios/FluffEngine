@@ -6,18 +6,18 @@ namespace fluff { namespace ecs {
 		: Pool_(ThreadPool), SystemToExecute_(SystemToExecute)
 	{	}
 
-	void SyncSystem::Configure(EntityManager & Entities, EventManager & Events)
+	void SyncSystem::Configure(std::shared_ptr<EntityManager> & Entities, std::shared_ptr<EventManager> & Events)
 	{
 	}
 
-	void SyncSystem::Update(EntityManager & Entities, EventManager & Events, double DeltaTime)
+	void SyncSystem::Update(std::shared_ptr<EntityManager> & Entities, std::shared_ptr<EventManager> & Events, double DeltaTime)
 	{
 		Pool_->Sync();
 		SystemToExecute_->Update(Entities, Events, DeltaTime);
 		Pool_->Sync(false);
 	}
 
-	void SyncSystem::FixedUpdate(EntityManager & Entities, EventManager & Event)
+	void SyncSystem::FixedUpdate(std::shared_ptr<EntityManager> & Entities, std::shared_ptr<EventManager> & Events)
 	{
 	}
 

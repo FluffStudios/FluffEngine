@@ -6,12 +6,12 @@ namespace fluff { namespace ecs {
 		: Pool_(ThreadPool)
 	{	}
 
-	void TaskSystem::Configure(EntityManager & Entities, EventManager & Events)
+	void TaskSystem::Configure(std::shared_ptr<EntityManager> & Entities, std::shared_ptr<EventManager> & Events)
 	{
 
 	}
 
-	void TaskSystem::Update(EntityManager & Entities, EventManager & Events, double DeltaTime)
+	void TaskSystem::Update(std::shared_ptr<EntityManager> & Entities, std::shared_ptr<EventManager> & Events, double DeltaTime)
 	{
 		std::vector<std::future<void>> funcs;
 		for (auto & it : Tasks_)
@@ -21,7 +21,7 @@ namespace fluff { namespace ecs {
 			{
 				for (auto ent : it.second)
 				{
-					task->SetEntity(ent);
+					task->SetEntity(&ent);
 					task->Update();
 				}
 			}
@@ -35,7 +35,7 @@ namespace fluff { namespace ecs {
 						for (size_t j = it.second.size() / chunks * i; j < it.second.size() / chunks * (i + 1) && j < it.second.size(); j++)
 						{
 							Entity ent = it.second[j];
-							task->SetEntity(ent);
+							task->SetEntity(&ent);
 							task->Update();
 						}
 					}));
@@ -51,7 +51,7 @@ namespace fluff { namespace ecs {
 			{
 				for (auto ent : it.second)
 				{
-					task->SetEntity(ent);
+					task->SetEntity(&ent);
 					task->LateUpdate();
 				}
 			}
@@ -65,7 +65,7 @@ namespace fluff { namespace ecs {
 						for (size_t j = it.second.size() / chunks * i; j < it.second.size() / chunks * (i + 1) && j < it.second.size(); j++)
 						{
 							Entity ent = it.second[j];
-							task->SetEntity(ent);
+							task->SetEntity(&ent);
 							task->LateUpdate();
 						}
 					}));
@@ -80,7 +80,7 @@ namespace fluff { namespace ecs {
 		}
 	}
 
-	void TaskSystem::FixedUpdate(EntityManager & Entities, EventManager & Events)
+	void TaskSystem::FixedUpdate(std::shared_ptr<EntityManager> & Entities, std::shared_ptr<EventManager> & Events)
 	{
 		
 	}

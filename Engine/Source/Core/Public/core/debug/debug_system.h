@@ -20,7 +20,7 @@ namespace fluff { namespace debug
 
 			Events - Event manager associated with debug system
 		*/
-		void FLUFF_API Configure(ecs::EventManager & Events);
+		void FLUFF_API Configure(std::shared_ptr<ecs::EventManager> & Events);
 
 		/*
 			Ticks through the debug messages
@@ -29,7 +29,7 @@ namespace fluff { namespace debug
 			Events - Event manager associated with debug system
 			TimeDelta - Time since last update
 		*/
-		void FLUFF_API Update(ecs::EntityManager & Entities, ecs::EventManager & Events, double TimeDelta) override;
+		void FLUFF_API Update(std::shared_ptr<ecs::EntityManager> & Entities, std::shared_ptr<ecs::EventManager> & Events, double TimeDelta) override;
 
 		/*
 			Response to the Debug Event

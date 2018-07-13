@@ -19,9 +19,9 @@ namespace fluff { namespace ecs {
 		std::shared_ptr<threading::ThreadPool> & Pool_;
 	public:
 		FLUFF_API TaskSystem(std::shared_ptr<threading::ThreadPool> & ThreadPool);
-		void FLUFF_API Configure(EntityManager & Entities, EventManager & Events) override;
-		void FLUFF_API Update(EntityManager & Entities, EventManager & Events, double DeltaTime) override;
-		void FLUFF_API FixedUpdate(EntityManager & Entities, EventManager & Events) override;
+		void FLUFF_API Configure(std::shared_ptr<EntityManager> & Entities, std::shared_ptr<EventManager> & Events) override;
+		void FLUFF_API Update(std::shared_ptr<EntityManager> & Entities, std::shared_ptr<EventManager> & Events, double DeltaTime) override;
+		void FLUFF_API FixedUpdate(std::shared_ptr<EntityManager> & Entities, std::shared_ptr<EventManager> & Events) override;
 		
 		template <typename TaskType, typename ... Arguments>
 		std::shared_ptr<ITask> Add(Arguments && ... Args);

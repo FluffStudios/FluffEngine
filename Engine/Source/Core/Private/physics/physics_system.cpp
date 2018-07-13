@@ -21,7 +21,7 @@ namespace fluff { namespace physics {
 		delete pManager_;
 	}
 
-	void PhysicsSystem::Configure(ecs::EntityManager & Entities, ecs::EventManager & Events)
+	void PhysicsSystem::Configure(std::shared_ptr<ecs::EntityManager> & Entities, std::shared_ptr<ecs::EventManager> & Events)
 	{
 		pManager_ = new PhysicsManager;
 
@@ -40,7 +40,7 @@ namespace fluff { namespace physics {
 		((physx::PxScene *) Scene_->GetScene())->simulate(1.0f / 60.0f);
 	}
 
-	void PhysicsSystem::Update(ecs::EntityManager & Entities, ecs::EventManager & Events, double DeltaTime)
+	void PhysicsSystem::Update(std::shared_ptr<ecs::EntityManager> & Entities, std::shared_ptr<ecs::EventManager> & Events, double DeltaTime)
 	{
 //		for (auto & ent : Entities.GetEntitiesWithComponents<PhysicsComponent, TransformationComponent>())
 //		{
@@ -54,11 +54,11 @@ namespace fluff { namespace physics {
 //		}
 	}
 
-	void PhysicsSystem::FixedUpdate(ecs::EntityManager & Entities, ecs::EventManager & Events)
+	void PhysicsSystem::FixedUpdate(std::shared_ptr<ecs::EntityManager> & Entities, std::shared_ptr<ecs::EventManager> & Events)
 	{
 		if (((physx::PxScene *) Scene_->GetScene())->fetchResults(false))
 		{
-			for (auto & ent : Entities.GetEntitiesWithComponents<PhysicsComponent, TransformationComponent>())
+			for (auto & ent : Entities->GetEntitiesWithComponents<PhysicsComponent, TransformationComponent>())
 			{
 				auto physics_handle = ent.GetComponent<PhysicsComponent>();
 

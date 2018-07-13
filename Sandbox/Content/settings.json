@@ -6,7 +6,7 @@
             "window_id": 0,
             "window_name": "DS_STATE",
             "vsync": true,
-            "fullscreen": false
+            "fullscreen": true
         },
         "graphics_settings": {
             "samples": 1,

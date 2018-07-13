@@ -189,9 +189,9 @@ void DSState::Configure()
 	render::Renderable renderable2(mat, mod3);
 	render::Renderable renderable3(mat2, mod3);
 	
-	for (auto i = -5; i < 5; i++)
+	for (auto i = -10; i < 5; i++)
 	{
-		for (auto j = -5; j < 5; j++)
+		for (auto j = -10; j < 5; j++)
 		{
 			auto ent = pManager_->GetEntityManager()->Create();
 			ent.AddComponent<render::RenderableComponent>(renderable2);

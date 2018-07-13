@@ -4,7 +4,7 @@ namespace fluff { namespace ecs {
 
 	size_t ITask::FamilyIDCounter = 0;
 
-	void ITask::SetEntity(Entity Ent)
+	void ITask::SetEntity(Entity * Ent)
 	{
 		this->Ent = Ent;
 	}

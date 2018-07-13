@@ -18,9 +18,9 @@ namespace fluff { namespace physics {
 	public:
 		PhysicsSystem(std::shared_ptr<ECSManager> & Manager);
 		~PhysicsSystem();
-		void Configure(ecs::EntityManager & Entities, ecs::EventManager & Events) override;
-		void Update(ecs::EntityManager & Entities, ecs::EventManager & Events, double DeltaTime) override;
-		void FixedUpdate(ecs::EntityManager & Entities, ecs::EventManager & Events) override;
+		void Configure(std::shared_ptr<ecs::EntityManager> & Entities, std::shared_ptr<ecs::EventManager> & Events) override;
+		void Update(std::shared_ptr<ecs::EntityManager> & Entities, std::shared_ptr<ecs::EventManager> & Events, double DeltaTime) override;
+		void FixedUpdate(std::shared_ptr<ecs::EntityManager> & Entities, std::shared_ptr<ecs::EventManager> & Events) override;
 		inline bool UseMainThread() override { return true; }
 
 		void * GetSDK() const { return pManager_->GetSDK(); }

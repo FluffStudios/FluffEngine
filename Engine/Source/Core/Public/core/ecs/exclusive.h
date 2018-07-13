@@ -24,9 +24,9 @@ namespace fluff { namespace ecs {
 
 			Events - Event manager associated with system
 		*/
-		void Configure(EventManager & Events) override
+		void Configure(std::shared_ptr<EventManager> & Events) override
 		{
-			Events.SubscribeToEvent<ComponentAddedEvent<Type>>(*this);
+			Events->SubscribeToEvent<ComponentAddedEvent<Type>>(*this);
 		}
 
 		/*
@@ -36,7 +36,7 @@ namespace fluff { namespace ecs {
 			Events - Event manager associated with system
 			Delta - change in time between this and last update call
 		*/
-		void Update(EntityManager & Entities, EventManager & Events, double Delta) override { }
+		void Update(std::shared_ptr<EntityManager> & Entities, std::shared_ptr<EventManager> & Events, double Delta) override { }
 	private:
 		template <typename Dep> void Remove(Entity E)
 		{

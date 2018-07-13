@@ -31,8 +31,8 @@ namespace fluff { namespace ecs {
 	{
 		std::unordered_map<size_t, std::shared_ptr<ISystem>> Systems_;
 		bool Init_ = false;
-		EntityManager & EntityManager_;
-		EventManager & EventManager_;
+		std::shared_ptr<EntityManager> & EntityManager_;
+		std::shared_ptr<EventManager> & EventManager_;
 		double LastUpdateTime_;
 		double FixedRefreshTime_ = 1.0 / 30.0;
 		double RefreshTime_ = 1.0 / 144.0;
@@ -44,7 +44,7 @@ namespace fluff { namespace ecs {
 			Entities - EntityManager encapsulated
 			Events - EventManager encapsulated
 		*/
-		FLUFF_API SystemManager(EntityManager & Entities, EventManager & Events);
+		FLUFF_API SystemManager(std::shared_ptr<EntityManager> & Entities, std::shared_ptr<EventManager> & Events);
 
 		/*
 			Creates system meanager
@@ -53,7 +53,7 @@ namespace fluff { namespace ecs {
 			Events - EventManager encapsulated
 			RefreshTime - Minimum time between fixed update calls
 		*/
-		FLUFF_API SystemManager(EntityManager & Entities, EventManager & Events, double RefreshTime);
+		FLUFF_API SystemManager(std::shared_ptr<EntityManager> & Entities, std::shared_ptr<EventManager> & Events, double RefreshTime);
 		
 		/*
 			Adds a system to the manager

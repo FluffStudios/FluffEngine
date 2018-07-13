@@ -13,9 +13,9 @@ namespace fluff { namespace ecs {
 		ISystem * SystemToExecute_;
 	public:
 		FLUFF_API SyncSystem(std::shared_ptr<threading::ThreadPool> & ThreadPool, ISystem * SystemToExecute);
-		void FLUFF_API Configure(EntityManager & Entities, EventManager & Events) override;
-		void FLUFF_API Update(EntityManager & Entities, EventManager & Events, double DeltaTime) override;
-		void FLUFF_API FixedUpdate(EntityManager & Entities, EventManager & Event) override;
+		void FLUFF_API Configure(std::shared_ptr<EntityManager> & Entities, std::shared_ptr<EventManager> & Events) override;
+		void FLUFF_API Update(std::shared_ptr<EntityManager> & Entities, std::shared_ptr<EventManager> & Events, double DeltaTime) override;
+		void FLUFF_API FixedUpdate(std::shared_ptr<EntityManager> & Entities, std::shared_ptr<EventManager> & Events) override;
 		inline bool UseMainThread() override { return true; }
 	};
 

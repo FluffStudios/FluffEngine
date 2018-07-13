@@ -3,15 +3,18 @@
 #include <common.h>
 #include <non_copyable.h>
 
+#include <core/debug/debug_log_writer.h>
 #include <core/ecs/event.h>
 #include <core/ecs/event_manager.h>
 #include <core/ecs/pool.h>
 #include <core/ecs/system.h>
 #include <core/lookup_table.h>
 
-#include <bitset>
 #include <algorithm>
-#include <core/debug/debug_log_writer.h>
+#include <bitset>
+#include <memory>
+
+#include <cereal/cereal.hpp>
 
 #ifndef MAX_COMPONENT_COUNT
 #define MAX_COMPONENT_COUNT 512
@@ -111,13 +114,14 @@ namespace fluff { namespace ecs {
 	class FLUFF_API Entity
 	{
 		ID Id_ = INVALID;
-		EntityManager * Manager_;
+		std::shared_ptr<EntityManager> & Manager_;
 	public:
 		static const ID INVALID;
+
 		/*
 			Default constructor
 		*/
-		Entity() = default;
+		Entity() = delete;
 
 		/*
 			Creates new entity from entity manager
@@ -125,14 +129,18 @@ namespace fluff { namespace ecs {
 			Manager - Reference to entity manager which dictates entity component behavior
 			Id - ID of entity
 		*/
-		Entity(EntityManager * Manager, ID Id);
+		Entity(std::shared_ptr<EntityManager> & Manager, ID Id);
 
 		/*
 			Creates new entity from another
 
 			Other - other entity
 		*/
-		Entity(const Entity & Other) = default;
+		Entity(const Entity & Other)
+			: Manager_(Other.Manager_)
+		{
+			this->Id_ = Other.Id_;
+		}
 
 		/*
 			Creates new entity from another
@@ -140,14 +148,17 @@ namespace fluff { namespace ecs {
 			Other - other entity to copy from
 			Returns new entity copy
 		*/
-		Entity & operator = (const Entity & Other) = default;
+		Entity & operator= (const Entity & Other) {
+			return Entity(Other);
+		}
 
+		
 		/*
 			Gets the entity's manager
 
 			Returns entity's manager
 		*/
-		EntityManager * GetManager() const { return Manager_; }
+		std::shared_ptr<EntityManager> & GetManager() const { return Manager_; }
 
 		/*
 			Checks if the entity's ID is valid
@@ -213,7 +224,7 @@ namespace fluff { namespace ecs {
 		ComponentHandle<Comp> AddComponent(Arguments && ... Args)
 		{
 			FLUFF_ASSERT(IsValid())
-				return Manager_->AddComponent<Comp>(Id_, std::forward<Arguments>(Args)...);
+			return Manager_->AddComponent<Comp>(Id_, std::forward<Arguments>(Args)...);
 		}
 
 		/*
@@ -226,7 +237,7 @@ namespace fluff { namespace ecs {
 		ComponentHandle<Comp> CopyComponent(const Comp & Type)
 		{
 			FLUFF_ASSERT(IsValid())
-				return Manager_->AddComponent<Comp>(Id_, Type);
+			return Manager_->AddComponent<Comp>(Id_, Type);
 		}
 
 		/*
@@ -360,7 +371,7 @@ namespace fluff { namespace ecs {
 	class FLUFF_API ComponentHandle
 	{
 		friend class EntityManager;
-		EM * Manager_;
+		std::shared_ptr<EM> & Manager_;
 		ID Id_;
 
 	public:
@@ -370,7 +381,7 @@ namespace fluff { namespace ecs {
 			Manager - Entity manager associated with component
 			Id - ID of entity owning the component
 		*/
-		ComponentHandle(EM * Manager, ID Id)
+		ComponentHandle(std::shared_ptr<EM> & Manager, ID Id)
 			: Manager_(Manager), Id_(Id)
 		{ }
 
@@ -396,7 +407,7 @@ namespace fluff { namespace ecs {
 		ComponentType * operator -> ()
 		{
 			FLUFF_ASSERT(IsValid());
-			return Manager_->template GetComponentPtr<ComponentType>(Id_);
+			return Manager_->GetComponentPtr<ComponentType>(Id_);
 		}
 
 		/*
@@ -407,15 +418,8 @@ namespace fluff { namespace ecs {
 		const ComponentType * operator -> () const
 		{
 			FLUFF_ASSERT(IsValid());
-			return Manager_->template GetComponentPtr<ComponentType>(Id_);
+			return Manager_->GetComponentPtr<ComponentType>(Id_);
 		}
-
-		/*
-			Creates component handle with nothing attached
-		*/
-		ComponentHandle() 
-			: Manager_(nullptr)
-		{ }
 
 		/*
 			Gets pointer to the component
@@ -425,7 +429,7 @@ namespace fluff { namespace ecs {
 		ComponentType * Get()
 		{
 			FLUFF_ASSERT(IsValid())
-			return Manager_->template GetComponentPtr<ComponentType>(Id_);
+			return Manager_->GetComponentPtr<ComponentType>(Id_);
 		}
 
 		/*
@@ -436,7 +440,7 @@ namespace fluff { namespace ecs {
 		const ComponentType * Get() const
 		{
 			FLUFF_ASSERT(IsValid())
-			return Manager_->template GetComponentPtr<ComponentType>(Id_);
+			return Manager_->GetComponentPtr<ComponentType>(Id_);
 		}
 
 		/*
@@ -445,7 +449,7 @@ namespace fluff { namespace ecs {
 		void Remove()
 		{
 			FLUFF_ASSERT(IsValid())
-			Manager_->template Remove<ComponentType>(Id_);
+			Manager_->Remove<ComponentType>(Id_);
 		}
 
 		/*
@@ -631,22 +635,24 @@ namespace fluff { namespace ecs {
 		Dst.CopyComponent<Comp>(*(Src.GetComponent<Comp>().Get()));
 	}
 
-	class FLUFF_API EntityManager : NonCopyable
+	class FLUFF_API EntityManager : public std::enable_shared_from_this<EntityManager>
 	{
 		std::vector<std::bitset<MAX_COMPONENT_COUNT>> EntityComponentMasks_;
 		std::vector<uint32_t> EntityVersions_;
 		std::vector<IPool*> ComponentPools_;
 		std::vector<IComponentHelper*> ComponentHelpers_;
 		std::vector<uint32_t> FreeSlots_;
-		EventManager & EventManager_;
+		std::shared_ptr<EventManager> & EventManager_;
 		uint32_t IndexCounter_;
+
+		std::shared_ptr<EntityManager> ThisPtr_;
 	public:
 		/*
 			Creates new Entity Manager
 
 			EM - Event Manager for Entity Manager
 		*/
-		explicit EntityManager(EventManager & EM);
+		explicit EntityManager(std::shared_ptr<EventManager> & EM);
 
 		/*
 			Deconstructor
@@ -657,7 +663,7 @@ namespace fluff { namespace ecs {
 		class FLUFF_API ViewIterator : public std::iterator<std::input_iterator_tag, ID>
 		{
 		protected:
-			EntityManager * Manager_;
+			std::shared_ptr<EntityManager> & Manager_;
 			std::bitset<MAX_COMPONENT_COUNT> Mask_;
 			uint32_t Index_;
 			size_t Capacity_;
@@ -703,7 +709,7 @@ namespace fluff { namespace ecs {
 			*/
 			Entity operator * () const { return Entity(Manager_, Manager_->CreateID(Index_)); }
 		protected:
-			ViewIterator(EntityManager * Manager, const std::bitset<MAX_COMPONENT_COUNT> Mask, const uint32_t Index)
+			ViewIterator(std::shared_ptr<EntityManager> & Manager, const std::bitset<MAX_COMPONENT_COUNT> Mask, const uint32_t Index)
 				: Manager_(Manager), Mask_(Mask), Index_(Index), Capacity_(Manager_->GetCapacity()), Cursor_(~0UL)
 			{ 
 				if (All) {
@@ -713,7 +719,7 @@ namespace fluff { namespace ecs {
 			}
 
 
-			ViewIterator(EntityManager *Manager, const uint32_t Index)
+			ViewIterator(std::shared_ptr<EntityManager> & Manager, const uint32_t Index)
 				: Manager_(Manager), Index_(Index), Capacity_(Manager_->GetCapacity()), Cursor_(~0UL) 
 				{
 				if (All) {
@@ -757,7 +763,7 @@ namespace fluff { namespace ecs {
 		class FLUFF_API BaseView
 		{
 			friend class EntityManager;
-			EntityManager * Manager_;
+			std::shared_ptr<EntityManager> & Manager_;
 			std::bitset<MAX_COMPONENT_COUNT> Mask_;
 		public:
 			class FLUFF_API Iterator : public ViewIterator<Iterator, All> {
@@ -769,7 +775,7 @@ namespace fluff { namespace ecs {
 						Mask - Component Mask
 						Index - Index of iterator
 					*/
-					Iterator(EntityManager * Manager, const std::bitset<MAX_COMPONENT_COUNT> Mask, const uint32_t Index)
+					Iterator(std::shared_ptr<EntityManager> & Manager, const std::bitset<MAX_COMPONENT_COUNT> Mask, const uint32_t Index)
 						: ViewIterator<Iterator, All>(Manager, Mask, Index)
 					{
 						ViewIterator<Iterator, All>::next();
@@ -811,10 +817,10 @@ namespace fluff { namespace ecs {
 			*/
 			inline const Iterator end() const { return Iterator(Manager_, Mask_, static_cast<uint32_t>(Manager_->GetCapacity())); }
 		private:
-			explicit BaseView(EntityManager * Manager) 
+			explicit BaseView(std::shared_ptr<EntityManager> & Manager)
 				: Manager_(Manager) 
 			{ Mask_.set(); }
-			BaseView(EntityManager * Manager, const std::bitset<MAX_COMPONENT_COUNT> Mask)
+			BaseView(std::shared_ptr<EntityManager> & Manager, const std::bitset<MAX_COMPONENT_COUNT> Mask)
 				: Manager_(Manager), Mask_(Mask)
 			{ }
 		};
@@ -823,8 +829,8 @@ namespace fluff { namespace ecs {
 		class FLUFF_API TypedView : public BaseView<All>
 		{
 			friend class EntityManager;
-			explicit TypedView(EntityManager * Manager) : BaseView<All>(Manager) { }
-			TypedView(EntityManager * Manager, const std::bitset<MAX_COMPONENT_COUNT> Mask) 
+			explicit TypedView(std::shared_ptr<EntityManager &> Manager) : BaseView<All>(Manager) { }
+			TypedView(std::shared_ptr<EntityManager> & Manager, const std::bitset<MAX_COMPONENT_COUNT> Mask)
 				: BaseView<All>(Manager, Mask) { }
 		public:
 			template<typename Type> struct Identity { typedef Type type; };
@@ -894,7 +900,7 @@ namespace fluff { namespace ecs {
 					Index - index to start from
 					Unpacker - unpacked components
 				*/
-				Iterator(EntityManager * Manager, const std::bitset<MAX_COMPONENT_COUNT> Mask, const uint32_t Index, const Unpacker &Unpack)
+				Iterator(std::shared_ptr<EntityManager> & Manager, const std::bitset<MAX_COMPONENT_COUNT> Mask, const uint32_t Index, const Unpacker &Unpack)
 					: ViewIterator<Iterator>(Manager, Mask, Index), Unpacker_(Unpack)
 				{ ViewIterator<Iterator>::next(); }
 
@@ -925,11 +931,11 @@ namespace fluff { namespace ecs {
 		private:
 			friend class EntityManager;
 
-			UnpackingView(EntityManager * Manager, const std::bitset<MAX_COMPONENT_COUNT> Mask, ComponentHandle<Components> & ... Handles)
+			UnpackingView(std::shared_ptr<EntityManager> & Manager, const std::bitset<MAX_COMPONENT_COUNT> Mask, ComponentHandle<Components> & ... Handles)
 				: Manager_(Manager), Mask_(Mask), Unpacker_(Handles)
 			{ }
 
-			EntityManager * Manager_;
+			std::shared_ptr<EntityManager> & Manager_;
 			std::bitset<MAX_COMPONENT_COUNT> Mask_;
 			Unpacker Unpacker_;
 		};
@@ -1012,8 +1018,8 @@ namespace fluff { namespace ecs {
 			::new(pool->GetAt(Id.Index())) Comp(std::forward<Arguments>(Args)...);
 
 			EntityComponentMasks_[Id.Index()].set(family_id);
-			ComponentHandle<Comp> component(this, Id);
-			EventManager_.EmitEvent<ComponentAddedEvent<Comp>>(Entity(this, Id), component);
+			ComponentHandle<Comp> component(ThisPtr_, Id);
+			EventManager_->EmitEvent<ComponentAddedEvent<Comp>>(Entity(ThisPtr_, Id), component);
 			return component;
 		}
 
@@ -1030,8 +1036,8 @@ namespace fluff { namespace ecs {
 			const size_t family = ComponentFamilyID<Comp>();
 			const auto index = Id.Index();
 			auto pool = ComponentPools_[family];
-			ComponentHandle<Comp> component(this, Id);
-			EventManager_.EmitEvent<ComponentRemovedEvent<Comp>>(Entity(this, Id), component);
+			ComponentHandle<Comp> component(ThisPtr_, Id);
+			EventManager_->EmitEvent<ComponentRemovedEvent<Comp>>(Entity(ThisPtr_, Id), component);
 			EntityComponentMasks_[Id.Index()].reset(family);
 			pool->Destroy(index);
 		}
@@ -1068,10 +1074,10 @@ namespace fluff { namespace ecs {
 			FLUFF_ASSERT(IsValid(Id))
 			
 			const size_t family = ComponentFamilyID<Comp>();
-			if (family >= ComponentPools_.size()) return ComponentHandle<Comp>();
+			if (family >= ComponentPools_.size()) return ComponentHandle<Comp>(ThisPtr_, Entity::INVALID);
 			const auto pool = ComponentPools_[family];
-			if (!pool || !EntityComponentMasks_[Id.Index()][family]) return ComponentHandle<Comp>();
-			return ComponentHandle<Comp>(this, Id);
+			if (!pool || !EntityComponentMasks_[Id.Index()][family]) return ComponentHandle<Comp>(ThisPtr_, Entity::INVALID);
+			return ComponentHandle<Comp>(ThisPtr_, Id);
 		}
 
 		/*
@@ -1089,7 +1095,7 @@ namespace fluff { namespace ecs {
 			if (family >= ComponentPools_.size()) return ComponentHandle<C, const EntityManager>();
 			const auto pool = ComponentPools_[family];
 			if (!pool || !EntityComponentMasks_[Id.Index()][family]) return ComponentHandle<C, const EntityManager>();
-			return ComponentHandle<C, const EntityManager>(this, Id);
+			return ComponentHandle<C, const EntityManager>(ThisPtr_, Id);
 		}
 
 		/*
@@ -1128,7 +1134,7 @@ namespace fluff { namespace ecs {
 		View<Components ...> GetEntitiesWithComponents()
 		{
 			auto mask = ComponentMask<Components...>();
-			return View<Components...>(this, mask);
+			return View<Components...>(ThisPtr_, mask);
 		}
 
 		template<typename Type> struct Identity { typedef Type type;};
@@ -1153,7 +1159,7 @@ namespace fluff { namespace ecs {
 		View<Components...> EntitiesWithComponents()
 		{
 			auto mask = ComponentMask<Components...>();
-			return View<Components...>(this, mask);
+			return View<Components...>(ThisPtr_, mask);
 		}
 
 		/*
@@ -1163,7 +1169,7 @@ namespace fluff { namespace ecs {
 		*/
 		DebugView DebugEntities()
 		{
-			return DebugView(this);
+			return DebugView(ThisPtr_);
 		}
 
 		/* 

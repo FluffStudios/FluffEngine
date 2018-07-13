@@ -19,12 +19,12 @@ namespace fluff { namespace render {
 		: Manager_(Manager)
 	{	}
 
-	void ScreenshotSystem::Configure(ecs::EventManager & Events)
+	void ScreenshotSystem::Configure(std::shared_ptr<ecs::EventManager> & Events)
 	{
-		Events.SubscribeToEvent<ScreenshotEvent>(*this);
+		Events->SubscribeToEvent<ScreenshotEvent>(*this);
 	}
 
-	void ScreenshotSystem::Update(ecs::EntityManager & Entities, ecs::EventManager & Events, double Delta)
+	void ScreenshotSystem::Update(std::shared_ptr<ecs::EntityManager> & Entities, std::shared_ptr<ecs::EventManager> & Events, double Delta)
 	{
 
 	}

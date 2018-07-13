@@ -8,10 +8,10 @@ namespace fluff { namespace ecs {
 	class ITask 
 	{
 	protected:
-		Entity Ent;
+		Entity * Ent;
 		static size_t FamilyIDCounter;
 	public:
-		void FLUFF_API SetEntity(Entity Ent);
+		void FLUFF_API SetEntity(Entity * Ent);
 
 		virtual FLUFF_API ~ITask();
 		virtual void FLUFF_API Start();
