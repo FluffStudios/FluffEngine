@@ -9,6 +9,8 @@
 #include <functional>
 #include <unordered_map>
 
+#include <cereal/access.hpp>
+
 namespace fluff { namespace ecs {
 
 	typedef fluff::Signal<void(const void *)> EventSignal;
@@ -47,6 +49,13 @@ namespace fluff { namespace ecs {
 
 	class FLUFF_API EventManager : NonCopyable
 	{
+		friend class cereal::access;
+
+		template <typename Archive>
+		void serialize(Archive & Ar)
+		{
+
+		}
 	protected:
 		std::vector<std::shared_ptr<EventSignal>> Handlers_;
 		

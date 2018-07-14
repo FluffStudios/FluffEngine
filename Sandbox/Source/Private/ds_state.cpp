@@ -1,15 +1,10 @@
 #include <ds_state.h>
 #include <movement_system.h>
 
+#include <iostream>
+#include <cereal/archives/binary.hpp>
+
 #define V_COUNT 512
-
-#ifndef UI_MAX_VERTEX_MEM
-#define UI_MAX_VERTEX_MEM 1024 * 512
-#endif
-
-#ifndef UI_MAX_ELEMENT_MEM
-#define UI_MAX_ELEMENT_MEM 1024 * 128
-#endif
 
 class TestTask : public fluff::ecs::Task<TestTask>
 {
@@ -189,9 +184,9 @@ void DSState::Configure()
 	render::Renderable renderable2(mat, mod3);
 	render::Renderable renderable3(mat2, mod3);
 	
-	for (auto i = -10; i < 5; i++)
+	for (auto i = -10; i < 10; i++)
 	{
-		for (auto j = -10; j < 5; j++)
+		for (auto j = -10; j < 10; j++)
 		{
 			auto ent = pManager_->GetEntityManager()->Create();
 			ent.AddComponent<render::RenderableComponent>(renderable2);
@@ -262,6 +257,10 @@ void DSState::Run()
 
 void DSState::Shutdown()
 {
+	std::ofstream out("entity_manager.bin");
+	cereal::BinaryOutputArchive out_arch(out);
+	out_arch(pManager_->GetEntityManager());
+
 	TextureLibrary::Clear();
 	PipelineLibrary::Clear();
 }

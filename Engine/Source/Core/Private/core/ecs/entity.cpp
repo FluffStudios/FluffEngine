@@ -58,6 +58,16 @@ namespace fluff { namespace ecs {
 		return Manager_->ComponentMask(Id_);
 	}
 
+	void IComponentHelper::CopyComponentTo(Entity Src, Entity Dst)
+	{
+		Manager->CpyComponent(Dst.GetID(), ID, Size, Src.GetID().Index());
+	}
+
+	void IComponentHelper::RemoveComponent(Entity Ent)
+	{
+		Manager->RemoveComponentByID();
+	}
+
 	EntityManager::EntityManager(std::shared_ptr<EventManager> & EM) 
 		: EventManager_(EM), IndexCounter_(0)
 	{
@@ -117,7 +127,7 @@ namespace fluff { namespace ecs {
 		auto mask = Ent.ComponentMask();
 		for (size_t i = 0; i < ComponentHelpers_.size(); i++)
 		{
-			IComponentHelper * helper = ComponentHelpers_[i];
+			std::shared_ptr<IComponentHelper> helper = ComponentHelpers_[i];
 			if (helper && mask.test(i))
 			{
 				helper->CopyComponentTo(Ent, clone);
@@ -134,7 +144,7 @@ namespace fluff { namespace ecs {
 		auto mask = EntityComponentMasks_[index];
 		for (size_t i = 0; i < ComponentHelpers_.size(); i++)
 		{
-			IComponentHelper * helper = ComponentHelpers_[i];
+			std::shared_ptr<IComponentHelper> helper = ComponentHelpers_[i];
 			if (helper && mask.test(i))
 				helper->RemoveComponent(Entity(ThisPtr_, Id));
 		}
@@ -150,7 +160,7 @@ namespace fluff { namespace ecs {
 		{
 			EntityComponentMasks_.resize(Index + 1);
 			EntityVersions_.resize(Index + 1);
-			for (auto * pool : ComponentPools_)
+			for (auto pool : ComponentPools_)
 			{
 				if (pool) pool->Expand(Index + 1);
 			}

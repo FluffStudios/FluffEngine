@@ -1,7 +1,6 @@
 #pragma once
 
 #include <common.h>
-#include <non_copyable.h>
 
 #include <core/debug/debug_log_writer.h>
 #include <core/ecs/event.h>
@@ -115,6 +114,13 @@ namespace fluff { namespace ecs {
 	{
 		ID Id_ = INVALID;
 		std::shared_ptr<EntityManager> & Manager_;
+
+		friend class cereal::access;
+
+		template <class Archive>
+		void serialize(Archive & ar) {
+			ar(Id_);
+		}
 	public:
 		static const ID INVALID;
 
@@ -241,6 +247,19 @@ namespace fluff { namespace ecs {
 		}
 
 		/*
+			Copies a component
+
+			Comp - Type of component
+			Src  - Entity to copy component from
+			Size - Size of component to copy
+		*/
+		void CopyComponent(size_t Type, size_t Src, size_t Size)
+		{
+			FLUFF_ASSERT(IsValid())
+//			Manager_->CpyComponent(Id_, Type, Size, Src);
+		}
+
+		/*
 			Replaces a component.  If the component is not already
 			contained, it adds the component
 
@@ -271,6 +290,17 @@ namespace fluff { namespace ecs {
 		{
 			FLUFF_ASSERT(IsValid())
 			Manager_->RemoveComponent<Comp>(Id_);
+		}
+
+		/*
+			Removes component from entity
+
+			Comp - Type of component to remove
+		*/
+		void RemoveComponent(size_t Comp)
+		{
+			FLUFF_ASSERT(IsValid())
+//			Manager_->RemComponent(Comp, Id_);
 		}
 
 		/*
@@ -319,11 +349,7 @@ namespace fluff { namespace ecs {
 			Returns a tuple of the component handles
 		*/
 		template<typename ... Components>
-		std::tuple<ComponentHandle<const Components, const EntityManager>...> GetComponents() const
-		{
-			FLUFF_ASSERT(IsValid())
-			return const_cast<const EntityManager*>(Manager_)->GetComponent<const Components...>(Id_);
-		}
+		std::tuple<ComponentHandle<const Components, const EntityManager>...> GetComponents() const;
 
 		/*
 			Checks if entity has a component of the type provided
@@ -446,6 +472,7 @@ namespace fluff { namespace ecs {
 		/*
 			Removes itself from its associated entity
 		*/
+		template <typename ComponentType>
 		void Remove()
 		{
 			FLUFF_ASSERT(IsValid())
@@ -563,19 +590,34 @@ namespace fluff { namespace ecs {
 		ComponentHandle<Comp> Handle;
 	};
 
-	class FLUFF_API IComponentHelper
+	class IComponentHelper
 	{
+		friend class cereal::access;
+
+		template <typename Archive>
+		void serialize(Archive & Ar)
+		{
+			Ar(ID, Size);
+		}
 	public:
+		size_t ID;
+		size_t Size;
+		std::shared_ptr<EntityManager> Manager;
+
+		FLUFF_API IComponentHelper(std::shared_ptr<EntityManager> Manager, size_t ID, size_t Size)
+			: ID(ID), Size(Size), Manager(Manager)
+		{	}
+
 		/*
 			Deconstructor
 		*/
-		virtual ~IComponentHelper() { };
+		FLUFF_API virtual ~IComponentHelper() { };
 		/*
 			Remove component helper
 
 			Ent - Entity to remove from
 		*/
-		virtual void RemoveComponent(Entity Ent) = 0;
+		virtual void FLUFF_API RemoveComponent(Entity Ent);
 		
 		/*
 			Copy component helper
@@ -583,32 +625,7 @@ namespace fluff { namespace ecs {
 			Src - Entity to copy from
 			Dst - Entity to copy to
 		*/
-		virtual void CopyComponentTo(Entity Src, Entity Dst) = 0;
-	};
-
-	template<typename Comp>
-	class FLUFF_API ComponentHelper : public IComponentHelper
-	{
-	public:
-		/*
-			Component helper
-		*/
-		ComponentHelper() { }
-
-		/*
-			Remove component helper method
-
-			Ent - Entity to remove from
-		*/
-		void RemoveComponent(Entity Ent) override;
-
-		/*
-			Copy component helper method
-
-			Src - Entity to copy from
-			Dst - Entity to copy to
-		*/
-		void CopyComponentTo(Entity Src, Entity Dst) override;
+		virtual void FLUFF_API CopyComponentTo(Entity Src, Entity Dst);
 	};
 
 	template <typename ComponentType, typename EM>
@@ -623,29 +640,25 @@ namespace fluff { namespace ecs {
 		return IsValid();
 	}
 
-	template <typename Comp>
-	void ComponentHelper<Comp>::RemoveComponent(Entity Ent)
-	{
-		Ent.RemoveComponent<Comp>();
-	}
-
-	template <typename Comp>
-	void ComponentHelper<Comp>::CopyComponentTo(Entity Src, Entity Dst)
-	{
-		Dst.CopyComponent<Comp>(*(Src.GetComponent<Comp>().Get()));
-	}
-
 	class FLUFF_API EntityManager : public std::enable_shared_from_this<EntityManager>
 	{
 		std::vector<std::bitset<MAX_COMPONENT_COUNT>> EntityComponentMasks_;
 		std::vector<uint32_t> EntityVersions_;
-		std::vector<IPool*> ComponentPools_;
-		std::vector<IComponentHelper*> ComponentHelpers_;
+		std::vector<std::shared_ptr<IPool>> ComponentPools_;
+		std::vector<std::shared_ptr<IComponentHelper>> ComponentHelpers_;
 		std::vector<uint32_t> FreeSlots_;
-		std::shared_ptr<EventManager> & EventManager_;
+		std::shared_ptr<EventManager> EventManager_;
 		uint32_t IndexCounter_;
 
 		std::shared_ptr<EntityManager> ThisPtr_;
+
+		friend class cereal::access;
+
+		template <typename Archive>
+		void serialize(Archive & Ar)
+		{
+			Ar(EntityVersions_, ComponentPools_, ComponentHelpers_, FreeSlots_, EventManager_, IndexCounter_);
+		}
 	public:
 		/*
 			Creates new Entity Manager
@@ -658,6 +671,10 @@ namespace fluff { namespace ecs {
 			Deconstructor
 		*/
 		virtual ~EntityManager() { Reset(); };
+
+		void RemoveComponentByID() {
+
+		}
 
 		template<class Type, bool All = false>
 		class FLUFF_API ViewIterator : public std::iterator<std::input_iterator_tag, ID>
@@ -940,6 +957,7 @@ namespace fluff { namespace ecs {
 			Unpacker Unpacker_;
 		};
 
+	public:
 		/*
 			Gets the entity specified by the ID and associated
 			with the EntityManager
@@ -1023,6 +1041,15 @@ namespace fluff { namespace ecs {
 			return component;
 		}
 
+		void FLUFF_API CpyComponent(ID Ent, size_t Comp, const size_t Size, const size_t Src)
+		{
+			FLUFF_ASSERT(IsValid(Ent))
+			FLUFF_ASSERT(!EntityComponentMasks_[Ent.Index()].test(Comp))
+			std::shared_ptr<IPool> pool = AccomodateComponent(Comp, Size);
+			memcpy(pool->GetAt(Ent.Index()), pool->GetAt(static_cast<uint32_t>(Src)), Size);
+			EntityComponentMasks_[Ent.Index()].set(Comp);
+		}
+
 		/*
 			Removes the component of given type
 
@@ -1038,7 +1065,7 @@ namespace fluff { namespace ecs {
 			auto pool = ComponentPools_[family];
 			ComponentHandle<Comp> component(ThisPtr_, Id);
 			EventManager_->EmitEvent<ComponentRemovedEvent<Comp>>(Entity(ThisPtr_, Id), component);
-			EntityComponentMasks_[Id.Index()].reset(family);
+			EntityComponentMasks_[index].reset(family);
 			pool->Destroy(index);
 		}
 
@@ -1058,6 +1085,23 @@ namespace fluff { namespace ecs {
 			if (family >= ComponentPools_.size()) return false;
 			const auto pool = ComponentPools_[family];
 			if (!pool || !EntityComponentMasks_[Id.Index()][family]) return false;
+			return true;
+		}
+
+		/*
+			Checks if entity has component of given type
+
+			Comp - Type of component
+			Id - ID of entity to check if it has component of given type
+			Returns if entity contains component
+		*/
+		bool HasComponent(size_t Comp, ID Id) const
+		{
+			FLUFF_ASSERT(IsValid(Id))
+
+			if (Comp >= ComponentPools_.size()) return false;
+			const auto pool = ComponentPools_[Comp];
+			if (!pool || !EntityComponentMasks_[Id.Index()][Comp]) return false;
 			return true;
 		}
 
@@ -1209,12 +1253,6 @@ namespace fluff { namespace ecs {
 		void Reset()
 		{
 			for (auto entity : DebugEntities()) entity.Destroy();
-			for (auto *pool : ComponentPools_) {
-				if (pool) delete pool;
-			}
-			for (auto *helper : ComponentHelpers_) {
-				if (helper) delete helper;
-			}
 			ComponentPools_.clear();
 			ComponentHelpers_.clear();
 			EntityComponentMasks_.clear();
@@ -1251,7 +1289,7 @@ namespace fluff { namespace ecs {
 			}
 			if (!ComponentPools_[family])
 			{
-				Pool<Comp> * pool = new Pool<Comp>();
+				std::shared_ptr<IPool> pool = std::make_shared<IPool>(sizeof(Comp));
 				pool->Expand(IndexCounter_);
 				ComponentPools_[family] = pool;
 			}
@@ -1261,10 +1299,32 @@ namespace fluff { namespace ecs {
 			}
 			if (!ComponentHelpers_[family])
 			{
-				ComponentHelper<Comp> * c = new ComponentHelper<Comp>();
-				ComponentHelpers_[family] = static_cast<IComponentHelper*>(c);
+				std::shared_ptr<IComponentHelper> c = std::make_shared<IComponentHelper>(ThisPtr_, ComponentFamilyID<Comp>(), sizeof(Comp));
+				ComponentHelpers_[family] = c;
 			}
-			return static_cast<Pool<Comp>*>(ComponentPools_[family]);
+			return static_cast<Pool<Comp>*>(ComponentPools_[family].get());
+		}
+
+		std::shared_ptr<IPool> AccomodateComponent(size_t Comp, size_t ElementSize)
+		{
+			if (ComponentPools_.size() <= Comp)
+			{
+				ComponentPools_.resize(Comp + 1, nullptr);
+			}
+			if (!ComponentPools_[Comp])
+			{
+				std::shared_ptr<IPool> pool = std::make_shared<IPool>(ElementSize);
+			}
+			if (ComponentHelpers_.size() <= Comp) 
+			{
+				ComponentHelpers_.resize(Comp + 1, nullptr);
+			}
+			if (!ComponentHelpers_[Comp]) 
+			{
+				std::shared_ptr<IComponentHelper> c = std::make_shared<IComponentHelper>(ThisPtr_, Comp, ElementSize);
+				ComponentHelpers_[Comp] = c;
+			}
+			return ComponentPools_[Comp];
 		}
 
 		/*
@@ -1342,8 +1402,8 @@ namespace fluff { namespace ecs {
 		template <typename Comp>
 		Comp * GetComponentPtr(ID id) {
 			FLUFF_ASSERT(IsValid(id))
-			IPool *pool = ComponentPools_[ComponentFamilyID<Comp>()];
-			FLUFF_ASSERT(pool)
+			std::shared_ptr<IPool> pool = ComponentPools_[ComponentFamilyID<Comp>()];
+			FLUFF_ASSERT(pool.get())
 			return static_cast<Comp*>(pool->GetAt(id.Index()));
 		}
 
@@ -1365,5 +1425,12 @@ namespace fluff { namespace ecs {
 	private:
 		void AccomodateEntity(uint32_t Index);
 	};
+
+	template <typename ... Components>
+	std::tuple<ComponentHandle<const Components, const EntityManager>...> Entity::GetComponents() const
+	{
+		FLUFF_ASSERT(IsValid())
+		return Manager_->GetComponent<const Components...>(Id_);
+	}
 
 } }
