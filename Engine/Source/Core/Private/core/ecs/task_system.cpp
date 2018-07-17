@@ -13,7 +13,11 @@ namespace fluff { namespace ecs {
 
 	void TaskSystem::Update(std::shared_ptr<EntityManager> & Entities, std::shared_ptr<EventManager> & Events, double DeltaTime)
 	{
-		std::vector<std::future<void>> funcs;
+		if (!Funcs_.empty())
+		{
+			return;
+		}
+
 		for (auto & it : Tasks_)
 		{
 			auto task = it.first;
@@ -31,7 +35,7 @@ namespace fluff { namespace ecs {
 				size_t chunks = entCount / task->SplitSize() + 1;
 				
 				for (size_t i = 0; i < chunks + 1; i++) {
-					funcs.push_back(Pool_->PushTask([i, chunks, it, task](size_t) {
+					Funcs_.push_back(Pool_->PushTask([i, chunks, it, task](size_t) {
 						for (size_t j = it.second.size() / chunks * i; j < it.second.size() / chunks * (i + 1) && j < it.second.size(); j++)
 						{
 							Entity ent = it.second[j];
@@ -61,7 +65,7 @@ namespace fluff { namespace ecs {
 				size_t chunks = entCount / task->SplitSize() + 1;
 
 				for (size_t i = 0; i < chunks + 1; i++) {
-					funcs.push_back(Pool_->PushTask([i, chunks, it, task](size_t) {
+					Funcs_.push_back(Pool_->PushTask([i, chunks, it, task](size_t) {
 						for (size_t j = it.second.size() / chunks * i; j < it.second.size() / chunks * (i + 1) && j < it.second.size(); j++)
 						{
 							Entity ent = it.second[j];
@@ -74,9 +78,21 @@ namespace fluff { namespace ecs {
 			}
 		}
 
-		for (auto & func : funcs)
+		for (auto & func : Funcs_)
 		{
 			func.get();
+		}
+
+		for (auto it = Tasks_.begin() ; it != Tasks_.end() ; )
+		{
+			if (it->first->IsComplete())
+			{
+				it = Tasks_.erase(it);
+			}
+			else
+			{
+				++it;
+			}
 		}
 	}
 

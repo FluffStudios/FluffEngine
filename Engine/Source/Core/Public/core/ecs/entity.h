@@ -1434,3 +1434,5 @@ namespace fluff { namespace ecs {
 	}
 
 } }
+
+#define REGISTER_COMPONENT(ComponentType) REGISTER_POLYMORPHIC_CLASS_CRTP(fluff::ecs::IComponent, fluff::ecs::Component<ComponentType>, ComponentType)

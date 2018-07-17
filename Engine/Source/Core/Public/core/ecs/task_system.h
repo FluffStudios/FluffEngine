@@ -14,6 +14,7 @@ namespace fluff { namespace ecs {
 
 	class TaskSystem final : public System<TaskSystem>
 	{
+		std::vector<std::future<void>> Funcs_;
 		std::unordered_map<size_t, std::shared_ptr<ITask>> TaskTypes_;
 		std::unordered_map<std::shared_ptr<ITask>, std::vector<Entity>> Tasks_;
 		std::shared_ptr<threading::ThreadPool> & Pool_;

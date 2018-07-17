@@ -6,16 +6,6 @@
 
 #define V_COUNT 512
 
-class TestTask : public fluff::ecs::Task<TestTask>
-{
-	size_t Updates;
-public:
-	void Update() override
-	{
-		Updates++;
-	}
-};
-
 void DSState::Configure()
 {
 	std::ifstream lt_in("lookup_table.bin", std::ios::binary);
@@ -184,9 +174,9 @@ void DSState::Configure()
 	render::Renderable renderable2(mat, mod3);
 	render::Renderable renderable3(mat2, mod3);
 	
-	for (auto i = -10; i < 10; i++)
+	for (auto i = -30; i < 30; i++)
 	{
-		for (auto j = -10; j < 10; j++)
+		for (auto j = -30; j < 30; j++)
 		{
 			auto ent = pManager_->GetEntityManager()->Create();
 			ent.AddComponent<render::RenderableComponent>(renderable2);

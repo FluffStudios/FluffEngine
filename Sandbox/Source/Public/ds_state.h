@@ -6,6 +6,16 @@
 
 using namespace fluff;
 
+class TestTask : public fluff::ecs::Task<TestTask>
+{
+	size_t Updates;
+public:
+	void Update() override
+	{
+		Updates++;
+	}
+};
+
 class DSState : public fluff::IGameState
 {
 private:
@@ -21,3 +31,5 @@ public:
 	void Shutdown() override;
 	bool ShouldShutdown() override;
 };
+
+REGISTER_TASK(TestTask)

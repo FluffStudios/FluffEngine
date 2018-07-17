@@ -20,3 +20,5 @@ namespace fluff { namespace ecs {
 	};
 
 } }
+
+#define REGISTER_TASK(TaskName) REGISTER_POLYMORPHIC_CLASS_CRTP(fluff::ecs::ITask, fluff::ecs::Task<TaskName>, TaskName)
