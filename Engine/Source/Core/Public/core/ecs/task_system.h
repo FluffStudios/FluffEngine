@@ -10,16 +10,48 @@
 #include <unordered_map>
 #include <vector>
 
+#include <cereal/access.hpp>
+
 namespace fluff { namespace ecs {
 
 	class TaskSystem final : public System<TaskSystem>
 	{
-		std::vector<std::future<void>> Funcs_;
+		std::vector<std::future<void>> FreeFuncs_;
+		std::vector<std::future<void>> FixedFuncs_;
 		std::unordered_map<size_t, std::shared_ptr<ITask>> TaskTypes_;
 		std::unordered_map<std::shared_ptr<ITask>, std::vector<Entity>> Tasks_;
-		std::shared_ptr<threading::ThreadPool> & Pool_;
+		std::shared_ptr<threading::ThreadPool> Pool_;
+
+		friend class cereal::access;
+
+		template <typename Archive>
+		void save(Archive & Ar) const
+		{
+			// ID -> ITask ptr
+			// ID -> Entity vector
+			std::unordered_map<size_t, std::vector<Entity>> TasksToEnts_;
+			for (auto out_it : TaskTypes_) {
+				size_t id = out_it.first;
+				auto ents = Tasks_.find(out_it.second)->second;
+				TasksToEnts_.insert(std::make_pair(id, ents));
+			}
+			Ar(TaskTypes_, TasksToEnts_);
+		}
+
+		template <typename Archive>
+		void load(Archive & Ar)
+		{
+			std::unordered_map<size_t, std::vector<Entity>> TasksToEnts_;
+			Ar(TaskTypes_, TasksToEnts_);
+			for (auto it : TaskTypes_)
+			{
+				size_t id = it.first;
+				auto ents = TasksToEnts_.find(id)->second;
+				Tasks_.insert(std::make_pair(it.second, ents));
+			}
+		}
 	public:
-		FLUFF_API TaskSystem(std::shared_ptr<threading::ThreadPool> & ThreadPool);
+		FLUFF_API TaskSystem();
 		void FLUFF_API Configure(std::shared_ptr<EntityManager> & Entities, std::shared_ptr<EventManager> & Events) override;
 		void FLUFF_API Update(std::shared_ptr<EntityManager> & Entities, std::shared_ptr<EventManager> & Events, double DeltaTime) override;
 		void FLUFF_API FixedUpdate(std::shared_ptr<EntityManager> & Entities, std::shared_ptr<EventManager> & Events) override;
@@ -34,6 +66,11 @@ namespace fluff { namespace ecs {
 
 		template <typename TaskType>
 		void AddEntity(Entity Ent);
+
+		inline void AttachThreadpool(const std::shared_ptr<threading::ThreadPool> & Threads)
+		{
+			Pool_ = Threads;
+		}
 	};
 
 	template<typename TaskType, typename ...Arguments>

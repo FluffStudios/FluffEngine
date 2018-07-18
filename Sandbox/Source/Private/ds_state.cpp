@@ -3,8 +3,9 @@
 
 #include <iostream>
 #include <cereal/archives/binary.hpp>
+#include <cereal/archives/json.hpp>
 
-#define V_COUNT 512
+#define V_COUNT 128
 
 void DSState::Configure()
 {
@@ -35,10 +36,9 @@ void DSState::Configure()
 	pManager_->GetSystemManager()->Add<MovementSystem>(cam);
 	pManager_->GetSystemManager()->Add<render::ScreenshotSystem>(pManager_);
 	pManager_->GetSystemManager()->Add<physics::PhysicsSystem>(pManager_);
-	pManager_->GetSystemManager()->Add<ecs::TaskSystem>(pManager_->GetSystemManager()->GetThreadPool());
+	auto taskSys = pManager_->GetSystemManager()->Add<ecs::TaskSystem>();
+	taskSys->AttachThreadpool(pManager_->GetSystemManager()->GetThreadPool());
 	pManager_->GetSystemManager()->Configure();
-
-	debug::DebugMessage(pManager_, debug::DebugErrorType::ILLEGAL_DATA, debug::DebugSeverity::WARN, __LINE__, __FILE__, "Test!");
 
 	pManager_->GetSystemManager()->GetSystem<ecs::TaskSystem>()->Add<TestTask>();
 
@@ -116,9 +116,9 @@ void DSState::Configure()
 	std::vector<std::future<void>> tasks;
 
 	tasks.push_back(pManager_->GetSystemManager()->GetThreadPool()->PushTask([&](size_t) {
-		for (auto x = -6; x < 5; x++)
+		for (auto x = -11; x < 10; x++)
 		{
-			for (auto z = -6; z < 5; z++)
+			for (auto z = -11; z < 10; z++)
 			{
 				Transformation trans(glm::vec3(x * V_COUNT - 1, 0, z * V_COUNT - 1), glm::vec3(0, 0, 0), glm::vec3(0.5f, 1, 0.5f));
 
@@ -174,7 +174,7 @@ void DSState::Configure()
 	render::Renderable renderable2(mat, mod3);
 	render::Renderable renderable3(mat2, mod3);
 	
-	for (auto i = -30; i < 30; i++)
+	for (auto i = -20; i < 20; i++)
 	{
 		for (auto j = -30; j < 30; j++)
 		{
@@ -250,6 +250,10 @@ void DSState::Shutdown()
 	std::ofstream out("entity_manager.bin");
 	cereal::BinaryOutputArchive out_arch(out);
 	out_arch(pManager_->GetEntityManager());
+
+	std::ofstream jout("task_system.json");
+	cereal::JSONOutputArchive jout_arch(jout);
+	jout_arch(pManager_->GetSystemManager()->GetSystem<fluff::ecs::TaskSystem>());
 
 	TextureLibrary::Clear();
 	PipelineLibrary::Clear();

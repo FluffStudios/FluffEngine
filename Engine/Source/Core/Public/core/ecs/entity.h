@@ -113,7 +113,7 @@ namespace fluff { namespace ecs {
 	class FLUFF_API Entity
 	{
 		ID Id_ = INVALID;
-		std::shared_ptr<EntityManager> & Manager_;
+		std::shared_ptr<EntityManager> Manager_;
 
 		friend class cereal::access;
 
@@ -121,13 +121,15 @@ namespace fluff { namespace ecs {
 		void serialize(Archive & ar) {
 			ar(Id_);
 		}
+
 	public:
 		static const ID INVALID;
+
+		Entity() { }
 
 		/*
 			Default constructor
 		*/
-		Entity() = delete;
 
 		/*
 			Creates new entity from entity manager
@@ -164,7 +166,7 @@ namespace fluff { namespace ecs {
 
 			Returns entity's manager
 		*/
-		std::shared_ptr<EntityManager> & GetManager() const { return Manager_; }
+		std::shared_ptr<EntityManager> & GetManager() { return Manager_; }
 
 		/*
 			Checks if the entity's ID is valid

@@ -36,7 +36,7 @@ namespace fluff { namespace ecs
 					funcs.push_back(Pool_->PushTask([this, it, DeltaTime](size_t) {
 						it.second->Update(EntityManager_, EventManager_, DeltaTime);
 					}));
-					std::this_thread::sleep_for(std::chrono::microseconds(1));
+					std::this_thread::sleep_for(std::chrono::nanoseconds(1));
 				}
 			} 
 			else
@@ -55,7 +55,7 @@ namespace fluff { namespace ecs
 						funcs.push_back(Pool_->PushTask([this, it, DeltaTime](size_t) {
 							it.second->FixedUpdate(EntityManager_, EventManager_);
 						}));
-						std::this_thread::sleep_for(std::chrono::microseconds(1));
+						std::this_thread::sleep_for(std::chrono::nanoseconds(1));
 					}
 				}
 				else

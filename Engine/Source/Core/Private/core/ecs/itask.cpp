@@ -18,6 +18,9 @@ namespace fluff { namespace ecs {
 	void ITask::Update()
 	{	}
 
+	void FLUFF_API ITask::FixedUpdate()
+	{	}
+
 	void ITask::LateUpdate()
 	{	}
 

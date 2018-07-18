@@ -17,6 +17,11 @@ namespace fluff { namespace ecs {
 	public:
 		inline virtual ~Task() 
 		{	};
+
+		inline virtual size_t GetTaskID() const override
+		{
+			return ID_ = Task<TaskType>::GetFamilyID();
+		}
 	};
 
 } }
