@@ -14,6 +14,9 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
 #include <Physx/cooking/PxCooking.h>
+#include <Physx/foundation/PxMat44.h>
+#include <core/transformation.h>
+#include <core/transformation_component.h>
 
 float _clamp(float x) {
 
@@ -29,6 +32,7 @@ namespace fluff { namespace physics {
 		physx::PxRigidDynamic * pActor;
 		physx::PxMaterial * pMat;
 		physx::PxReal Min_;
+		Transformation T_;
 	};
 
 	PhysicsDynamicActor::PhysicsDynamicActor(void * pSDK, glm::vec3 Position, glm::quat Rotation, GeometryType Geometry, GeometryDesc * GeomDesc, PhysicsMaterialDescriptor Material, float Density)
@@ -140,21 +144,36 @@ namespace fluff { namespace physics {
 		return Impl_->pActor;
 	}
 
+	const glm::mat4 PhysicsDynamicActor::GetTransform() const
+	{
+		return Impl_->T_.GetTransformationMatrix();
+	}
+
+	void PhysicsDynamicActor::Update()
+	{
+		if (!Impl_->pActor->isSleeping()) {
+			Impl_->T_.SetPosition(this->GetPosition());
+			Impl_->T_.SetRotation(this->GetRotation());
+		}
+	}
+
 	struct PhysicsStaticActor::PhysicsStaticActorImpl
 	{
 		physx::PxTransform Pose_;
 		physx::PxRigidStatic * pActor;
 		physx::PxMaterial * pMat;
 		physx::PxReal Min_;
+		Transformation T_;
 	};
 
-	PhysicsStaticActor::PhysicsStaticActor(void * pSDK, glm::vec3 Position, glm::quat Rotation, GeometryType Geometry, GeometryDesc * GeomDesc, PhysicsMaterialDescriptor Material)
+	PhysicsStaticActor::PhysicsStaticActor(void * pSDK, glm::vec3 Position, glm::vec3 Rotation, glm::vec3 Scale, GeometryType Geometry, GeometryDesc * GeomDesc, PhysicsMaterialDescriptor Material)
 		: Impl_(new PhysicsStaticActor::PhysicsStaticActorImpl)
 	{
+		glm::quat q = glm::toQuat(glm::orientate3(glm::radians(Rotation)));
 		Impl_->Pose_ = physx::PxTransform
 		{
 			physx::PxVec3(-Position.x, Position.y, Position.z),
-			physx::PxQuat(Rotation.x, Rotation.y, Rotation.z, Rotation.w)
+			physx::PxQuat(q.x, q.y, q.z, q.w)
 		};
 
 		physx::PxGeometry * geometry = nullptr;
@@ -221,13 +240,18 @@ namespace fluff { namespace physics {
 			physx::PxHeightField * field = ((physx::PxCooking*) hf->pManager->GetCooking())->createHeightField(desc, ((physx::PxPhysics *)hf->pManager->GetSDK())->getPhysicsInsertionCallback());
 			geometry = new physx::PxHeightFieldGeometry(field, physx::PxMeshGeometryFlag::eDOUBLE_SIDED, dHeight != 0.0f ? heightScale : 1.0f, hf->RowScale, hf->ColumnScale);
 			Impl_->Pose_.p.y += minHeight;
+			Position.y += Impl_->Pose_.p.y;
 			Impl_->Min_ = minHeight;
 			delete [] samples;
 		}
 		}
 
+		Impl_->T_ = Transformation(Position, Rotation, Scale);
 		Impl_->pMat = ((physx::PxPhysics*)pSDK)->createMaterial(Material.StaticFriction, Material.DynamicFriction, Material.Restitution);
 		if (geometry) Impl_->pActor = physx::PxCreateStatic(*((physx::PxPhysics *)pSDK), Impl_->Pose_, *geometry, *(Impl_->pMat));
+
+		Impl_->T_.SetPosition(this->GetPosition());
+		Impl_->T_.SetRotation(this->GetRotation());
 	}
 
 	glm::vec3 PhysicsStaticActor::GetPosition() const
@@ -256,5 +280,15 @@ namespace fluff { namespace physics {
 	void * PhysicsStaticActor::GetPointer() const
 	{
 		return Impl_->pActor;
+	}
+
+	const glm::mat4 PhysicsStaticActor::GetTransform() const
+	{
+		return Impl_->T_.GetTransformationMatrix();
+	}
+	void PhysicsStaticActor::Update()
+	{
+//		Impl_->T_.SetPosition(this->GetPosition());
+//		Impl_->T_.SetRotation(this->GetRotation());
 	}
 } }

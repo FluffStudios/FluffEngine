@@ -399,7 +399,7 @@ namespace fluff { namespace ecs {
 	class FLUFF_API ComponentHandle
 	{
 		friend class EntityManager;
-		std::shared_ptr<EM> & Manager_;
+		std::shared_ptr<EM> Manager_;
 		ID Id_;
 
 	public:
@@ -409,7 +409,7 @@ namespace fluff { namespace ecs {
 			Manager - Entity manager associated with component
 			Id - ID of entity owning the component
 		*/
-		ComponentHandle(std::shared_ptr<EM> & Manager, ID Id)
+		ComponentHandle(std::shared_ptr<EM> Manager, ID Id)
 			: Manager_(Manager), Id_(Id)
 		{ }
 

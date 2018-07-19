@@ -18,6 +18,7 @@ namespace fluff { namespace physics {
 		PhysicsActor * pActor_;
 		PhysicsMaterial * pMaterial_;
 	public:
+		PhysicsComponent();
 		PhysicsComponent(ActorType Actor, GeometryType Geometry, GeometryDesc * GeomDesc, TransformationComponent * Transform, PhysicsMaterialDescriptor Material, PhysicsSystem * System, float Density = 0);
 		~PhysicsComponent();
 

@@ -116,26 +116,26 @@ void DSState::Configure()
 	std::vector<std::future<void>> tasks;
 
 	tasks.push_back(pManager_->GetSystemManager()->GetThreadPool()->PushTask([&](size_t) {
-		for (auto x = -11; x < 10; x++)
+		for (auto x = -10; x < 11; x++)
 		{
-			for (auto z = -11; z < 10; z++)
+			for (auto z = -10; z < 11; z++)
 			{
-				Transformation trans(glm::vec3(x * V_COUNT - 1, 0, z * V_COUNT - 1), glm::vec3(0, 0, 0), glm::vec3(0.5f, 1, 0.5f));
+				Transformation trans(glm::vec3(x * V_COUNT, 0, z * V_COUNT), glm::vec3(0, 0, 0), glm::vec3(1, 1, 1));
 
-				auto * ter = new render::Terrain(V_COUNT + 2, mat4, &trans, noise, 48, 1);
+				auto * ter = new render::Terrain(V_COUNT, mat4, &trans, noise, 48, 1);
 
-				trans.SetPosition(trans.GetPosition() / 2.0f);
+				trans.SetPosition(trans.GetPosition());
 
 				physics::HeightFieldDesc hfd;
-				hfd.ColumnScale = 0.5f;
-				hfd.RowScale = 0.5f;
-				hfd.NumCols = V_COUNT + 3;
-				hfd.NumRows = V_COUNT + 3;
+				hfd.ColumnScale = 1.0f;
+				hfd.RowScale = 1.0f;
+				hfd.NumCols = V_COUNT + 1;
+				hfd.NumRows = V_COUNT + 1;
 				hfd.pManager = pManager_->GetSystemManager()->GetSystem<physics::PhysicsSystem>()->GetManager();
-				hfd.HeightScale = 64;
+				hfd.HeightScale = 48;
 
 				hfd.HeightMap = static_cast<float*>(calloc(sizeof(float) * hfd.NumCols * hfd.NumRows, 1));
-				memcpy(hfd.HeightMap, ter->GetHeightMap(), sizeof(float) * (V_COUNT + 3) * (V_COUNT + 3));
+				memcpy(hfd.HeightMap, ter->GetHeightMap(), sizeof(float) * (V_COUNT + 1) * (V_COUNT + 1));
 
 				auto e = pManager_->GetEntityManager()->Create();
 
@@ -174,9 +174,9 @@ void DSState::Configure()
 	render::Renderable renderable2(mat, mod3);
 	render::Renderable renderable3(mat2, mod3);
 	
-	for (auto i = -20; i < 20; i++)
+	for (auto i = -35; i < 35; i++)
 	{
-		for (auto j = -30; j < 30; j++)
+		for (auto j = -35; j < 35; j++)
 		{
 			auto ent = pManager_->GetEntityManager()->Create();
 			ent.AddComponent<render::RenderableComponent>(renderable2);
