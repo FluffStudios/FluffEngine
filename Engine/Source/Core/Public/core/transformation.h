@@ -79,6 +79,14 @@ namespace fluff
 			CreateTransformationMatrix();
 		}
 
+		void SetPositionAndRotation(const glm::vec3 Position, const glm::vec3 Rotation) 
+		{
+			this->Position = Position;
+			glm::vec3 new_rot(fmod(Rotation.x + 360.0f, 360), fmod(Rotation.y + 360.0f, 360), fmod(Rotation.z + 360.0f, 360));
+			this->Rotation = new_rot;
+			CreateTransformationMatrix();
+		}
+
 		/*
 			Gets the scale of the transformation
 

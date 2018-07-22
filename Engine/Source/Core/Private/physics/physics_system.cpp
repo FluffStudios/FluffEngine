@@ -12,7 +12,7 @@
 namespace fluff { namespace physics {
 
 	PhysicsSystem::PhysicsSystem(std::shared_ptr<ECSManager> & Manager)
-		: Scene_(nullptr), SystemsManager_(Manager)
+		: Scene_(nullptr), SystemsManager_(Manager), Ready_(true)
 	{	
 	}
 
@@ -28,7 +28,7 @@ namespace fluff { namespace physics {
 		PhysicsSceneDescriptor desc
 		{
 			glm::vec3(0, -9.8, 0),
-			physx::PxDefaultCpuDispatcherCreate(2)
+			physx::PxDefaultCpuDispatcherCreate(4)
 		};
 
 		Scene_ = new PhysicsScene((physx::PxPhysics*)pManager_->GetSDK(), desc);
@@ -37,7 +37,7 @@ namespace fluff { namespace physics {
 		{
 			FLUFF_LOG(debug::DebugErrorType::ILLEGAL_STATE, debug::DebugSeverity::FATAL, "Could not create PhysX Scene.");
 		}
-		((physx::PxScene *) Scene_->GetScene())->simulate(1.0f / 60.0f);
+		((physx::PxScene *) Scene_->GetScene())->simulate(1.0f / 30.0f);
 	}
 
 	void PhysicsSystem::Update(std::shared_ptr<ecs::EntityManager> & Entities, std::shared_ptr<ecs::EventManager> & Events, double DeltaTime)

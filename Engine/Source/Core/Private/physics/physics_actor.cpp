@@ -152,8 +152,7 @@ namespace fluff { namespace physics {
 	void PhysicsDynamicActor::Update()
 	{
 		if (!Impl_->pActor->isSleeping()) {
-			Impl_->T_.SetPosition(this->GetPosition());
-			Impl_->T_.SetRotation(this->GetRotation());
+			Impl_->T_.SetPositionAndRotation(this->GetPosition(), this->GetRotation());
 		}
 	}
 
