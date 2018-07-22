@@ -113,7 +113,7 @@ namespace fluff { namespace ecs {
 	class FLUFF_API Entity
 	{
 		ID Id_ = INVALID;
-		std::shared_ptr<EntityManager> & Manager_;
+		std::shared_ptr<EntityManager> Manager_;
 
 		friend class cereal::access;
 
@@ -121,13 +121,15 @@ namespace fluff { namespace ecs {
 		void serialize(Archive & ar) {
 			ar(Id_);
 		}
+
 	public:
 		static const ID INVALID;
+
+		Entity() { }
 
 		/*
 			Default constructor
 		*/
-		Entity() = delete;
 
 		/*
 			Creates new entity from entity manager
@@ -164,7 +166,7 @@ namespace fluff { namespace ecs {
 
 			Returns entity's manager
 		*/
-		std::shared_ptr<EntityManager> & GetManager() const { return Manager_; }
+		std::shared_ptr<EntityManager> & GetManager() { return Manager_; }
 
 		/*
 			Checks if the entity's ID is valid
@@ -397,7 +399,7 @@ namespace fluff { namespace ecs {
 	class FLUFF_API ComponentHandle
 	{
 		friend class EntityManager;
-		std::shared_ptr<EM> & Manager_;
+		std::shared_ptr<EM> Manager_;
 		ID Id_;
 
 	public:
@@ -407,7 +409,7 @@ namespace fluff { namespace ecs {
 			Manager - Entity manager associated with component
 			Id - ID of entity owning the component
 		*/
-		ComponentHandle(std::shared_ptr<EM> & Manager, ID Id)
+		ComponentHandle(std::shared_ptr<EM> Manager, ID Id)
 			: Manager_(Manager), Id_(Id)
 		{ }
 
@@ -1434,3 +1436,5 @@ namespace fluff { namespace ecs {
 	}
 
 } }
+
+#define REGISTER_COMPONENT(ComponentType) REGISTER_POLYMORPHIC_CLASS_CRTP(fluff::ecs::IComponent, fluff::ecs::Component<ComponentType>, ComponentType)

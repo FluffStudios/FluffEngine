@@ -9,6 +9,7 @@
 #include <gfx/camera_component.h>
 #include <core/assets/material_library.h>
 #include <glew.h>
+#include <physics/physics_component.h>
 
 namespace fluff { namespace render {
 
@@ -354,9 +355,18 @@ namespace fluff { namespace render {
 			}
 			case NONE:
 			{
-				auto transformation = ent.GetComponent<TransformationComponent>()->GetTransformationMatrix();
-				matl->SetModelMatrix(const_cast<float*>(glm::value_ptr(transformation)));
-				modl->Draw();
+//				auto transformation = ent.GetComponent<TransformationComponent>()->GetTransformationMatrix();
+//				matl->SetModelMatrix(const_cast<float*>(glm::value_ptr(transformation)));
+				auto actor = ent.GetComponent<physics::PhysicsComponent>()->GetActor();
+				if (actor) {
+					auto transform = actor->GetTransform();
+					matl->SetModelMatrix(const_cast<float*>(glm::value_ptr(transform)));
+					modl->Draw();
+				}
+				else
+				{
+					FLUFF_LOG(fluff::debug::DebugErrorType::ILLEGAL_STATE, fluff::debug::DebugSeverity::WARN, "No physics component added.");
+				}
 			}
 			default: break;
 			}

@@ -30,10 +30,10 @@
 #ifndef PXFOUNDATION_PXINTRINSICS_H
 #define PXFOUNDATION_PXINTRINSICS_H
 
-#include "foundation/PxPreprocessor.h"
+#include <Physx/foundation/PxPreprocessor.h>
 
 #if PX_WINDOWS_FAMILY
-#include "foundation/windows/PxWindowsIntrinsics.h"
+#include <Physx/foundation/windows/PxWindowsIntrinsics.h>
 #elif(PX_LINUX || PX_ANDROID || PX_APPLE_FAMILY || PX_PS4)
 #include "foundation/unix/PxUnixIntrinsics.h"
 #elif PX_XBOXONE

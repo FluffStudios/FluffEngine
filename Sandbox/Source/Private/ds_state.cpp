@@ -3,18 +3,9 @@
 
 #include <iostream>
 #include <cereal/archives/binary.hpp>
+#include <cereal/archives/json.hpp>
 
-#define V_COUNT 512
-
-class TestTask : public fluff::ecs::Task<TestTask>
-{
-	size_t Updates;
-public:
-	void Update() override
-	{
-		Updates++;
-	}
-};
+#define V_COUNT 128
 
 void DSState::Configure()
 {
@@ -45,10 +36,9 @@ void DSState::Configure()
 	pManager_->GetSystemManager()->Add<MovementSystem>(cam);
 	pManager_->GetSystemManager()->Add<render::ScreenshotSystem>(pManager_);
 	pManager_->GetSystemManager()->Add<physics::PhysicsSystem>(pManager_);
-	pManager_->GetSystemManager()->Add<ecs::TaskSystem>(pManager_->GetSystemManager()->GetThreadPool());
+	auto taskSys = pManager_->GetSystemManager()->Add<ecs::TaskSystem>();
+	taskSys->AttachThreadpool(pManager_->GetSystemManager()->GetThreadPool());
 	pManager_->GetSystemManager()->Configure();
-
-	debug::DebugMessage(pManager_, debug::DebugErrorType::ILLEGAL_DATA, debug::DebugSeverity::WARN, __LINE__, __FILE__, "Test!");
 
 	pManager_->GetSystemManager()->GetSystem<ecs::TaskSystem>()->Add<TestTask>();
 
@@ -126,26 +116,26 @@ void DSState::Configure()
 	std::vector<std::future<void>> tasks;
 
 	tasks.push_back(pManager_->GetSystemManager()->GetThreadPool()->PushTask([&](size_t) {
-		for (auto x = -6; x < 5; x++)
+		for (auto x = -10; x < 11; x++)
 		{
-			for (auto z = -6; z < 5; z++)
+			for (auto z = -10; z < 11; z++)
 			{
-				Transformation trans(glm::vec3(x * V_COUNT - 1, 0, z * V_COUNT - 1), glm::vec3(0, 0, 0), glm::vec3(0.5f, 1, 0.5f));
+				Transformation trans(glm::vec3(x * V_COUNT, 0, z * V_COUNT), glm::vec3(0, 0, 0), glm::vec3(1, 1, 1));
 
-				auto * ter = new render::Terrain(V_COUNT + 2, mat4, &trans, noise, 48, 1);
+				auto * ter = new render::Terrain(V_COUNT, mat4, &trans, noise, 48, 1);
 
-				trans.SetPosition(trans.GetPosition() / 2.0f);
+				trans.SetPosition(trans.GetPosition());
 
 				physics::HeightFieldDesc hfd;
-				hfd.ColumnScale = 0.5f;
-				hfd.RowScale = 0.5f;
-				hfd.NumCols = V_COUNT + 3;
-				hfd.NumRows = V_COUNT + 3;
+				hfd.ColumnScale = 1.0f;
+				hfd.RowScale = 1.0f;
+				hfd.NumCols = V_COUNT + 1;
+				hfd.NumRows = V_COUNT + 1;
 				hfd.pManager = pManager_->GetSystemManager()->GetSystem<physics::PhysicsSystem>()->GetManager();
-				hfd.HeightScale = 64;
+				hfd.HeightScale = 48;
 
 				hfd.HeightMap = static_cast<float*>(calloc(sizeof(float) * hfd.NumCols * hfd.NumRows, 1));
-				memcpy(hfd.HeightMap, ter->GetHeightMap(), sizeof(float) * (V_COUNT + 3) * (V_COUNT + 3));
+				memcpy(hfd.HeightMap, ter->GetHeightMap(), sizeof(float) * (V_COUNT + 1) * (V_COUNT + 1));
 
 				auto e = pManager_->GetEntityManager()->Create();
 
@@ -184,9 +174,9 @@ void DSState::Configure()
 	render::Renderable renderable2(mat, mod3);
 	render::Renderable renderable3(mat2, mod3);
 	
-	for (auto i = -10; i < 10; i++)
+	for (auto i = -25; i < 25; i++)
 	{
-		for (auto j = -10; j < 10; j++)
+		for (auto j = -50; j < 50; j++)
 		{
 			auto ent = pManager_->GetEntityManager()->Create();
 			ent.AddComponent<render::RenderableComponent>(renderable2);
@@ -260,6 +250,10 @@ void DSState::Shutdown()
 	std::ofstream out("entity_manager.bin");
 	cereal::BinaryOutputArchive out_arch(out);
 	out_arch(pManager_->GetEntityManager());
+
+	std::ofstream jout("task_system.json");
+	cereal::JSONOutputArchive jout_arch(jout);
+	jout_arch(pManager_->GetSystemManager()->GetSystem<fluff::ecs::TaskSystem>());
 
 	TextureLibrary::Clear();
 	PipelineLibrary::Clear();

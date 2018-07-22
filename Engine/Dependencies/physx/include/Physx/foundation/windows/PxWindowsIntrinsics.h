@@ -30,8 +30,8 @@
 #ifndef PXFOUNDATION_PXWINDOWSINTRINSICS_H
 #define PXFOUNDATION_PXWINDOWSINTRINSICS_H
 
-#include "foundation/Px.h"
-#include "foundation/PxAssert.h"
+#include <Physx/foundation/Px.h>
+#include <Physx/foundation/PxAssert.h>
 
 #if !PX_WINDOWS_FAMILY
 #error "This file should only be included by Windows builds!!"

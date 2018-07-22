@@ -1,12 +1,12 @@
 {
     "settings": {
         "window_settings": {
-            "width": 1920,
-            "height": 1080,
+            "width": 1280,
+            "height": 720,
             "window_id": 0,
             "window_name": "DS_STATE",
             "vsync": true,
-            "fullscreen": true
+            "fullscreen": false
         },
         "graphics_settings": {
             "samples": 1,
