@@ -3,6 +3,9 @@
 #include <common.h>
 #include <vector>
 
+#include <cereal/cereal.hpp>
+#include <cereal/types/polymorphic.hpp>
+
 namespace fluff { namespace ecs {
 
 	class IPool
@@ -13,6 +16,41 @@ namespace fluff { namespace ecs {
 		size_t ChunkSize_ = 0;
 		size_t Size_ = 0;
 		std::vector<char *> Chunks_;
+
+		friend class cereal::access;
+
+		template <typename Archive>
+		void save(Archive & Ar) const {
+			std::vector<char> chunkData;
+			chunkData.reserve(Size_ * ChunkSize_ * ElementSize_);
+
+			for (char * chunk : Chunks_) 
+			{
+				for (size_t i = 0; i < ChunkSize_ * ElementSize_; i++)
+				{
+					chunkData.push_back(chunk[i]);
+				}
+			}
+
+			Ar(ElementSize_, Capacity_, ChunkSize_, Size_, chunkData);
+		}
+
+		template <typename Archive>
+		void load(Archive & Ar)
+		{
+			std::vector<char> chunkData;
+			Ar(ElementSize_, Capacity_, ChunkSize_, Size_, chunkData);
+			size_t chunkCount = Size_ / (ChunkSize_ * ElementSize_);
+			for (size_t c = 0; c < chunkCount; c++)
+			{
+				char * chunk = new char[ChunkSize_];
+				for (size_t i = 0; i < ChunkSize_ * ElementSize_)
+				{
+					chunk[i] = chunkData[c * ChunkSize_ + i];
+				}
+				Chunks_.push_back(chunk);
+			}
+		}
 	public:
 		/*
 			Creates a Pool
@@ -83,7 +121,7 @@ namespace fluff { namespace ecs {
 
 			Index - Location to destroy
 		*/
-		virtual void Destroy(size_t Index) = 0;
+		virtual void FLUFF_API Destroy(size_t Index);
 	};
 	
 	template<typename T, size_t ChunkSize = 8192>

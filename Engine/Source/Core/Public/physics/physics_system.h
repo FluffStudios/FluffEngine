@@ -7,21 +7,23 @@
 #include <mutex>
 
 #include <glm/vec3.hpp>
+#include <atomic>
 
 namespace fluff { namespace physics {
 
 	class PhysicsSystem : public ecs::System<PhysicsSystem>, public ecs::Receiver<PhysicsSystem>
 	{
+		std::atomic_bool Ready_;
 		PhysicsScene * Scene_;
 		PhysicsManager * pManager_;
 		std::shared_ptr<ECSManager> & SystemsManager_;
 	public:
 		PhysicsSystem(std::shared_ptr<ECSManager> & Manager);
 		~PhysicsSystem();
-		void Configure(ecs::EntityManager & Entities, ecs::EventManager & Events) override;
-		void Update(ecs::EntityManager & Entities, ecs::EventManager & Events, double DeltaTime) override;
-		void FixedUpdate(ecs::EntityManager & Entities, ecs::EventManager & Events) override;
-		inline bool UseMainThread() override { return true; }
+		void Configure(std::shared_ptr<ecs::EntityManager> & Entities, std::shared_ptr<ecs::EventManager> & Events) override;
+		void Update(std::shared_ptr<ecs::EntityManager> & Entities, std::shared_ptr<ecs::EventManager> & Events, double DeltaTime) override;
+		void FixedUpdate(std::shared_ptr<ecs::EntityManager> & Entities, std::shared_ptr<ecs::EventManager> & Events) override;
+		inline bool UseMainThread() override { return false; }
 
 		void * GetSDK() const { return pManager_->GetSDK(); }
 		PhysicsScene * GetScene() const { return Scene_; }

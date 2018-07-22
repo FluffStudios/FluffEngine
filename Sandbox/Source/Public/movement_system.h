@@ -16,19 +16,18 @@ struct MovementSystem : ecs::System<MovementSystem>
 	glm::vec3 Velocity;
 	glm::vec3 AngularVelocity;
 
-	MovementSystem() { }
 	MovementSystem(ecs::Entity Cam) : Cam(Cam) {
 		Position = this->Cam.GetComponent<gfx::CameraComponent>()->GetPosition();
 		Rotation = this->Cam.GetComponent<gfx::CameraComponent>()->GetRotation();
 	}
 
-	void Update(ecs::EntityManager & Entities, ecs::EventManager & Events, const double Delta) override
+	void Update(std::shared_ptr<ecs::EntityManager> & Entities, std::shared_ptr<ecs::EventManager> & Events, const double Delta) override
 	{
 		Cam.GetComponent<gfx::CameraComponent>()->SetPosition(Cam.GetComponent<gfx::CameraComponent>()->GetPosition() + Velocity * (float)Delta);
 		Cam.GetComponent<gfx::CameraComponent>()->SetRotation(Cam.GetComponent<gfx::CameraComponent>()->GetRotation() + AngularVelocity * (float)Delta);
 	}
 
-	void FixedUpdate(ecs::EntityManager & Entities, ecs::EventManager & Events) override
+	void FixedUpdate(std::shared_ptr<ecs::EntityManager> & Entities, std::shared_ptr<ecs::EventManager> & Events) override
 	{
 		Velocity = glm::vec3(0);
 		AngularVelocity = glm::vec3(0);

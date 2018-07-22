@@ -3,7 +3,7 @@
 namespace fluff { namespace ecs {
 
 	IPool::IPool(size_t ElementSize, size_t ChunkSize)
-		: ElementSize_(ElementSize), ChunkSize_(ChunkSize_), Capacity_(0)
+		: ElementSize_(ElementSize), ChunkSize_(ChunkSize), Capacity_(0)
 	{ }
 
 	IPool::~IPool()
@@ -40,6 +40,13 @@ namespace fluff { namespace ecs {
 	{
 		FLUFF_ASSERT(Index < Size_)
 		return Chunks_[Index / ChunkSize_] + ((Index % ChunkSize_) * ElementSize_);
+	}
+
+	void IPool::Destroy(size_t Index)
+	{
+		FLUFF_ASSERT(Index < Size_)
+		auto ptr = GetAt(Index);
+		memset(ptr, 0, ElementSize_);
 	}
 
 } }

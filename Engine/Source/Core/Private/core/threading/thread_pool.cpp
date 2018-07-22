@@ -2,14 +2,9 @@
 
 namespace fluff { namespace threading {
 
-	ThreadPool::ThreadPool()
+	ThreadPool::ThreadPool(size_t NumThreads)
 	{
 		Initialize();
-	}
-
-	ThreadPool::ThreadPool(size_t NumThreads)
-		: ThreadPool()
-	{
 		SetThreadCount(NumThreads);
 	}
 

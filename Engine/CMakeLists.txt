@@ -2,7 +2,6 @@
 if(MSVC)
 	add_definitions(
 		-c
-		-W4
 	)
 else()
 	add_definitions(
@@ -29,10 +28,14 @@ include_directories(${FluffEngine_SOURCE_DIR}/Engine/Source/Core/Public)
 
 # Define the executable
 add_library(Core STATIC ${CORE_HDRS} ${CORE_SRCS})
-
 target_compile_definitions(Core PUBLIC 
 	"$<$<CONFIG:Release>:O2>" 
 	"$<$<CONFIG:Release>:NDEBUG>"
+)
+
+target_compile_options(Core PUBLIC
+	"$<$<CONFIG:Release>:-w>"
+	"$<$<CONFIG:Debug>:-W4>"
 )
 
 #######################################

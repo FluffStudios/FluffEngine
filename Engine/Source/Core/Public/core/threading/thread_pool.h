@@ -13,6 +13,8 @@
 #include <thread>
 #include <vector>
 
+#include <cereal/access.hpp>
+
 namespace fluff { namespace threading {
 
 	class ThreadPool
@@ -28,9 +30,23 @@ namespace fluff { namespace threading {
 
 		std::mutex Mutex_;
 		std::condition_variable Condition_;
+
+		friend class cereal::access;
+
+		template <typename Archive>
+		void save(Archive & Ar) const
+		{
+			Ar(Threads_.size())
+		}
+
+		template <typename Archive>
+		void load(Archive & Ar)
+		{
+			size_t size;
+			Ar(size);
+		}
 	public:
-		FLUFF_API ThreadPool();
-		FLUFF_API ThreadPool(size_t NumThreads);
+		FLUFF_API ThreadPool(size_t NumThreads = 4);
 		FLUFF_API ~ThreadPool();
 
 		size_t FLUFF_API Size() const;
@@ -90,3 +106,17 @@ namespace fluff { namespace threading {
 	}
 
 }	}
+
+namespace cereal
+{
+	template <> struct LoadAndConstruct<fluff::threading::ThreadPool>
+	{
+		template <class Archive>
+		static void load_and_construct(Archive & ar, cereal::construct<fluff::threading::ThreadPool> & construct)
+		{
+			size_t count;
+			ar(count);
+			construct(count);
+		}
+	};
+}

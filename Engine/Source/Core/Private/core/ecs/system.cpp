@@ -4,7 +4,7 @@
 #include <core/ecs/entity.h>
 #include <core/ecs/event_manager.h>
 
-void Update(std::shared_ptr<fluff::ecs::ISystem> System, fluff::ecs::EntityManager & Entities, fluff::ecs::EventManager & Events, float DeltaTime)
+void Update(std::shared_ptr<fluff::ecs::ISystem> System, std::shared_ptr<fluff::ecs::EntityManager> & Entities, std::shared_ptr<fluff::ecs::EventManager> & Events, float DeltaTime)
 {
 	System->Update(Entities, Events, DeltaTime);
 }
@@ -12,11 +12,11 @@ void Update(std::shared_ptr<fluff::ecs::ISystem> System, fluff::ecs::EntityManag
 namespace fluff { namespace ecs
 {
 	
-	SystemManager::SystemManager(EntityManager& Entities, EventManager& Events)
+	SystemManager::SystemManager(std::shared_ptr<EntityManager> & Entities, std::shared_ptr<EventManager> & Events)
 		: SystemManager(Entities, Events, 1.0f / 60.0f)
 	{ }
 
-	SystemManager::SystemManager(EntityManager & Entities, EventManager & Events, double RefreshTime) 
+	SystemManager::SystemManager(std::shared_ptr<EntityManager> & Entities, std::shared_ptr<EventManager> & Events, double RefreshTime)
 		: EntityManager_(Entities), EventManager_(Events)
 	{
 		Pool_ = std::make_shared<threading::ThreadPool>(2);
@@ -36,7 +36,7 @@ namespace fluff { namespace ecs
 					funcs.push_back(Pool_->PushTask([this, it, DeltaTime](size_t) {
 						it.second->Update(EntityManager_, EventManager_, DeltaTime);
 					}));
-					std::this_thread::sleep_for(std::chrono::microseconds(1));
+					std::this_thread::sleep_for(std::chrono::nanoseconds(1));
 				}
 			} 
 			else
@@ -55,7 +55,7 @@ namespace fluff { namespace ecs
 						funcs.push_back(Pool_->PushTask([this, it, DeltaTime](size_t) {
 							it.second->FixedUpdate(EntityManager_, EventManager_);
 						}));
-						std::this_thread::sleep_for(std::chrono::microseconds(1));
+						std::this_thread::sleep_for(std::chrono::nanoseconds(1));
 					}
 				}
 				else

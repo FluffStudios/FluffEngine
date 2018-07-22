@@ -17,6 +17,13 @@ namespace fluff { namespace ecs {
 	public:
 		inline virtual ~Task() 
 		{	};
+
+		inline virtual size_t GetTaskID() const override
+		{
+			return ID_ = Task<TaskType>::GetFamilyID();
+		}
 	};
 
 } }
+
+#define REGISTER_TASK(TaskName) REGISTER_POLYMORPHIC_CLASS_CRTP(fluff::ecs::ITask, fluff::ecs::Task<TaskName>, TaskName)

@@ -166,7 +166,7 @@ namespace fluff { namespace gfx {
 		Allocator::Free(bitangents);
 		Allocator::Free(indices);
 
-		Manager->GetEventManager()->EmitEvent<ModelSubmittedEvent>(Manager->GetEntityManager()->Create());
+		Manager->GetEventManager()->EmitEvent<ModelSubmittedEvent>();
 
 		return buffer;
 	}

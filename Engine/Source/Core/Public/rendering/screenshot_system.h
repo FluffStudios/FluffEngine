@@ -21,7 +21,7 @@ namespace fluff { namespace render {
 			Configures Screenshot System to listen for
 			screenshot events
 		*/
-		void Configure(ecs::EventManager & Events) override;
+		void Configure(std::shared_ptr<ecs::EventManager> & Events) override;
 
 		/*
 			Ticks through events
@@ -30,7 +30,7 @@ namespace fluff { namespace render {
 			Events - Event Manager associated with screenshot system
 			TimeDelta - time since last update
 		*/
-		void Update(ecs::EntityManager & Entities, ecs::EventManager & Events, double TimeDelta) override;
+		void Update(std::shared_ptr<ecs::EntityManager> & Entities, std::shared_ptr<ecs::EventManager> & Events, double TimeDelta) override;
 
 		/*
 			Creates screenshot

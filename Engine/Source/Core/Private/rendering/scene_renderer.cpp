@@ -9,6 +9,7 @@
 #include <gfx/camera_component.h>
 #include <core/assets/material_library.h>
 #include <glew.h>
+#include <physics/physics_component.h>
 
 namespace fluff { namespace render {
 
@@ -125,7 +126,7 @@ namespace fluff { namespace render {
 
 	SceneRenderer::SceneRenderer(std::shared_ptr<ECSManager> & Manager, ecs::Entity Cam, glm::mat4& ProjectionMatrix) : SceneRenderer(Manager, ProjectionMatrix)
 	{
-		this->Cam = Cam;
+		this->Cam = std::make_shared<ecs::Entity>(Cam);
 	}
 
 	SceneRenderer::~SceneRenderer()
@@ -134,11 +135,11 @@ namespace fluff { namespace render {
 		delete LightingBuffer_;
 	}
 
-	void SceneRenderer::Configure(ecs::EventManager & Events)
+	void SceneRenderer::Configure(std::shared_ptr<ecs::EventManager> & Events)
 	{
-		Events.SubscribeToEvent<ecs::EntityDestroyedEvent>(*this);
-		Events.SubscribeToEvent<ecs::ComponentRemovedEvent<RenderableComponent>>(*this);
-		Events.SubscribeToEvent<ModelSubmittedEvent>(*this);
+		Events->SubscribeToEvent<ecs::EntityDestroyedEvent>(*this);
+		Events->SubscribeToEvent<ecs::ComponentRemovedEvent<RenderableComponent>>(*this);
+		Events->SubscribeToEvent<ModelSubmittedEvent>(*this);
 	}
 
 	void SceneRenderer::Receive(const ModelSubmittedEvent & ModelSubmission)
@@ -307,12 +308,12 @@ namespace fluff { namespace render {
 
 	void SceneRenderer::Render()
 	{
-		ViewProjMatrix_.ViewMatrix = Cam.GetComponent<gfx::CameraComponent>()->GetViewMatrix();
+		ViewProjMatrix_.ViewMatrix = Cam->GetComponent<gfx::CameraComponent>()->GetViewMatrix();
 		ViewProjMatrix_.ProjectionMatrix = ProjectionMatrix_;
 		Context::UpdateSubResource(ViewProjBuffer_, &ViewProjMatrix_, 0, 256);
 		Context::BindRange(ViewProjBuffer_, 0, sizeof(ViewProj), 0);
 
-		camera_position->SetValue(glm::value_ptr(Cam.GetComponent<gfx::CameraComponent>()->GetPosition()));
+		camera_position->SetValue(glm::value_ptr(Cam->GetComponent<gfx::CameraComponent>()->GetPosition()));
 		DeferredPass();
 		LightingPass();
 		TransparencyPass();
@@ -354,9 +355,18 @@ namespace fluff { namespace render {
 			}
 			case NONE:
 			{
-				auto transformation = ent.GetComponent<TransformationComponent>()->GetTransformationMatrix();
-				matl->SetModelMatrix(const_cast<float*>(glm::value_ptr(transformation)));
-				modl->Draw();
+//				auto transformation = ent.GetComponent<TransformationComponent>()->GetTransformationMatrix();
+//				matl->SetModelMatrix(const_cast<float*>(glm::value_ptr(transformation)));
+				auto actor = ent.GetComponent<physics::PhysicsComponent>()->GetActor();
+				if (actor) {
+					auto transform = actor->GetTransform();
+					matl->SetModelMatrix(const_cast<float*>(glm::value_ptr(transform)));
+					modl->Draw();
+				}
+				else
+				{
+					FLUFF_LOG(fluff::debug::DebugErrorType::ILLEGAL_STATE, fluff::debug::DebugSeverity::WARN, "No physics component added.");
+				}
 			}
 			default: break;
 			}
@@ -400,8 +410,8 @@ namespace fluff { namespace render {
 			auto l = Manager_->GetEntityManager()->Get(left);
 			auto r = Manager_->GetEntityManager()->Get(right);
 
-			auto d_l = glm::length2(l.GetComponent<TransformationComponent>()->GetPosition() - Cam.GetComponent<gfx::CameraComponent>()->GetPosition());
-			auto d_r = glm::length2(r.GetComponent<TransformationComponent>()->GetPosition() - Cam.GetComponent<gfx::CameraComponent>()->GetPosition());
+			auto d_l = glm::length2(l.GetComponent<TransformationComponent>()->GetPosition() - Cam->GetComponent<gfx::CameraComponent>()->GetPosition());
+			auto d_r = glm::length2(r.GetComponent<TransformationComponent>()->GetPosition() - Cam->GetComponent<gfx::CameraComponent>()->GetPosition());
 			return d_l > d_r;
 		});
 
@@ -465,8 +475,8 @@ namespace fluff { namespace render {
 			Vec3 LPosition = Manager_->GetEntityManager()->GetComponentPtr<PointLightComponent>(left)->Light.Position;
 			Vec3 RPosition = Manager_->GetEntityManager()->GetComponentPtr<PointLightComponent>(left)->Light.Position;
 
-			return (Cam.GetComponent<gfx::CameraComponent>()->GetPosition().x * LPosition.Value[0] + Cam.GetComponent<gfx::CameraComponent>()->GetPosition().y * LPosition.Value[1] + Cam.GetComponent<gfx::CameraComponent>()->GetPosition().z * LPosition.Value[2]) <
-				(Cam.GetComponent<gfx::CameraComponent>()->GetPosition().x * RPosition.Value[0] + Cam.GetComponent<gfx::CameraComponent>()->GetPosition().y * RPosition.Value[1] + Cam.GetComponent<gfx::CameraComponent>()->GetPosition().z * RPosition.Value[2]);
+			return (Cam->GetComponent<gfx::CameraComponent>()->GetPosition().x * LPosition.Value[0] + Cam->GetComponent<gfx::CameraComponent>()->GetPosition().y * LPosition.Value[1] + Cam->GetComponent<gfx::CameraComponent>()->GetPosition().z * LPosition.Value[2]) <
+				(Cam->GetComponent<gfx::CameraComponent>()->GetPosition().x * RPosition.Value[0] + Cam->GetComponent<gfx::CameraComponent>()->GetPosition().y * RPosition.Value[1] + Cam->GetComponent<gfx::CameraComponent>()->GetPosition().z * RPosition.Value[2]);
 		});
 
 		std::sort(spot_lights.begin(), spot_lights.end(), [&](ecs::ID left, ecs::ID right)
@@ -474,8 +484,8 @@ namespace fluff { namespace render {
 			Vec3 LPosition = Manager_->GetEntityManager()->GetComponentPtr<SpotLightComponent>(left)->Light.Position;
 			Vec3 RPosition = Manager_->GetEntityManager()->GetComponentPtr<SpotLightComponent>(left)->Light.Position;
 
-			return (Cam.GetComponent<gfx::CameraComponent>()->GetPosition().x * LPosition.Value[0] + Cam.GetComponent<gfx::CameraComponent>()->GetPosition().y * LPosition.Value[1] + Cam.GetComponent<gfx::CameraComponent>()->GetPosition().z * LPosition.Value[2]) <
-				(Cam.GetComponent<gfx::CameraComponent>()->GetPosition().x * RPosition.Value[0] + Cam.GetComponent<gfx::CameraComponent>()->GetPosition().y * RPosition.Value[1] + Cam.GetComponent<gfx::CameraComponent>()->GetPosition().z * RPosition.Value[2]);
+			return (Cam->GetComponent<gfx::CameraComponent>()->GetPosition().x * LPosition.Value[0] + Cam->GetComponent<gfx::CameraComponent>()->GetPosition().y * LPosition.Value[1] + Cam->GetComponent<gfx::CameraComponent>()->GetPosition().z * LPosition.Value[2]) <
+				(Cam->GetComponent<gfx::CameraComponent>()->GetPosition().x * RPosition.Value[0] + Cam->GetComponent<gfx::CameraComponent>()->GetPosition().y * RPosition.Value[1] + Cam->GetComponent<gfx::CameraComponent>()->GetPosition().z * RPosition.Value[2]);
 		});
 
 		std::vector<ecs::ID> return_values;
