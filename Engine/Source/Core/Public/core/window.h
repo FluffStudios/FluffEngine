@@ -43,7 +43,7 @@ namespace fluff
 		/*
 			Kills window
 		 */
-		void CloseWindow();
+		void CloseWindow() const;
 
 		/*
 			Gets the window's width

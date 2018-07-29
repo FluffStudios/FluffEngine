@@ -2,16 +2,30 @@
 #include <core/inputs/cursor.h>
 #include <core/inputs/keyboard.h>
 #include <core/inputs/mouse.h>
-#include <common.h>
 #include <gfx/error_callback.h>
 #include "gfx/context.h"
 #include <core/timer.h>
 #include <glew.h>
 #include <glfw3.h>
 
+#include <imgui/imgui.h>
+#include <rendering/ui/backend_imgui_wrapper.h>
+
 static void key_callback(GLFWwindow *Window, int Key, int Scancode, int Action, int Mods)
 {
 	fluff::Keyboard::Update(Key, Action == GLFW_PRESS || Action == GLFW_REPEAT);
+
+    ImGuiIO& io = ImGui::GetIO();
+    if (Action == GLFW_PRESS)
+        io.KeysDown[Key] = true;
+    if (Action == GLFW_RELEASE)
+        io.KeysDown[Key] = false;
+
+    (void)Mods; // Modifiers are not reliable across systems
+    io.KeyCtrl = io.KeysDown[GLFW_KEY_LEFT_CONTROL] || io.KeysDown[GLFW_KEY_RIGHT_CONTROL];
+    io.KeyShift = io.KeysDown[GLFW_KEY_LEFT_SHIFT] || io.KeysDown[GLFW_KEY_RIGHT_SHIFT];
+    io.KeyAlt = io.KeysDown[GLFW_KEY_LEFT_ALT] || io.KeysDown[GLFW_KEY_RIGHT_ALT];
+    io.KeySuper = io.KeysDown[GLFW_KEY_LEFT_SUPER] || io.KeysDown[GLFW_KEY_RIGHT_SUPER];
 }
 
  static void char_callback(GLFWwindow *window, unsigned int codepoint)
@@ -88,14 +102,19 @@ namespace fluff
 
 	bool Window::Update() const
 	{
-		fluff::Mouse::Update(0.0, 0.0);
-		glfwPollEvents();
+		Mouse::Update(0.0, 0.0);
+        glfwPollEvents();
+
 		glfwSwapBuffers(Impl_->Handle_);
 		return glfwWindowShouldClose(Impl_->Handle_) == 0;
 	}
 
-	void Window::CloseWindow()
+	void Window::CloseWindow() const
 	{
+        ImGui_ImplOpenGL3_Shutdown();
+        ImGui_ImplGlfw_Shutdown();
+        ImGui::DestroyContext();
+
 		glfwDestroyWindow(Impl_->Handle_);
 		Impl_->Handle_ = nullptr;
 	}
@@ -204,6 +223,18 @@ namespace fluff
 		glClearDepth(0);
 		glClearColor(0, 0, 0, 1);
 
+        // Initialize IMGUI
+        IMGUI_CHECKVERSION();
+        ImGui::CreateContext();
+
+        ImGuiIO& imGuiIo = ImGui::GetIO(); 
+	    (void)imGuiIo;
+
+        const char* GLSL_VERSION = "#version 130";
+
+        ImGui_ImplGlfw_InitForOpenGL(Impl_->Handle_, true);
+        ImGui_ImplOpenGL3_Init(GLSL_VERSION);
+        ImGui::StyleColorsClassic();
 	}
 
 }

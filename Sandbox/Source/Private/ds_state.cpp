@@ -1,5 +1,6 @@
 #include <ds_state.h>
 #include <movement_system.h>
+#include "rendering/ui/backend_imgui_wrapper.h"
 
 #include <iostream>
 #include <cereal/archives/binary.hpp>
@@ -11,7 +12,6 @@ void DSState::Configure()
 {
 	std::ifstream lt_in("lookup_table.bin", std::ios::binary);
 	cereal::BinaryInputArchive archive_in(lt_in);
-
 	{
 		ComponentLookupTable table;
 		archive_in(table);
@@ -193,7 +193,6 @@ void DSState::Configure()
 			desc.HalfWidth = 1.0f;
 			desc.HalfHeight = 1.0f;
 			desc.HalfDepth = 1.0f;
-
 
 			physics::PhysicsMaterialDescriptor mat_desc;
 			mat_desc.DynamicFriction = 0.5f;

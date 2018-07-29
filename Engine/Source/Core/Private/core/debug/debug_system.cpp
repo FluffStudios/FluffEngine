@@ -42,5 +42,9 @@ namespace fluff { namespace debug
 
 		Message.append(Msg.Description);
 		std::cout << Message.c_str() << std::endl;
+		if (Msg.Severity == DebugSeverity::FATAL) 
+		{
+			FLUFF_ASSERT(false)
+		}
 	}
 }	}

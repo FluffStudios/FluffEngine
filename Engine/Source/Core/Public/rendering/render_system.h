@@ -31,7 +31,7 @@ namespace fluff { namespace render {
 		*/
 		void Update(std::shared_ptr<ecs::EntityManager> & Entities, std::shared_ptr<ecs::EventManager> & Events, double Delta) override;
 
-		inline bool UseMainThread() override { return true; }
+		bool UseMainThread() override { return true; }
 
 		std::shared_ptr<SceneRenderer> & GetSceneRenderer() { return Scene_; }
 	};
