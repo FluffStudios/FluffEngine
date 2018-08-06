@@ -97,12 +97,12 @@ namespace fluff { namespace gfx {
 			index_size += mesh->IndexCount;
 		}
 
-		const auto positions = static_cast<float*>(Allocator::Alloc(vbo_size * sizeof(float)));
-		const auto uvs = static_cast<float*>(Allocator::Alloc(vbo_size * sizeof(float)));
-		const auto normals = static_cast<float*>(Allocator::Alloc(vbo_size * sizeof(float)));
-		const auto tangents = static_cast<float*>(Allocator::Alloc(vbo_size * sizeof(float)));
-		const auto bitangents = static_cast<float*>(Allocator::Alloc(vbo_size * sizeof(float)));
-		const auto indices = static_cast<unsigned int*>(Allocator::Alloc(index_size * sizeof(unsigned int)));
+		const auto positions = static_cast<float *>(malloc(vbo_size * sizeof(float)));
+		const auto uvs = static_cast<float*>(malloc(vbo_size * sizeof(float)));
+		const auto normals = static_cast<float*>(malloc(vbo_size * sizeof(float)));
+		const auto tangents = static_cast<float*>(malloc(vbo_size * sizeof(float)));
+		const auto bitangents = static_cast<float*>(malloc(vbo_size * sizeof(float)));
+		const auto indices = static_cast<unsigned int*>(malloc(index_size * sizeof(unsigned int)));
 
 		size_t vertex_offset = 0;
 		size_t index_offset = 0;
@@ -159,12 +159,12 @@ namespace fluff { namespace gfx {
 		Singleton_.VertexOffset_ = 0;
 		Singleton_.Models_.clear();
 		
-		Allocator::Free(positions);
-		Allocator::Free(uvs);
-		Allocator::Free(normals);
-		Allocator::Free(tangents);
-		Allocator::Free(bitangents);
-		Allocator::Free(indices);
+		free(positions);
+		free(uvs);
+		free(normals);
+		free(tangents);
+		free(bitangents);
+		free(indices);
 
 		Manager->GetEventManager()->EmitEvent<ModelSubmittedEvent>();
 

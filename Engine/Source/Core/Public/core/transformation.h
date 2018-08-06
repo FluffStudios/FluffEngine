@@ -39,6 +39,8 @@ namespace fluff
 			this->Position = Position;
 			this->Rotation = Rotation;
 			this->Scale = Scale;
+
+			CreateTransformationMatrix();
 		}
 
 		/*

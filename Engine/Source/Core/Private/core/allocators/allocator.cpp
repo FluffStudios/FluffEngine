@@ -22,11 +22,11 @@ namespace fluff
 	{
 		for (auto block : Blocks_)
 		{
-			free(block.Ptr);
+			if (block.Ptr != nullptr) free(block.Ptr);
 		}
 		for (auto block : FreeBlocks_)
 		{
-			free(block.Ptr);
+			if (block.Ptr != nullptr) free(block.Ptr);
 		}
 
 		Blocks_.clear();

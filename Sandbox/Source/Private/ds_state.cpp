@@ -1,11 +1,12 @@
 #include <ds_state.h>
 #include <movement_system.h>
+#include <sphere_generators.h>
 
 #include <iostream>
 #include <cereal/archives/binary.hpp>
 #include <cereal/archives/json.hpp>
 
-#define V_COUNT 128
+#define V_COUNT 256
 
 void DSState::Configure()
 {
@@ -27,7 +28,7 @@ void DSState::Configure()
 
 	auto cam = pManager_->GetEntityManager()->Create();
 	cam.AddComponent<gfx::CameraComponent>();
-	cam.GetComponent<gfx::CameraComponent>()->SetPosition(glm::vec3(0, 120, -200));
+	cam.GetComponent<gfx::CameraComponent>()->SetPosition(glm::vec3(0, 100, 0));
 	cam.GetComponent<gfx::CameraComponent>()->SetRotation(glm::vec3(-45, 0, 0));
 
 	pManager_->GetSystemManager()->Add<render::RenderSystem>(pManager_, cam, proj);
@@ -116,11 +117,11 @@ void DSState::Configure()
 	std::vector<std::future<void>> tasks;
 
 	tasks.push_back(pManager_->GetSystemManager()->GetThreadPool()->PushTask([&](size_t) {
-		for (auto x = -10; x < 11; x++)
+		for (auto x = -1; x < 2; x++)
 		{
-			for (auto z = -10; z < 11; z++)
+			for (auto z = -1; z < 2; z++)
 			{
-				Transformation trans(glm::vec3(x * V_COUNT, 0, z * V_COUNT), glm::vec3(0, 0, 0), glm::vec3(1, 1, 1));
+				Transformation trans(glm::vec3((x * V_COUNT) - V_COUNT / 2, 0, (z * V_COUNT) - V_COUNT / 2), glm::vec3(0, 0, 0), glm::vec3(1, 1, 1));
 
 				auto * ter = new render::Terrain(V_COUNT, mat4, &trans, noise, 48, 1);
 
@@ -163,24 +164,57 @@ void DSState::Configure()
 	}
 
 	gfx::Context::Flush(pManager_);
+	Allocator::Dispose();
+
+	for (size_t i = 0; i < 10; i++)
+	{
+		sandbox::Icosphere generator;
+		auto icosphere = generator.GetMesh(i);
+		gfx::Model * sphere = gfx::Context::LoadMesh(icosphere);
+
+		ecs::Entity ent = pManager_->GetEntityManager()->Create();
+		render::Renderable renderable(mat4, sphere);
+		ent.AddComponent<render::RenderableComponent>(renderable);
+
+		auto physics_system = pManager_->GetSystemManager()->GetSystem<physics::PhysicsSystem>();
+
+		physics::BoxDesc desc;
+		desc.HalfWidth = 1.0f;
+		desc.HalfHeight = 1.0f;
+		desc.HalfDepth = 1.0f;
+
+
+		physics::PhysicsMaterialDescriptor mat_desc;
+		mat_desc.DynamicFriction = 0.5f;
+		mat_desc.StaticFriction = 0.5f;
+		mat_desc.Restitution = 0.5f;
+
+		ent.GetComponent<TransformationComponent>()->SetPosition(glm::vec3(i * 5, 100, 0));
+		ent.GetComponent<TransformationComponent>()->SetScale(glm::vec3(1, 1, 1));
+
+		ent.AddComponent<physics::PhysicsComponent>(physics::STATIC, physics::BOX, &desc, ent.GetComponent<TransformationComponent>().Get(), mat_desc, physics_system.get());
+	
+		gfx::Context::Flush(pManager_);
+	}
 
 	float ter_scale = V_COUNT / 64.0f;
 
 	gfx::GraphicsPipeline::SetDefault();
 
-	Allocator::Dispose();
+//	Allocator::Dispose();
 
 	render::Renderable renderable(mat, mod3);
 	render::Renderable renderable2(mat, mod3);
 	render::Renderable renderable3(mat2, mod3);
-	
-	for (auto i = -25; i < 25; i++)
+
+
+	for (auto i = -50; i < 50; i++)
 	{
 		for (auto j = -50; j < 50; j++)
 		{
 			auto ent = pManager_->GetEntityManager()->Create();
 			ent.AddComponent<render::RenderableComponent>(renderable2);
-			ent.GetComponent<TransformationComponent>()->SetPosition(glm::vec3(i * 15 + 1, 65, j * 15 + 1));
+			ent.GetComponent<TransformationComponent>()->SetPosition(glm::vec3(i * 7 + 1, 65, j * 7 + 1));
 			ent.GetComponent<TransformationComponent>()->SetScale(glm::vec3(1, 1, 1));
 
 			auto new_rot = ent.GetComponent<TransformationComponent>()->GetRotation();
@@ -204,29 +238,13 @@ void DSState::Configure()
 		}
 	}
 
+
 	pManager_->GetEventManager()->EmitEvent<gfx::ModelSubmittedEvent>();
 	gfx::Context::Clear();
 
-	auto directional_light = pManager_->GetEntityManager()->Create();
-	directional_light.AddComponent<render::DirectionalLightComponent>(gfx::DirectionalLight{
-		render::Vec3{ 0, -1, 0 },
-		render::Vec3{ .2f, .2f, .2f },
-		render::Vec3{ .6f, .6f, .6f },
-		render::Vec3{ .2f, .2f, .2f }
-	});
-
 	auto point_light = pManager_->GetEntityManager()->Create();
 	point_light.AddComponent<render::PointLightComponent>(gfx::PointLight{
-		render::Vec3{ 350, 100, 25 },
-		render::Vec3{ .2f, .2f, .2f },
-		render::Vec3{ .6f, .6f, .6f },
-		render::Vec3{ .2f, .2f, .2f },
-		render::Vec3{ 0.0f, 0.01f, 0.0f }
-	});
-
-	auto point_light_2 = pManager_->GetEntityManager()->Create();
-	point_light_2.AddComponent<render::PointLightComponent>(gfx::PointLight{
-		render::Vec3{ 50, 100, 25 },
+		render::Vec3{ -20, 120, 0 },
 		render::Vec3{ .2f, .2f, .2f },
 		render::Vec3{ .6f, .6f, .6f },
 		render::Vec3{ .2f, .2f, .2f },

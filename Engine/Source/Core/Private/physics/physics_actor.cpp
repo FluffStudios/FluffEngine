@@ -32,7 +32,7 @@ namespace fluff { namespace physics {
 		physx::PxRigidDynamic * pActor;
 		physx::PxMaterial * pMat;
 		physx::PxReal Min_;
-		Transformation T_;
+		physx::PxMat44 Transform_;
 	};
 
 	PhysicsDynamicActor::PhysicsDynamicActor(void * pSDK, glm::vec3 Position, glm::quat Rotation, GeometryType Geometry, GeometryDesc * GeomDesc, PhysicsMaterialDescriptor Material, float Density)
@@ -144,16 +144,15 @@ namespace fluff { namespace physics {
 		return Impl_->pActor;
 	}
 
-	const glm::mat4 PhysicsDynamicActor::GetTransform() const
+	const float * PhysicsDynamicActor::GetTransform() const
 	{
-		return Impl_->T_.GetTransformationMatrix();
+		Impl_->Transform_ = physx::PxMat44(Impl_->pActor->getGlobalPose());
+		return Impl_->Transform_.front();
 	}
 
 	void PhysicsDynamicActor::Update()
 	{
-		if (!Impl_->pActor->isSleeping()) {
-			Impl_->T_.SetPositionAndRotation(this->GetPosition(), this->GetRotation());
-		}
+
 	}
 
 	struct PhysicsStaticActor::PhysicsStaticActorImpl
@@ -162,7 +161,7 @@ namespace fluff { namespace physics {
 		physx::PxRigidStatic * pActor;
 		physx::PxMaterial * pMat;
 		physx::PxReal Min_;
-		Transformation T_;
+		physx::PxMat44 Transform_;
 	};
 
 	PhysicsStaticActor::PhysicsStaticActor(void * pSDK, glm::vec3 Position, glm::vec3 Rotation, glm::vec3 Scale, GeometryType Geometry, GeometryDesc * GeomDesc, PhysicsMaterialDescriptor Material)
@@ -171,7 +170,7 @@ namespace fluff { namespace physics {
 		glm::quat q = glm::toQuat(glm::orientate3(glm::radians(Rotation)));
 		Impl_->Pose_ = physx::PxTransform
 		{
-			physx::PxVec3(-Position.x, Position.y, Position.z),
+			physx::PxVec3(Position.x, Position.y, Position.z),
 			physx::PxQuat(q.x, q.y, q.z, q.w)
 		};
 
@@ -245,12 +244,10 @@ namespace fluff { namespace physics {
 		}
 		}
 
-		Impl_->T_ = Transformation(Position, Rotation, Scale);
 		Impl_->pMat = ((physx::PxPhysics*)pSDK)->createMaterial(Material.StaticFriction, Material.DynamicFriction, Material.Restitution);
 		if (geometry) Impl_->pActor = physx::PxCreateStatic(*((physx::PxPhysics *)pSDK), Impl_->Pose_, *geometry, *(Impl_->pMat));
 
-		Impl_->T_.SetPosition(this->GetPosition());
-		Impl_->T_.SetRotation(this->GetRotation());
+		Impl_->Transform_ = physx::PxMat44(Impl_->Pose_);
 	}
 
 	glm::vec3 PhysicsStaticActor::GetPosition() const
@@ -281,13 +278,12 @@ namespace fluff { namespace physics {
 		return Impl_->pActor;
 	}
 
-	const glm::mat4 PhysicsStaticActor::GetTransform() const
+	const float * PhysicsStaticActor::GetTransform() const
 	{
-		return Impl_->T_.GetTransformationMatrix();
+		return Impl_->Transform_.front();
 	}
 	void PhysicsStaticActor::Update()
 	{
-//		Impl_->T_.SetPosition(this->GetPosition());
-//		Impl_->T_.SetRotation(this->GetRotation());
+
 	}
 } }

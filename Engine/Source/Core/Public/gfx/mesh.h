@@ -139,6 +139,20 @@ namespace fluff { namespace gfx {
 		size_t IndexCount;
 
 		Mesh() { }
+
+		Mesh(uint64_t VertexCount, uint64_t IndexCount) 
+		{
+			Positions_ = static_cast<float*>(Allocator::Alloc(VertexCount * 3 * sizeof(float)));
+			TextureCoords_ = static_cast<float*>(Allocator::Alloc(VertexCount * 3 * sizeof(float)));
+			Normals_ = static_cast<float*>(Allocator::Alloc(VertexCount * 3 * sizeof(float)));
+			Tangents_ = static_cast<float*>(Allocator::Alloc(VertexCount * 3 * sizeof(float)));
+			BiTangents_ = static_cast<float*>(Allocator::Alloc(VertexCount * 3 * sizeof(float)));
+			Indices_ = static_cast<unsigned int*>(Allocator::Alloc(IndexCount * sizeof(unsigned int)));
+		
+			this->VertexCount = VertexCount;
+			this->IndexCount = IndexCount;
+		}
+
 		~Mesh();
 
 		/*
@@ -357,8 +371,8 @@ namespace fluff { namespace gfx {
 		 */
 		void SetIndices(std::vector<unsigned int> & Indices)
 		{
-			if (Indices_) delete[] Indices_;
-			Indices_ = new unsigned int[Indices.size()];
+			if (Indices_) Allocator::Free(Indices_);
+			Indices_ = static_cast<uint32_t*>(Allocator::Alloc(Indices.size() * sizeof(unsigned int)));
 			memcpy(Indices_, Indices.data(), sizeof(unsigned int) * Indices.size());
 		}
 

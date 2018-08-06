@@ -55,12 +55,12 @@ namespace fluff { namespace gfx {
 	Mesh::Mesh(utilities::SerializationMesh & Serial)
 	{
 
-		Positions_ = new float[Serial.VertexCount * 3];
-		TextureCoords_ = new float[Serial.VertexCount * 3];
-		Normals_ = new float[Serial.VertexCount * 3];
-		Tangents_ = new float[Serial.VertexCount * 3];
-		BiTangents_ = new float[Serial.VertexCount * 3];
-		Indices_ = new unsigned int[Serial.IndexCount];
+		Positions_ = static_cast<float*>(Allocator::Alloc(Serial.VertexCount * 3 * sizeof(float)));
+		TextureCoords_ = static_cast<float*>(Allocator::Alloc(Serial.VertexCount * 3 * sizeof(float)));
+		Normals_ = static_cast<float*>(Allocator::Alloc(Serial.VertexCount * 3 * sizeof(float)));
+		Tangents_ = static_cast<float*>(Allocator::Alloc(Serial.VertexCount * 3 * sizeof(float)));
+		BiTangents_ = static_cast<float*>(Allocator::Alloc(Serial.VertexCount * 3 * sizeof(float)));
+		Indices_ = static_cast<unsigned int*>(Allocator::Alloc(Serial.IndexCount * sizeof(unsigned int)));
 
 		for (auto i = 0; i < Serial.VertexCount; i++)
 		{
@@ -92,12 +92,12 @@ namespace fluff { namespace gfx {
 			IndexCount += SerialMesh[i].IndexCount;
 		}
 
-		Positions_ = new float[VertexCount * 3];
-		TextureCoords_ = new float[VertexCount * 3];
-		Normals_ = new float[VertexCount * 3];
-		Tangents_ = new float[VertexCount * 3];
-		BiTangents_ = new float[VertexCount * 3];
-		Indices_ = new unsigned int[IndexCount];
+		Positions_ = static_cast<float*>(Allocator::Alloc(VertexCount * 3 * sizeof(float)));
+		TextureCoords_ = static_cast<float*>(Allocator::Alloc(VertexCount * 3 * sizeof(float)));
+		Normals_ = static_cast<float*>(Allocator::Alloc(VertexCount * 3 * sizeof(float)));
+		Tangents_ = static_cast<float*>(Allocator::Alloc(VertexCount * 3 * sizeof(float)));
+		BiTangents_ = static_cast<float*>(Allocator::Alloc(VertexCount * 3 * sizeof(float)));
+		Indices_ = static_cast<unsigned int*>(Allocator::Alloc(IndexCount * sizeof(unsigned int)));
 
 		auto c = 0L;
 		for (auto i = 0; i < Count; i++)
