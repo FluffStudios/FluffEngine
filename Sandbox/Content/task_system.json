@@ -1,0 +1,77 @@
+{
+    "value0": {
+        "polymorphic_id": 1073741824,
+        "ptr_wrapper": {
+            "id": 2147483649,
+            "data": {
+                "value0": [
+                    {
+                        "key": 0,
+                        "value": {
+                            "polymorphic_id": 2147483649,
+                            "polymorphic_name": "TestTask",
+                            "ptr_wrapper": {
+                                "id": 2147483650,
+                                "data": {
+                                    "value0": 0
+                                }
+                            }
+                        }
+                    }
+                ],
+                "value1": [
+                    {
+                        "key": 0,
+                        "value": [
+                            {
+                                "value0": {
+                                    "value0": 4294967297
+                                }
+                            },
+                            {
+                                "value0": {
+                                    "value0": 4294967298
+                                }
+                            },
+                            {
+                                "value0": {
+                                    "value0": 4294967299
+                                }
+                            },
+                            {
+                                "value0": {
+                                    "value0": 4294967300
+                                }
+                            },
+                            {
+                                "value0": {
+                                    "value0": 4294967301
+                                }
+                            },
+                            {
+                                "value0": {
+                                    "value0": 4294967302
+                                }
+                            },
+                            {
+                                "value0": {
+                                    "value0": 4294967303
+                                }
+                            },
+                            {
+                                "value0": {
+                                    "value0": 4294967304
+                                }
+                            },
+                            {
+                                "value0": {
+                                    "value0": 4294967305
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    }
+}

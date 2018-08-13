@@ -7,6 +7,10 @@
 #include <sstream>
 #include <stdio.h>
 
+#ifndef MIN_DEBUG_LVL
+#define MIN_DEBUG_LVL fluff::debug::DebugSeverity::ERROR
+#endif
+
 namespace fluff { namespace debug {
 
 	DebugLogWriter::DebugLogWriterImpl::DebugLogWriterImpl()
@@ -39,6 +43,10 @@ namespace fluff { namespace debug {
 
 	void DebugLogWriter::DebugLogWriterImpl::Log(DebugErrorType ErrorType, DebugSeverity Severity, size_t LineNumber, std::string FileName, std::string Description)
 	{
+		if (Severity < MIN_DEBUG_LVL)
+		{
+			return;
+		}
 		std::lock_guard<std::mutex> lock(Mutex_);
 
 		using namespace rapidjson;

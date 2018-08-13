@@ -38,6 +38,8 @@ namespace fluff { namespace gfx {
 		stream << "---------------" << std::endl;
 		stream << "Debug message (" << Id << "): " << Message << std::endl;
 
+		debug::DebugSeverity severity = debug::DebugSeverity::ERROR;
+
 		switch (Source)
 		{
 		case GL_DEBUG_SOURCE_API:             stream << "Source: API"; break;
@@ -67,14 +69,13 @@ namespace fluff { namespace gfx {
 		{
 		case GL_DEBUG_SEVERITY_HIGH:         stream << "Severity: high"; break;
 		case GL_DEBUG_SEVERITY_MEDIUM:       stream << "Severity: medium"; break;
-		case GL_DEBUG_SEVERITY_LOW:          stream << "Severity: low"; break;
-		case GL_DEBUG_SEVERITY_NOTIFICATION: stream << "Severity: notification"; break;
+		case GL_DEBUG_SEVERITY_LOW:          stream << "Severity: low"; severity = debug::DebugSeverity::WARN; break;
+		case GL_DEBUG_SEVERITY_NOTIFICATION: stream << "Severity: notification"; severity = debug::DebugSeverity::WARN; break;
 		default:;
 		} stream << std::endl;
 		stream << std::endl;
 
-		FLUFF_LOG(debug::DebugErrorType::ILLEGAL_STATE, debug::DebugSeverity::ERROR, stream.str());
-		FLUFF_ERROR_FUNC(stream.str().c_str())
+		FLUFF_LOG(debug::DebugErrorType::ILLEGAL_STATE, severity, stream.str());
 	}
 
 } }

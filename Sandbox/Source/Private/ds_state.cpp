@@ -166,7 +166,7 @@ void DSState::Configure()
 	gfx::Context::Flush(pManager_);
 	Allocator::Dispose();
 
-	for (size_t i = 0; i < 10; i++)
+	for (size_t i = 0; i < 3; i++)
 	{
 		sandbox::Icosphere generator;
 		auto icosphere = generator.GetMesh(i);
